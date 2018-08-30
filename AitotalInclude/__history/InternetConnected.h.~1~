@@ -1,0 +1,32 @@
+
+#include <wininet.h>
+typedef BOOL(WINAPI * INETCHECKPROC)(LPDWORD lpdwFlags, DWORD dwReserved);
+
+bool GetStatusConnect()
+{
+    // возвращает 1, если комп подключен к интеренту, в противном случае -0
+	bool bRetVal;
+	HINSTANCE hLib = NULL;
+	INETCHECKPROC pfnInternetGetConnectedState;
+
+	// грузим (в смысле загружаем) библиотеку wininet.dll
+	hLib = LoadLibraryA("wininet.dll");
+	if (!hLib) // если не получилось загрузить библиотеку, то
+			return false; // возвращаем 0
+
+	// получаем адрес функции InternetGetConnectedState
+	pfnInternetGetConnectedState = (INETCHECKPROC)GetProcAddress(hLib,
+		"InternetGetConnectedState");
+
+	// Если не удалось получить адрес функции
+	if (!pfnInternetGetConnectedState)
+		return false; // возвращаем 0
+
+	DWORD lpdwFlags;
+
+	// проверяем соединение
+	bRetVal = pfnInternetGetConnectedState(&lpdwFlags, 0) != 0;
+
+	FreeLibrary(hLib); // выгружаем библиотеку
+	return bRetVal; // возвращаем статус подключения
+}

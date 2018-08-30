@@ -1,0 +1,11 @@
+//---------------------------------------------------------------------------
+
+#ifndef jessonLogH
+#define jessonLogH
+//---------------------------------------------------------------------------
+
+ void __fastcall LVItemsToText();
+ void __fastcall LVItemsToTextINJsson();
+
+
+#endif

@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>1899.12.30 00:00:00.000.047,D:\Proect\Aitotal\Aitotal_ver[v3.1]\CPP\7zip\UI\Client7z\Unit1.h=D:\Proect\Aitotal\Aitotal_ver[v3.1]\CPP\7zip\UI\Client7z\ScanVirustotalIndy.h</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.859,=D:\Proect\Aitotal\Aitotal_ver[v3.2]\CPP\7zip\UI\Client7z\AitotalInclude\ScanVTIndy\ScanVTIndy1.cpp</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.310,=D:\Proect\Aitotal\Aitotal_ver[v3.2]\CPP\7zip\UI\Client7z\AitotalInclude\RabotaSfilam.cpp</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.140,D:\Proect\Aitotal\Aitotal_ver[v3.2]\CPP\7zip\UI\Client7z\Unit1.h=D:\Proect\Aitotal\Aitotal_ver[v3.2]\CPP\7zip\UI\Client7z\ParsingArchiv.h</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.265,D:\Proect\Aitotal\Aitotal_ver[v3.2]\CPP\7zip\UI\Client7z\Unit1.h=D:\Proect\Aitotal\Aitotal_ver[v3.2]\CPP\7zip\UI\Client7z\RabotaSfilam.h</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.495,=D:\Project\Aitotal\Aitotal_ver[v3.2]\CPP\7zip\UI\Client7z\Unit1.cpp</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.214,=D:\Proect\Aitotal\Aitotal_ver[v3.2]\CPP\7zip\UI\Client7z\AitotalInclude\XeshSumma.cpp</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.004,=D:\Proect\Aitotal\Aitotal_ver[v3.2]\CPP\7zip\UI\Client7z\AitotalInclude\Hash.cpp</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.091,=D:\Proect\Aitotal\Aitotal_ver[v3.2]\CPP\7zip\UI\Client7z\AitotalInclude\Hash.cpp</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.952,D:\Project\Aitotal\Aitotal_ver[v3.2]\CPP\7zip\UI\Client7z\AitotalInclude\BaseParser.cpp=</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.674,D:\Proect\Aitotal\Aitotal_ver[v3.2]\CPP\7zip\UI\Client7z\AitotalInclude\XeshSumma.cpp=</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.112,=D:\Proect\Aitotal\Aitotal_ver[v3.2]\CPP\7zip\UI\Client7z\AitotalInclude\XeshSumma.cpp</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.688,C:\Proect\Aitotal\Aitotal_ver[v3.2]-14-10-2015\CPP\7zip\UI\Client7z\AitotalInclude\Options\MyOptions1.cpp=C:\Proect\Aitotal\Aitotal_ver[v3.2]-14-10-2015\CPP\7zip\UI\Client7z\AitotalInclude\Options\Options1.cpp</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.355,=D:\Proect\Aitotal\Aitotal_ver[v3.1]\CPP\7zip\UI\Client7z\Unit1.cpp</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.937,=D:\Proect\Aitotal\Aitotal_ver[v3.1]\CPP\7zip\UI\Client7z\Unit1.cpp</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.612,C:\Project\Aitotal_ver[v3.3.0]-29-01-2016\CPP\7zip\UI\Client7z\AitotalInclude\SizeFile.cpp=</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.528,=D:\Proect\Aitotal\Aitotal_ver[v3.2]\CPP\7zip\UI\Client7z\AitotalInclude\ScanResultat\ScanResult.cpp</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.149,D:\Proect\Aitotal\Aitotal_ver[v3.2]\CPP\7zip\UI\Client7z\XeshSumma.h=D:\Proect\Aitotal\Aitotal_ver[v3.2]\CPP\7zip\UI\Client7z\Unit1.h</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.047,D:\Proect\Aitotal\Aitotal_ver[v3.1]\CPP\7zip\UI\Client7z\Unit1.cpp=D:\Proect\Aitotal\Aitotal_ver[v3.1]\CPP\7zip\UI\Client7z\ScanVirustotalIndy.cpp</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.155,D:\Project\Aitotal\Aitotal_ver[v3.2]\CPP\7zip\UI\Client7z\File1.c=D:\Project\Aitotal\Aitotal_ver[v3.2]\CPP\7zip\UI\Client7z\AitotalInclude\File1.c</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.777,=D:\Proect\Aitotal\Aitotal_ver[v3.2]\CPP\7zip\UI\Client7z\AitotalInclude\Options\MyOptions1.cpp</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.980,D:\Proect\Aitotal\Aitotal_ver[v3.2]\CPP\7zip\UI\Client7z\ParsingArchiv.cpp=</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.149,D:\Proect\Aitotal\Aitotal_ver[v3.2]\CPP\7zip\UI\Client7z\XeshSumma.cpp=D:\Proect\Aitotal\Aitotal_ver[v3.2]\CPP\7zip\UI\Client7z\Unit1.cpp</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.953,=D:\Proect\Aitotal\Aitotal_ver[v3.2]\CPP\7zip\UI\Client7z\AitotalInclude\archiv\CallbackClasses.cpp</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.944,=D:\Project\Aitotal\Aitotal_ver[v3.2]\CPP\7zip\UI\Client7z\File1.c</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.356,D:\Proect\Aitotal\Aitotal_ver[v3.2]\CPP\7zip\UI\Client7z\AitotalInclude\Hash.cpp=</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.273,D:\Project\Aitotal\Aitotal_ver[v3.2]\CPP\7zip\UI\Client7z\AitotalInclude\ParseHeadrArchiv.cpp=D:\Project\Aitotal\Aitotal_ver[v3.2]\CPP\7zip\UI\Client7z\Unit1.cpp</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.513,D:\Proect\Aitotal\Aitotal_ver[v3.1]\CPP\7zip\UI\Client7z\ScanVTIndy1.cpp=D:\Proect\Aitotal\Aitotal_ver[v3.1]\CPP\7zip\UI\Client7z\Unit1.cpp</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.057,=D:\Proect\Aitotal\Aitotal_ver[v3.2]\CPP\7zip\UI\Client7z\AitotalInclude\cheshMD5\md5.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.513,D:\Proect\Aitotal\Aitotal_ver[v3.1]\CPP\7zip\UI\Client7z\ScanVTIndy1.h=D:\Proect\Aitotal\Aitotal_ver[v3.1]\CPP\7zip\UI\Client7z\Unit1.h</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.724,=D:\Project\Aitotal\Aitotal_ver[v3.2]\CPP\7zip\UI\Client7z\File1.h</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.964,=D:\Proect\Aitotal\Aitotal_ver[v3.1]\CPP\7zip\UI\Client7z\AitotalInclude\SizeFile.cpp</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.893,=D:\Proect\Aitotal\Aitotal_ver[v3.2]\CPP\7zip\UI\Client7z\VirusTotal.cpp</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.258,=D:\Proect\Aitotal\Aitotal_ver[v3.2]\CPP\7zip\UI\Client7z\AitotalInclude\archiv\PrintFunctions.cpp</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.636,=D:\Project\Aitotal\Aitotal_ver[v3.2]\CPP\7zip\UI\Client7z\File1.cpp</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.092,=D:\Proect\Aitotal\Aitotal_ver[v3.2]\CPP\7zip\UI\Client7z\AitotalInclude\About\ABOUT.cpp</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.037,D:\Proect\Aitotal\Aitotal_ver[v3.2]\CPP\7zip\UI\Client7z\VirusTotal.cpp=</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.511,D:\Proect\Aitotal\Aitotal_ver[v3.2]\CPP\7zip\UI\Client7z\VirusTotal.cpp=</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.140,D:\Proect\Aitotal\Aitotal_ver[v3.2]\CPP\7zip\UI\Client7z\Unit1.cpp=D:\Proect\Aitotal\Aitotal_ver[v3.2]\CPP\7zip\UI\Client7z\ParsingArchiv.cpp</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.956,=D:\Proect\Aitotal\Aitotal_ver[v3.1]\CPP\7zip\UI\Client7z\AitotalInclude\BaseParser.cpp</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.854,=D:\Proect\Aitotal\Aitotal_ver[v3.2]\CPP\7zip\UI\Client7z\AitotalInclude\archiv\extract.cpp</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.830,=D:\Proect\Aitotal\Aitotal_ver[v3.2]\CPP\7zip\UI\Client7z\AitotalInclude\archiv\extract.cpp</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.772,D:\Proect\Aitotal\Aitotal_ver[v3.2]\CPP\7zip\UI\Client7z\AitotalInclude\Hash.cpp=</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.778,D:\Project\Aitotal\Aitotal_ver[v3.2]\CPP\7zip\UI\Client7z\AitotalInclude\File1.c=</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.273,D:\Project\Aitotal\Aitotal_ver[v3.2]\CPP\7zip\UI\Client7z\AitotalInclude\ParseHeadrArchiv.h=D:\Project\Aitotal\Aitotal_ver[v3.2]\CPP\7zip\UI\Client7z\Unit1.h</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.246,=D:\Proect\Aitotal\Aitotal_ver[v3.2]\CPP\7zip\UI\Client7z\Unit1.cpp</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.834,=D:\Proect\Aitotal\Aitotal_ver[v3.2]\CPP\7zip\UI\Client7z\Unit1.cpp</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.294,=D:\Proect\Aitotal\Aitotal_ver[v3.2]\CPP\7zip\UI\Client7z\Unit1.cpp</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.261,D:\Proect\Aitotal\Aitotal_ver[v3.2]\CPP\7zip\UI\Client7z\AitotalInclude\archiv\extract.cpp=</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.486,D:\Proect\Aitotal\Aitotal_ver[v3.2]\CPP\7zip\UI\Client7z\RabotaSfilam.cpp=</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.265,D:\Proect\Aitotal\Aitotal_ver[v3.2]\CPP\7zip\UI\Client7z\Unit1.cpp=D:\Proect\Aitotal\Aitotal_ver[v3.2]\CPP\7zip\UI\Client7z\RabotaSfilam.cpp</Transaction>
+  </Transactions>
+</BorlandProject>

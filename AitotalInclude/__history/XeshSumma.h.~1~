@@ -1,0 +1,17 @@
+//---------------------------------------------------------------------------
+
+#ifndef XeshSummaH
+#define XeshSummaH
+
+class XeshSumma{
+   public:
+		  bool XeshSumma::SHA256(UnicodeString FileName, UnicodeString &sha256);
+
+
+
+
+};
+
+
+//---------------------------------------------------------------------------
+#endif

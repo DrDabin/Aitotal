@@ -1,0 +1,8 @@
+#define IDR_RT_MANIFEST1                104
+#define IDR_RT_MANIFEST2                1
+ 
+ 
+ 
+// Manifest.rc
+ 
+IDR_RT_MANIFEST2        RT_MANIFEST             "Manifest.xml"

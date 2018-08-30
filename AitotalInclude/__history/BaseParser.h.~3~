@@ -1,0 +1,23 @@
+//---------------------------------------------------------------------------
+
+#ifndef BaseParserH
+#define BaseParserH
+//---------------------------------------------------------------------------
+
+class ParserBase{
+  private:
+	 UnicodeString Mystroka;
+	  TStringList *SpisokBase;// (new TStringList(NULL) );
+  public:
+	 void ParserBase::SaveToLog(UnicodeString StrokaSave);
+	 ParserBase::ParserBase();
+	 ~ParserBase();
+	 void ParserBase::AddBase(MyBase StrokaBase);
+
+};
+
+
+
+
+
+#endif

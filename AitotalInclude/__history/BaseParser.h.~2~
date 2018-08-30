@@ -1,0 +1,20 @@
+//---------------------------------------------------------------------------
+
+#ifndef BaseParserH
+#define BaseParserH
+//---------------------------------------------------------------------------
+class ParserBase{
+  private:
+	 UnicodeString Mystroka;
+
+  public:
+	 void ParserBase::SaveStrToLog(UnicodeString StrokaSave);
+
+
+
+};
+
+
+
+
+#endif

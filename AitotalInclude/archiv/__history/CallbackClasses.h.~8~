@@ -1,0 +1,149 @@
+// ---------------------------------------------------------------------------
+#ifndef CallbackClassesH
+#define CallbackClassesH
+// ---------------------------------------------------------------------------
+#include "Common/IntToString.h"
+#include "Common/MyInitGuid.h"
+#include "Common/StringConvert.h"
+
+#include "Windows/DLL.h"
+#include "Windows/FileDir.h"
+#include "Windows/FileFind.h"
+#include "Windows/FileName.h"
+
+#include "Windows/PropVariant.h"
+#include "Windows/PropVariantConversions.h"
+
+#include "../Common/FileStreams.h"
+
+#include "../Archive/IArchive.h"
+
+#include "../IPassword.h"
+//#include "../../MyVersion.h"
+
+// ---------------------------------------------------------------------------
+// using namespace NWindows;
+// ---------------------------------------------------------------------------
+// Archive Open callback class
+// ---------------------------------------------------------------------------
+class CArchiveOpenCallback : public IArchiveOpenCallback,
+	public ICryptoGetTextPassword, public CMyUnknownImp {
+public:
+	MY_UNKNOWN_IMP1(ICryptoGetTextPassword)
+
+		STDMETHOD(SetTotal)(const UInt64* files, const UInt64* bytes);
+	STDMETHOD(SetCompleted)(const UInt64* files, const UInt64* bytes);
+
+	STDMETHOD(CryptoGetTextPassword)(BSTR* password);
+
+	bool PasswordIsDefined;
+	UString Password;
+
+	CArchiveOpenCallback() : PasswordIsDefined(false) {
+	}
+};
+
+// ---------------------------------------------------------------------------
+// Archive Extracting callback class
+// ---------------------------------------------------------------------------
+static const wchar_t* kCantDeleteOutputFile =
+	L"ERROR: Can not delete output file ";
+
+static const char *kTestingString    =  "Testing     ";
+static const char *kExtractingString =  "Extracting  ";
+static const char *kSkippingString   =  "Skipping    ";
+
+
+/*static const wchar_t* kTestingString = L"Testing     ";
+static const wchar_t* kExtractingString = L"Extracting  ";
+static const wchar_t* kSkippingString = L"Skipping    ";
+
+static const wchar_t* kUnsupportedMethod = L"Unsupported Method";
+static const wchar_t* kCRCFailed = L"CRC Failed";
+static const wchar_t* kDataError = L"Data Error";
+static const wchar_t* kUnknownError = L"Unknown Error"; */
+
+static const wchar_t* kEmptyFileAlias = L"[Content]";
+static const char *kUnsupportedMethod = "Unsupported Method";
+static const char *kCRCFailed = "CRC Failed";
+static const char *kDataError = "Data Error";
+static const char *kUnavailableData = "Unavailable data";
+static const char *kUnexpectedEnd = "Unexpected end of data";
+static const char *kDataAfterEnd = "There are some data after the end of the payload data";
+static const char *kIsNotArc = "Is not archive";
+static const char *kHeadersError = "Headers Error";
+
+// ---------------------------------------------------------------------------
+class CArchiveExtractCallback : public IArchiveExtractCallback, public ICryptoGetTextPassword, public CMyUnknownImp
+{
+   public:
+	MY_UNKNOWN_IMP1(ICryptoGetTextPassword)
+
+		// IProgress
+		STDMETHOD(SetTotal)(UInt64 size);
+	STDMETHOD(SetCompleted)(const UInt64* completeValue);
+
+	// IArchiveExtractCallback
+	STDMETHOD(GetStream)(UInt3232 index, ISequentialOutStream** outStream,
+		Int3232 askExtractMode);
+	STDMETHOD(PrepareOperation)(Int3232 askExtractMode);
+	STDMETHOD(SetOperationResult)(Int3232 resultEOperationResult);
+
+	// ICryptoGetTextPassword
+	STDMETHOD(CryptoGetTextPassword)(BSTR* aPassword);
+
+  private:
+	CMyComPtr<IInArchive>_archiveHandler;
+	UString _directoryPath; // Output directory
+	UString _filePath; // name inside arcvhive
+	UString _diskFilePath; // full path to file on disk
+	bool _extractMode;
+	UInt64 sizeFil;
+
+	struct CProcessedFileInfo
+	{
+		FILETIME MTime;
+		UInt3232 Attrib;
+		bool isDir;
+		bool AttribDefined;
+		bool MTimeDefined;
+	} _processedFileInfo;
+
+	COutFileStream* _outFileStreamSpec;
+	CMyComPtr<ISequentialOutStream>_outFileStream;
+
+public:
+	void Init(IInArchive* archiveHandler, const UString& directoryPath);
+
+	UInt64 NumErrors;
+	bool PasswordIsDefined;
+	UString Password;
+
+	CArchiveExtractCallback() : PasswordIsDefined(false)
+	{
+	}
+};
+
+// ---------------------------------------------------------------------------
+// Archive Creating callback class
+// ---------------------------------------------------------------------------
+struct CDirItem
+ {
+	UInt64 Size;
+	FILETIME CTime;
+	FILETIME ATime;
+	FILETIME MTime;
+	UString Name;
+	UString FullPath;
+	UInt3232 Attrib;
+
+	bool isDir() const
+	{
+	   return (Attrib & FILE_ATTRIBUTE_DIRECTORY) != 0;
+	}
+ };
+
+// ---------------------------------------------------------------------------
+
+// -----------------------------------------------------------------------------
+#endif

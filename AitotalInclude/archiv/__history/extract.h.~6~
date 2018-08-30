@@ -1,0 +1,14 @@
+// ---------------------------------------------------------------------------
+
+#ifndef extractH
+#define extractH
+
+// ---------------------------------------------------------------------------
+   //CLSID_CFormat == 1 == 7z
+   //CLSID_CFormat == 2 == zip
+   //CLSID_CFormat == 3 == rar
+   //CLSID_CFormat ==4 == rar5
+
+   bool extract2( wchar_t* archiv, wchar_t* dir, unsigned int CLSID_CFormat);
+// ---------------------------------------------------------------------------
+#endif

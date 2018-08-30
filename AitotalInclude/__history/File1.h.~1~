@@ -1,0 +1,57 @@
+#ifndef File1H
+#define File1H
+#include "curl/curl.h"
+ #include <io.h>
+
+ struct myprogress {
+  double lastruntime;
+  std::string asd;
+  CURL *curl;
+};
+
+static int xferinfo(void *p,
+					curl_off_t dltotal, curl_off_t dlnow,
+					curl_off_t ultotal, curl_off_t ulnow);
+
+static int older_progress(void *p,
+						  double dltotal, double dlnow,
+						  double ultotal, double ulnow)
+{
+  return xferinfo(p,
+				  (curl_off_t)dltotal,
+				  (curl_off_t)dlnow,
+				  (curl_off_t)ultotal,
+				  (curl_off_t)ulnow);
+}
+
+static int xferinfo(void *p,
+					curl_off_t dltotal, curl_off_t dlnow,
+					curl_off_t ultotal, curl_off_t ulnow)
+{
+  struct myprogress *myp = (struct myprogress *)p;
+  CURL *curl = myp->curl;
+  double curtime = 0;
+
+  curl_easy_getinfo(curl, CURLINFO_TOTAL_TIME, &curtime);
+
+   //Form1->Memo1->Lines->Add(myp->asd.c_str());
+   UnicodeString name = myp->asd.c_str();
+   if((ulnow !=0) && (ultotal !=0))
+	  Form1->Label1->Caption =name + " = " + UnicodeString( (ulnow*100)/ultotal);
+   //
+	  //std::cout <<(dlnow*100)/dltotal<< "\n";
+  return 0;
+}
+
+
+static size_t write(char *ptr, size_t size, size_t nmemb, std::string* data)
+{
+  if (data)
+   {
+	 data->append(ptr, size*nmemb);
+	 return size*nmemb;
+   }
+  else return 0;  // будет ошибка
+}
+
+#endif

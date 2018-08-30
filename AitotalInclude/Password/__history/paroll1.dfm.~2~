@@ -1,0 +1,37 @@
+object FParoll: TFParoll
+  Left = 495
+  Top = 315
+  BorderIcons = [biSystemMenu]
+  Caption = #1042#1074#1077#1076#1080#1090#1077' '#1087#1072#1088#1086#1083#1100
+  ClientHeight = 78
+  ClientWidth = 243
+  Color = clBtnFace
+  Font.Charset = RUSSIAN_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  Position = poDesigned
+  PixelsPerInch = 96
+  TextHeight = 13
+  object EdParoll: TEdit
+    Left = 8
+    Top = 8
+    Width = 225
+    Height = 21
+    ParentShowHint = False
+    ShowHint = True
+    TabOrder = 0
+    TextHint = #1042#1074#1077#1076#1080#1090#1077' '#1087#1072#1088#1086#1083#1100
+  end
+  object BtOk: TButton
+    Left = 64
+    Top = 48
+    Width = 97
+    Height = 25
+    Caption = 'Ok'
+    TabOrder = 1
+    OnClick = BtOkClick
+  end
+end

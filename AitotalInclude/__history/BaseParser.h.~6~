@@ -1,0 +1,30 @@
+//---------------------------------------------------------------------------
+
+#ifndef BaseParserH
+#define BaseParserH
+//---------------------------------------------------------------------------
+#include "MyInclude/MyStruct.h"
+class BaseClass{
+  private:
+	 UnicodeString Mystroka;
+	 TStringList *SpisokBase;// (new TStringList(NULL) );
+	 __int64 PosiciyaPoisk;
+  public:
+	 void BaseClass::AddBase(MyBase StructBase);
+	 void BaseClass::SaveToLog(UnicodeString StrokaSave);
+	 void BaseClass::AddSaveTolog(MyBase StructBase, UnicodeString StrokaSave);
+	 MyBase BaseClass::LogToMyStruct(UnicodeString StrokaSave);
+	 UnicodeString BaseClass::TexTega(UnicodeString text, UnicodeString beginTeg, UnicodeString endTeg,__int64 Posiciya);
+     void BaseClass::AddToListItem();
+
+	 BaseClass::BaseClass();
+	 ~BaseClass();
+
+
+};
+
+
+
+
+
+#endif

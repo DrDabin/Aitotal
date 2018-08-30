@@ -1,0 +1,7 @@
+#ifdef debug
+    ShowMessage("debug");
+
+#else
+   ShowMessage("reles");
+   
+#endif

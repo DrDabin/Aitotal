@@ -1,0 +1,66 @@
+unit parsejsson;
+
+interface
+   uses
+ { Winapi.Windows,} {System.SysUtils,} {System.Variants,} System.Classes, {Vcl.Graphics,}
+  {Vcl.Controls,} {Vcl.StdCtrls,}ComCtrls ,System.JSON;
+
+ procedure BuClick();
+
+implementation
+
+procedure BuClick();
+var JSONObject, InnerObject : TJSONObject;
+    Pair : TJSONPair;
+    JsonArray: TJSONArray;
+    S:TStringList;
+    I, coit : integer;
+begin
+  S:=TStringList.Create;
+  {создали объект верхнего уровня}
+try
+  JSONObject:=TJSONObject.Create;
+  {создали пару}
+  Pair:=TJSONPair.Create('stringPair','TestString');
+  {записали пару в объект}
+  JSONObject.AddPair(Pair);
+  {можно записать и так}
+  JSONObject.AddPair(TJSONPair.Create('stringPair2','TestString2'));
+  {и даже так}
+  JSONObject.AddPair(TJSONPair.Create('NumberPair2',TJSONNumber.Create(458)));
+
+  {добавляем в объект ещё один объект}
+  //InnerObject:=TJSONObject.Create;
+  //InnerObject.AddPair('Inner_StringPair','Hello World!');
+  //JSONObject.AddPair(TJSONPair.Create('InnerObject',InnerObject));
+
+  {записываем в объект массив}
+  //создали пустой массив
+  JsonArray:=TJSONArray.Create();
+  JsonArray.Add('StringElement');//первый элемент - строка
+
+  coit:=500;
+  for I := 0 to coit do
+  begin
+     InnerObject:=TJSONObject.Create;
+
+     InnerObject.AddPair('Inner_StringPair',TJSONNumber.Create(I));
+     JsonArray.AddElement(InnerObject);
+  end;
+
+  //JsonArray.AddElement(InnerObject);//четвертый элемент - объект
+  //записали массив в объект
+  JSONObject.AddPair('Array',JsonArray);
+  S.Add(JSONObject.ToString);
+  S.SaveToFile('json.txt');
+
+  JSONObject.Destroy;
+finally
+  s.Destroy;
+
+end;
+
+end;
+//+++++++++++++++++++++
+
+end.

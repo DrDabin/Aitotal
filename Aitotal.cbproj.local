@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>1899.12.30 00:00:00.000.687,C:\Users\Alex\Documents\ProjectWin\Project\Aitotal_ver[v3.3.9]-27-06-2016\Aitotal\Manifest.rc=</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.008,=C:\Users\Alex\Documents\ProjectWin\Project\Aitotal_ver[v3.3.9]-27-06-2016\Aitotal\Manifest.rc</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.881,C:\Users\Alex\Documents\ProjectWin\Project\Aitotal_ver[v3.3.14]-04-03-2017\Aitotal\Unit1.h=C:\Users\Alex\Documents\ProjectWin\Project\Aitotal_ver[v3.3.14]-04-03-2017\Aitotal\AitotalInclude\ScanThread.h</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.772,C:\Users\Alex\Documents\ProjectWin\Project\Aitotal_ver[v3.3.14]-04-03-2017\Aitotal\Unit1.h=C:\Users\Alex\Documents\ProjectWin\Project\Aitotal_ver[v3.3.14]-04-03-2017\Aitotal\AitotalInclude\jessonLog.h</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.786,C:\Users\Alex\Documents\ProjectWin\Project\Aitotal_ver[v3.3.14]-04-03-2017\Aitotal\AitotalInclude\parsejsson.pas=</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.897,=C:\Users\Alex\Documents\ProjectWin\Project\Aitotal_ver[v3.3.14]-04-03-2017\Aitotal\AitotalInclude\parsejsson.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.586,C:\Users\Alex\Documents\ProjectWin\Project\Aitotal_ver[v3.3.9]-27-06-2016\Aitotal\Manifest.rc=</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.666,=C:\Users\Alex\Documents\ProjectWin\Project\Aitotal-ver[3.3.19-2017.12.05]\Aitotal\AitotalInclude\archiv\CallbackClassesOpen.cpp</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.456,C:\Users\Alex\Documents\ProjectWin\Project\Aitotal-ver[3.3.19-2017.12.05]\Aitotal\AitotalInclude\uSha256.pas=</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.836,C:\Users\Alex\Documents\ProjectWin\Project\Aitotal_ver[v3.3.14]-04-03-2017\Aitotal\AitotalInclude\ScanThread.cpp=</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.772,C:\Users\Alex\Documents\ProjectWin\Project\Aitotal_ver[v3.3.14]-04-03-2017\Aitotal\Unit1.cpp=C:\Users\Alex\Documents\ProjectWin\Project\Aitotal_ver[v3.3.14]-04-03-2017\Aitotal\AitotalInclude\jessonLog.cpp</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.655,=C:\Users\Alex\Documents\ProjectWin\Project\Aitotal-ver[3.3.19-2017.12.05]\Aitotal\AitotalInclude\archiv\CallbackClassesExtract.cpp</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.407,C:\Users\Alex\Documents\ProjectWin\Project\Aitotal-ver[3.3.19-2017.12.05]\Aitotal\AitotalInclude\sha256.cpp=</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.628,=C:\Users\Alex\Documents\ProjectWin\Project\Aitotal_ver[v3.3.14]-04-03-2017\Aitotal\Unit1.cpp</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.160,=C:\Users\Alex\Documents\ProjectWin\Project\Aitotal_ver[v3.3.14]-04-03-2017\Aitotal\Unit1.cpp</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.881,C:\Users\Alex\Documents\ProjectWin\Project\Aitotal_ver[v3.3.14]-04-03-2017\Aitotal\Unit1.cpp=C:\Users\Alex\Documents\ProjectWin\Project\Aitotal_ver[v3.3.14]-04-03-2017\Aitotal\AitotalInclude\ScanThread.cpp</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.341,=C:\Users\Alex\Documents\ProjectWin\Project\Aitotal_ver[v3.3.14]-04-03-2017\Aitotal\Unit1.cpp</Transaction>
+  </Transactions>
+	<BT_BuildType>Debug</BT_BuildType>
+</BorlandProject>

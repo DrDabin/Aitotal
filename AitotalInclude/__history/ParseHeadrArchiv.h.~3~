@@ -1,0 +1,8 @@
+//---------------------------------------------------------------------------
+
+#ifndef ParseHeadrArchivH
+#define ParseHeadrArchivH
+//---------------------------------------------------------------------------
+   bool Parse_Head_Guid(UnicodeString guidParse,_GUID &GuidArchiv);
+   bool Read_head_file(UnicodeString FileName, UnicodeString &head);
+#endif

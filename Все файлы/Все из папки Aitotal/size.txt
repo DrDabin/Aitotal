@@ -1,0 +1,5 @@
+#include <sys\stat.h>    
+            ...
+struct stati64 statbuf;
+_stati64(OpenDialog1->FileName.c_str(), &statbuf);
+Label1->Caption=statbuf.st_size;

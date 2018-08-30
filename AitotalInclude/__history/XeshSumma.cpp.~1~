@@ -1,0 +1,12 @@
+//---------------------------------------------------------------------------
+
+#pragma hdrstop
+
+#include "XeshSumma.h"
+
+bool XeshSumma::SHA256(UnicodeString FileName, UnicodeString &sha256)
+{
+    ;
+}
+//---------------------------------------------------------------------------
+#pragma package(smart_init)

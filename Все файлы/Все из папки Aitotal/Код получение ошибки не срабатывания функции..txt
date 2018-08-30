@@ -1,0 +1,296 @@
+
+//функция выводит ошибку не срабатывание функции.
+//пример вызова // ErrorExit(TEXT("TDirectory::CreateDirectoryA"));
+//просто прописываем имя функции без собок.
+//для ее работы надо подключить файл #include <strsafe.h>
+
+/*void ErrorExit(LPTSTR lpszFunction)
+{
+	// Retrieve the system error message for the last-error code
+
+	LPVOID lpMsgBuf;
+	LPVOID lpDisplayBuf;
+	DWORD dw = GetLastError();
+
+	FormatMessage(
+		FORMAT_MESSAGE_ALLOCATE_BUFFER |
+		FORMAT_MESSAGE_FROM_SYSTEM |
+		FORMAT_MESSAGE_IGNORE_INSERTS,
+		NULL,
+		dw,
+		MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+		(LPTSTR) &lpMsgBuf,
+		0, NULL );
+
+    // Display the error message and exit the process
+
+	lpDisplayBuf = (LPVOID)LocalAlloc(LMEM_ZEROINIT,
+		(lstrlen((LPCTSTR)lpMsgBuf) + lstrlen((LPCTSTR)lpszFunction) + 40) * sizeof(TCHAR));
+	StringCchPrintf((LPTSTR)lpDisplayBuf,
+		LocalSize(lpDisplayBuf) / sizeof(TCHAR),
+		TEXT("%s failed with error %d: %s"),
+		lpszFunction, dw, lpMsgBuf);
+	MessageBox(NULL, (LPCTSTR)lpDisplayBuf, TEXT("Error"), MB_OK);
+
+	LocalFree(lpMsgBuf);
+	LocalFree(lpDisplayBuf);
+	ExitProcess(dw);
+}*/
+
+#include <windows.h>
+#include <tchar.h>
+
+typedef BOOL (WINAPI *LPFN_ISWOW64PROCESS) (HANDLE, PBOOL);
+
+LPFN_ISWOW64PROCESS fnIsWow64Process;
+
+BOOL IsWow64()
+{
+	BOOL bIsWow64 = FALSE;
+
+	//IsWow64Process is not available on all supported versions of Windows.
+    //Use GetModuleHandle to get a handle to the DLL that contains the function
+    //and GetProcAddress to get a pointer to the function if available.
+
+    fnIsWow64Process = (LPFN_ISWOW64PROCESS) GetProcAddress(
+        GetModuleHandle(TEXT("kernel32")),"IsWow64Process");
+
+	if(NULL != fnIsWow64Process)
+    {
+        if (!fnIsWow64Process(GetCurrentProcess(),&bIsWow64))
+        {
+			//handle error
+		}
+	}
+	return bIsWow64;
+}
+//++++++++++++++++++++++++++++++++++++
+void __fastcall TForm3::Button2Click(TObject *Sender)
+{
+   /*if(IsCurrentUserLocalAdministrator())
+	  ShowMessage(L"Es Admin");
+   else
+	  ShowMessage(L"nou admin"); */
+
+	 if(IsWow64())
+	  ShowMessage(L"х64");
+   else
+	  ShowMessage(L"х86");
+
+	 // ShowMessage(TOSVersion::ToString());
+
+   //RenameFileAT("D:\\Proect\\Aitotal\\Aitotal_ver[v3.2]\\CPP\\7zip\\UI\\Client7z\\new  1.txt", "D:\\Proect\\Aitotal\\Aitotal_ver[v3.2]\\CPP\\7zip\\UI\\Client7z\\new  2.txt");
+}
+
+
+BOOL IsUserAdmin(VOID)
+/*++
+Routine Description: This routine returns TRUE if the caller's
+process is a member of the Administrators local group. Caller is NOT
+expected to be impersonating anyone and is expected to be able to
+open its own process and process token.
+Arguments: None.
+Return Value:
+   TRUE - Caller has Administrators local group.
+   FALSE - Caller does not have Administrators local group. --
+*/
+{
+BOOL b;
+SID_IDENTIFIER_AUTHORITY NtAuthority = SECURITY_NT_AUTHORITY;
+PSID AdministratorsGroup;
+b = AllocateAndInitializeSid(
+    &NtAuthority,
+    2,
+    SECURITY_BUILTIN_DOMAIN_RID,
+    DOMAIN_ALIAS_RID_ADMINS,
+    0, 0, 0, 0, 0, 0,
+    &AdministratorsGroup);
+if(b)
+{
+    if (!CheckTokenMembership( NULL, AdministratorsGroup, &b))
+    {
+         b = FALSE;
+    }
+    FreeSid(AdministratorsGroup);
+}
+
+return(b);
+}
+//+++++++++++++++++++++++++++++++++++
+// Более правильная версия определения пользователь является администратором или нет.
+BOOL IsCurrentUserLocalAdministrator(void)
+{
+   BOOL   fReturn         = FALSE;
+   DWORD  dwStatus;
+   DWORD  dwAccessMask;
+   DWORD  dwAccessDesired;
+   DWORD  dwACLSize;
+   DWORD  dwStructureSize = sizeof(PRIVILEGE_SET);
+   PACL   pACL            = NULL;
+   PSID   psidAdmin       = NULL;
+
+   HANDLE hToken              = NULL;
+   HANDLE hImpersonationToken = NULL;
+
+   PRIVILEGE_SET   ps;
+   GENERIC_MAPPING GenericMapping;
+
+   PSECURITY_DESCRIPTOR     psdAdmin           = NULL;
+   SID_IDENTIFIER_AUTHORITY SystemSidAuthority = SECURITY_NT_AUTHORITY;
+
+
+   /*
+      Determine if the current thread is running as a user that is a member
+
+of
+      the local admins group.  To do this, create a security descriptor
+
+that
+      has a DACL which has an ACE that allows only local aministrators
+
+access.
+      Then, call AccessCheck with the current thread's token and the
+
+security
+      descriptor.  It will say whether the user could access an object if
+
+it
+      had that security descriptor.  Note: you do not need to actually
+
+create
+      the object.  Just checking access against the security descriptor
+
+alone
+      will be sufficient.
+   */
+   const DWORD ACCESS_READ  = 1;
+   const DWORD ACCESS_WRITE = 2;
+
+
+   __try
+   {
+
+      /*
+         AccessCheck() requires an impersonation token.  We first get a
+
+primary
+         token and then create a duplicate impersonation token.  The
+         impersonation token is not actually assigned to the thread, but is
+         used in the call to AccessCheck.  Thus, this function itself never
+         impersonates, but does use the identity of the thread.  If the
+
+thread
+         was impersonating already, this function uses that impersonation
+
+context.
+      */
+	  if (!OpenThreadToken(GetCurrentThread(), TOKEN_DUPLICATE|TOKEN_QUERY, TRUE, &hToken))
+      {
+		 if (GetLastError() != ERROR_NO_TOKEN)
+			 goto Mystop;
+
+		 if (!OpenProcessToken(GetCurrentProcess(), TOKEN_DUPLICATE|TOKEN_QUERY, &hToken))
+			goto Mystop;
+	  }
+
+	  if (!DuplicateToken (hToken, SecurityImpersonation, &hImpersonationToken))
+		  goto Mystop;
+
+
+	  /*
+		Create the binary representation of the well-known SID that
+		represents the local administrators group.  Then create the
+
+security
+		descriptor and DACL with an ACE that allows only local admins
+
+access.
+		After that, perform the access check.  This will determine whether
+        the current user is a local admin.
+      */
+	  if (!AllocateAndInitializeSid(&SystemSidAuthority, 2,
+                                    SECURITY_BUILTIN_DOMAIN_RID,
+                                    DOMAIN_ALIAS_RID_ADMINS,
+									0, 0, 0, 0, 0, 0, &psidAdmin))
+		 goto Mystop;
+
+	  psdAdmin = LocalAlloc(LPTR, SECURITY_DESCRIPTOR_MIN_LENGTH);
+      if (psdAdmin == NULL)
+		 goto Mystop;
+
+      if (!InitializeSecurityDescriptor(psdAdmin,
+
+SECURITY_DESCRIPTOR_REVISION))
+		 goto Mystop;
+
+	  // Compute size needed for the ACL.
+	  dwACLSize = sizeof(ACL) + sizeof(ACCESS_ALLOWED_ACE) +
+                  GetLengthSid(psidAdmin) - sizeof(DWORD);
+
+      pACL = (PACL)LocalAlloc(LPTR, dwACLSize);
+	  if (pACL == NULL)
+		 goto Mystop;
+
+      if (!InitializeAcl(pACL, dwACLSize, ACL_REVISION2))
+		 goto Mystop;
+
+      dwAccessMask= ACCESS_READ | ACCESS_WRITE;
+
+	  if (!AddAccessAllowedAce(pACL, ACL_REVISION2, dwAccessMask,
+
+psidAdmin))
+		 goto Mystop;
+
+	  if (!SetSecurityDescriptorDacl(psdAdmin, TRUE, pACL, FALSE))
+		 goto Mystop;
+
+	  /*
+         AccessCheck validates a security descriptor somewhat; set the
+
+group
+		 and owner so that enough of the security descriptor is filled out
+
+to
+         make AccessCheck happy.
+	  */
+	  SetSecurityDescriptorGroup(psdAdmin, psidAdmin, FALSE);
+      SetSecurityDescriptorOwner(psdAdmin, psidAdmin, FALSE);
+
+	  if (!IsValidSecurityDescriptor(psdAdmin))
+		 goto Mystop;
+
+	  dwAccessDesired = ACCESS_READ;
+
+      /*
+		 Initialize GenericMapping structure even though you
+         do not use generic rights.
+	  */
+	  GenericMapping.GenericRead    = ACCESS_READ;
+      GenericMapping.GenericWrite   = ACCESS_WRITE;
+      GenericMapping.GenericExecute = 0;
+	  GenericMapping.GenericAll     = ACCESS_READ | ACCESS_WRITE;
+
+      if (!AccessCheck(psdAdmin, hImpersonationToken, dwAccessDesired,
+					   &GenericMapping, &ps, &dwStructureSize, &dwStatus,
+					   &fReturn))
+	  {
+		 fReturn = FALSE;
+		 goto Mystop;
+	  }
+
+	  Mystop:
+		 ;
+   }
+   __finally
+   {
+	  // Clean up.
+	  if (pACL) LocalFree(pACL);
+	  if (psdAdmin) LocalFree(psdAdmin);
+	  if (psidAdmin) FreeSid(psidAdmin);
+	  if (hImpersonationToken) CloseHandle (hImpersonationToken);
+	  if (hToken) CloseHandle (hToken);
+   }
+
+   return fReturn;
+}
+//++++++++++++++++++++++++++++++++++++
