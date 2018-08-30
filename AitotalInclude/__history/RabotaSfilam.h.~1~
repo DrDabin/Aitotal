@@ -1,7 +1,0 @@
-//---------------------------------------------------------------------------
-
-#ifndef RabotaSfilamH
-#define RabotaSfilamH
-//---------------------------------------------------------------------------
-   UnicodeString RenameFileAT (UnicodeString Filename, UnicodeString FileNameOut);
-#endif

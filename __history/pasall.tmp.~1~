@@ -1,7 +1,0 @@
-﻿program pasall;
-uses
-  md256 in 'md256.pas',
-  uSha256 in 'uSha256.pas',
-  md5 in 'AitotalInclude\cheshMD5\md5.pas';
-begin
-end.

@@ -1,8 +1,0 @@
-//---------------------------------------------------------------------------
-
-#ifndef RabotaSfilamH
-#define RabotaSfilamH
-//---------------------------------------------------------------------------
-   UnicodeString RenameFileName(UnicodeString fileNime);
-    __int64 MyFileSize2(UnicodeString Path);
-#endif

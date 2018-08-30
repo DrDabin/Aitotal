@@ -1,7 +1,0 @@
-//---------------------------------------------------------------------------
-
-#ifndef RabotaSfilamH
-#define RabotaSfilamH
-//---------------------------------------------------------------------------
-   bool RenameFileAT (UnicodeString Filename, UnicodeString &FileNameOut, UnicodeString & errorLog);
-#endif
