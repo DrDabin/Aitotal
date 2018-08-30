@@ -30,3 +30,10 @@
 *.exe
 *.out
 *.app
+
+# Файл истории
+__history/
+__recovery/
+
+# Директория Win32
+Win32/
