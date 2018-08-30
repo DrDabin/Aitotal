@@ -35,6 +35,17 @@
 *.~
 __history/
 __recovery/
+# Разное
+*.#
+*.ilc
+*.ild
+*.ilf
+*.ils
+*.map
+*.tds
+*.res
+*.zip
+*.bat
 
 # Директория Win32
 Win32/
