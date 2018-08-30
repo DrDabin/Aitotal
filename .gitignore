@@ -43,7 +43,8 @@ __recovery/
 *.ils
 *.map
 *.tds
-*.res
+*.rar
+*.7z
 *.zip
 *.bat
 
