@@ -170,7 +170,7 @@
             <BuildOrder>39</BuildOrder>
         </CppCompile>
         <DelphiCompile Include="AitotalInclude\cheshMD5\md5.pas">
-            <BuildOrder>33</BuildOrder>
+            <BuildOrder>45</BuildOrder>
         </DelphiCompile>
         <CppCompile Include="AitotalInclude\jessonLog.cpp">
             <DependentOn>AitotalInclude\jessonLog.h</DependentOn>
@@ -213,10 +213,6 @@
             <Form>symple.res</Form>
             <BuildOrder>28</BuildOrder>
         </ResourceCompile>
-        <CppCompile Include="AitotalInclude\XeshSumma.cpp">
-            <DependentOn>AitotalInclude\XeshSumma.h</DependentOn>
-            <BuildOrder>31</BuildOrder>
-        </CppCompile>
         <CppCompile Include="include7z\CPP\7zip\Common\FileStreams.cpp">
             <BuildOrder>16</BuildOrder>
         </CppCompile>
@@ -303,10 +299,10 @@
             <BuildOrder>35</BuildOrder>
         </None>
         <FormResources Include="AitotalInclude\Options\Options1.dfm"/>
-        <FormResources Include="AitotalInclude\About\ABOUT.dfm"/>
         <FormResources Include="Aitotal1.dfm"/>
-        <FormResources Include="AitotalInclude\ScanResultat\ScanResult.dfm"/>
+        <FormResources Include="AitotalInclude\About\ABOUT.dfm"/>
         <FormResources Include="AitotalInclude\Password\paroll1.dfm"/>
+        <FormResources Include="AitotalInclude\ScanResultat\ScanResult.dfm"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
@@ -389,11 +385,7 @@
                 <Platform value="Win64">False</Platform>
             </Platforms>
             <Deployment Version="3">
-                <DeployFile Condition="'$(DynamicRTL)'=='true' And '$(Multithreaded)'!='true'" LocalName="$(BDS)\bin64\cc64250.dll" Class="DependencyModule">
-                    <Platform Name="Win64">
-                        <Overwrite>true</Overwrite>
-                    </Platform>
-                </DeployFile>
+                <DeployFile Condition="'$(DynamicRTL)'=='true' And '$(Multithreaded)'=='true'" LocalName="$(BDS)\bin64\cc64160mt.dll" Class="DependencyModule"/>
                 <DeployFile Condition="'$(DynamicRTL)'=='true' And '$(Multithreaded)'=='true'" LocalName="$(BDS)\bin\cc32c250mt.dll" Class="DependencyModule">
                     <Platform Name="Win32">
                         <Overwrite>true</Overwrite>
@@ -451,9 +443,13 @@
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
+                <DeployFile Condition="'$(DynamicRTL)'=='true' And '$(Multithreaded)'!='true'" LocalName="$(BDS)\bin64\cc64250.dll" Class="DependencyModule">
+                    <Platform Name="Win64">
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
                 <DeployFile Condition="'$(DynamicRTL)'=='true' And '$(Multithreaded)'!='true'" LocalName="$(BDS)\bin64\cc64160.dll" Class="DependencyModule"/>
                 <DeployFile Condition="'$(DynamicRTL)'=='true' And '$(Multithreaded)'=='true'" LocalName="$(BDS)\bin\cc32150mt.dll" Class="DependencyModule"/>
-                <DeployFile Condition="'$(DynamicRTL)'=='true' And '$(Multithreaded)'=='true'" LocalName="$(BDS)\bin64\cc64160mt.dll" Class="DependencyModule"/>
                 <DeployClass Name="AdditionalDebugSymbols">
                     <Platform Name="iOSSimulator">
                         <Operation>1</Operation>

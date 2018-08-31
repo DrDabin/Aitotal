@@ -9,10 +9,10 @@
 //---------------------------------------------------------------------------
 
 USEFORM("AitotalInclude\Options\Options1.cpp", MyOptionsForm);
-USEFORM("AitotalInclude\About\ABOUT.cpp", AboutBox);
 USEFORM("Aitotal1.cpp", Form3);
-USEFORM("AitotalInclude\ScanResultat\ScanResult.cpp", FormResultScan);
+USEFORM("AitotalInclude\About\ABOUT.cpp", AboutBox);
 USEFORM("AitotalInclude\Password\paroll1.cpp", FParoll);
+USEFORM("AitotalInclude\ScanResultat\ScanResult.cpp", FormResultScan);
 //---------------------------------------------------------------------------
 WINAPI _tWinMain(HINSTANCE, HINSTANCE, LPTSTR par, int)
 {

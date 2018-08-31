@@ -1865,12 +1865,8 @@ void __fastcall TForm3::CopyTListToListViewofStream()
 						OtWetErrorSizeFile(FileItem.MyPatch,"", FileItem.SizeFile, "");
 					else
 					{
-						// перенёс, что бы проверить будет ли ошибка при расчете SHA256
 						FileItem.Md5File = CalksStreamMD5(fs).LowerCase();
 
-						//UnicodeString er="";
-						//FileItem.SHA256 = Streamsha256(fs);
-						//Использую стандартную функцию расчета хеш суммы
 						try
 						{
 							FileItem.SHA256 = THashSHA2::GetHashString(fs, THashSHA2::TSHA2Version::SHA256);
@@ -1880,12 +1876,6 @@ void __fastcall TForm3::CopyTListToListViewofStream()
 							stat1->Panels->Items[1]->Text  = "Error SHA256.1";
 							ErrorLog("Ошибка расчета Sha256.1  CopyTListToListViewofStream()\n" + E.ToString());
                         }
-
-						/*if(FileItem.SHA256 == "")
-						{
-							//ErrorLog(FileItem.MyPatch +"\n Ошибка расчета Sha256.1 " + er +"\n"  + FileSpisokProwerki->Strings[i] + "\n number = " + IntToStr(i));
-							stat1->Panels->Items[1]->Text  = "Error SHA256.1";
-						}*/
 
 						if(FileItem.Md5File == "")
 						{
@@ -1926,8 +1916,8 @@ void __fastcall TForm3::CopyTListToListViewofStream()
 				}
 				catch(Exception &E)
 				{
-					ShowMessage("Файл = " + FileItem.MyPatch +  "\nзанят другим процессом.\n" + E.ToString());
-					ErrorLog("Файл = " + FileItem.MyPatch +  "\nзанят другим процессом.\n" + E.ToString());
+					ShowMessage("Ошибка = " + FileItem.MyPatch +  "\n Не удалось открыть файл.\n" + E.ToString());
+					ErrorLog("Ошибка = " + FileItem.MyPatch +  "\n Не удалось открыть файл. CopyTListToListViewofStream(). \n" + E.ToString());
 				}
 			}
 			else
