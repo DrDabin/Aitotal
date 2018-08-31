@@ -47,6 +47,12 @@ __recovery/
 *.7z
 *.zip
 *.bat
+AitotalTMP/
+tools/
+UnpackTo7Z/
+архивы/
+файлы/
+
 
 # Директория Win32
 Win32/
