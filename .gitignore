@@ -47,6 +47,7 @@ __recovery/
 *.7z
 *.zip
 *.bat
+*.txt
 AitotalTMP/
 Release\Aitotal\tools/
 UnpackTo7Z/
