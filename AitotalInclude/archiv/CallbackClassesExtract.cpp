@@ -273,7 +273,7 @@ STDMETHODIMP CArchiveExtractCallback::SetOperationResult(Int3232 operationResult
   }
   _outFileStream.Release();
   if (_extractMode && _processedFileInfo.AttribDefined)
-	SetFileAttrib(_diskFilePath, _processedFileInfo.Attrib);
+	SetFileAttrib_PosixHighDetect(_diskFilePath, _processedFileInfo.Attrib);
 	PrintNewLine();
   return S_OK;
 }
