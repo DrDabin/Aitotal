@@ -108,7 +108,7 @@
         <BCC_MonitorGlobalAndStackData>true</BCC_MonitorGlobalAndStackData>
         <BCC_MonitorThis>true</BCC_MonitorThis>
         <LinkPackageStatics>rtl.lib;vcl.lib;xmlrtl.lib;IndyCore.lib;IndySystem.lib;IndyProtocols.lib;vclx.lib;vclactnband.lib;DbxCommonDriver.lib;dbrtl.lib;adortl.lib;vclimg.lib</LinkPackageStatics>
-        <ILINK_LibraryPath>C:\Users\Aibolit\Desktop\AitotalXE4._Bez_Archivatora7Z\CPP;$(ILINK_LibraryPath)</ILINK_LibraryPath>
+        <ILINK_LibraryPath>$(ILINK_LibraryPath)</ILINK_LibraryPath>
         <ILINK_FullDebugInfo>true</ILINK_FullDebugInfo>
         <BCC_SourceDebuggingOn>true</BCC_SourceDebuggingOn>
         <BCC_OptimizeForSpeed>false</BCC_OptimizeForSpeed>
