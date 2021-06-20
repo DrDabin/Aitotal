@@ -18,7 +18,7 @@ BSTR AllocBstrFromAscii(const char *s) throw()
   if (p)
   {
     for (UINT i = 0; i <= len; i++)
-	  p[i] = (Bytee)s[i];
+      p[i] = (Bytee)s[i];
   }
   return p;
 }
@@ -91,7 +91,7 @@ CPropVariant& CPropVariant::operator=(BSTR bstrSrc)
   return *this;
 }
 
-static const char *kMemException = "out of memory";
+static const char * const kMemException = "out of memory";
 
 CPropVariant& CPropVariant::operator=(LPCOLESTR lpszSrc)
 {
@@ -195,7 +195,7 @@ BSTR CPropVariant::AllocBstr(unsigned numChars)
 #define SET_PROP_FUNC(type, id, dest) \
   CPropVariant& CPropVariant::operator=(type value) throw() \
   { if (vt != id) { InternalClear(); vt = id; } \
-	dest = value; return *this; }
+    dest = value; return *this; }
 
 SET_PROP_FUNC(Bytee, VT_UI1, bVal)
 // SET_PROP_FUNC(Int1616, VT_I2, iVal)

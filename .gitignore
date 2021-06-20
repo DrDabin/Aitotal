@@ -1,5 +1,6 @@
-# Prerequisites
+﻿# Prerequisites
 *.d
+*.local
 
 # Compiled Object files
 *.slo
@@ -14,7 +15,7 @@
 # Compiled Dynamic libraries
 *.so
 *.dylib
-*.dll
+#*.dll
 
 # Fortran module files
 *.mod
@@ -47,6 +48,7 @@ __recovery/
 *.7z
 *.zip
 *.bat
+*.txt
 AitotalTMP/
 Release\Aitotal\tools/
 UnpackTo7Z/

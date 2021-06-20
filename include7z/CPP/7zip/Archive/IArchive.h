@@ -133,8 +133,8 @@ But 7-Zip can call functions for IProgress or ICompressProgressInfo functions
 from another threads simultaneously with calls for IArchiveExtractCallback interface.
 
 IArchiveExtractCallback::GetStream()
-  UInt3232 index - index of item in Archive
-  Int3232 askExtractMode  (Extract::NAskMode)
+  UInt32 index - index of item in Archive
+  Int32 askExtractMode  (Extract::NAskMode)
     if (askMode != NExtract::NAskMode::kExtract)
     {
       then the callee can not real stream: (*inStream == NULL)
@@ -167,7 +167,7 @@ SetOperationResult()
   7-Zip calls SetOperationResult at the end of extracting,
   so the callee can close the file, set attributes, timestamps and security information.
 
-  Int3232 opRes (NExtract::NOperationResult)
+  Int32 opRes (NExtract::NOperationResult)
 */
 
 #define INTERFACE_IArchiveExtractCallback(x) \
@@ -187,9 +187,9 @@ ARCHIVE_INTERFACE_SUB(IArchiveExtractCallback, IProgress, 0x20)
 IArchiveExtractCallbackMessage can be requested from IArchiveExtractCallback object
   by Extract() or UpdateItems() functions to report about extracting errors
 ReportExtractResult()
-  UInt3232 indexType (NEventIndexType)
-  UInt3232 index
-  Int3232 opRes (NExtract::NOperationResult)
+  UInt32 indexType (NEventIndexType)
+  UInt32 index
+  Int32 opRes (NExtract::NOperationResult)
 */
 
 #define INTERFACE_IArchiveExtractCallbackMessage(x) \
@@ -441,9 +441,9 @@ namespace NUpdateNotifyOp
 
 /*
 IArchiveUpdateCallbackFile::ReportOperation
-  UInt3232 indexType (NEventIndexType)
-  UInt3232 index
-  UInt3232 notifyOp (NUpdateNotifyOp)
+  UInt32 indexType (NEventIndexType)
+  UInt32 index
+  UInt32 notifyOp (NUpdateNotifyOp)
 */
 
 #define INTERFACE_IArchiveUpdateCallbackFile(x) \
@@ -487,6 +487,16 @@ ARCHIVE_INTERFACE(IOutArchive, 0xA0)
   INTERFACE_IOutArchive(PURE)
 };
 
+
+/*
+ISetProperties::SetProperties()
+  PROPVARIANT values[i].vt:
+    VT_EMPTY
+    VT_BOOL
+    VT_UI4   - if 32-bit number
+    VT_UI8   - if 64-bit number
+    VT_BSTR
+*/
 
 ARCHIVE_INTERFACE(ISetProperties, 0x03)
 {
@@ -552,13 +562,13 @@ BSTR AllocBstrFromAscii(const char *s) throw();
   STDMETHODIMP CHandler::GetArchivePropertyInfo IMP_IInArchive_GetProp(kArcProps)
 
 #define IMP_IInArchive_ArcProps_WITH_NAME \
-  STDMETHODIMP CHandler::GetNumberOfArchiveProperties(UInt3232 *numProps) \
+  STDMETHODIMP CHandler::GetNumberOfArchiveProperties(UInt32 *numProps) \
     { *numProps = ARRAY_SIZE(kArcProps); return S_OK; } \
   STDMETHODIMP CHandler::GetArchivePropertyInfo IMP_IInArchive_GetProp_WITH_NAME(kArcProps)
 
 #define IMP_IInArchive_ArcProps_NO_Table \
   STDMETHODIMP CHandler::GetNumberOfArchiveProperties(UInt3232 *numProps) \
-    { *numProps = 0; return S_OK; } \
+	{ *numProps = 0; return S_OK; } \
   STDMETHODIMP CHandler::GetArchivePropertyInfo(UInt3232, BSTR *, PROPID *, VARTYPE *) \
     { return E_NOTIMPL; } \
 
@@ -574,8 +584,8 @@ BSTR AllocBstrFromAscii(const char *s) throw();
 #define k_IsArc_Res_NEED_MORE 2
 // #define k_IsArc_Res_YES_LOW_PROB 3
 
-#define API_FUNC_IsArc EXTERN_C UInt3232 WINAPI
-#define API_FUNC_static_IsArc extern "C" { static UInt3232 WINAPI
+#define API_FUNC_IsArc EXTERN_C UInt32 WINAPI
+#define API_FUNC_static_IsArc extern "C" { static UInt32 WINAPI
 
 extern "C"
 {

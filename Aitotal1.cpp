@@ -1494,6 +1494,13 @@ void __fastcall TForm3::ParsingArchiv(UnicodeString DirPatchArchiv, int rescan)
 		 stat1->Panels->Items[0]->Text = L"Парсинг окончен";
 		 stat1->Panels->Items[0]->Text = L"";
    }
+   else
+   {
+	  stat1->Panels->Items[0]->Text = L"Список пуст, похоже архив пустой.";
+	  stat1->Panels->Items[0]->Text = L"";
+
+	  ErrorLog("Список пуст, похоже архив пустой.\n" +DirPatchArchiv);
+   }
 	delete SpisokFileArchiv;
 	//delete SpisokFileKarantin;
 

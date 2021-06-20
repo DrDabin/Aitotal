@@ -22,8 +22,8 @@ class ScanVTIndy : public TThread
 {
 private:
    bool __fastcall ScanVTIndy::UploadFileVT (UnicodeString file_path);
-   bool __fastcall ScanVTIndy::ReportVT (UnicodeString chesch);
-   bool __fastcall ScanVTIndy::RescanVT (UnicodeString chesch);
+   // Совместил две функции (ReportVT и RescanVT), при передачи передаю ещё url.
+   bool __fastcall ScanVTIndy::RescanToReportVT (UnicodeString chesch, UnicodeString Url);
    void __fastcall ScanVTIndy::InOnWorkBegin(TObject *ASender, TWorkMode AWorkMode,__int64 AWorkCountMax);
    void __fastcall ScanVTIndy::InWork(TObject *ASender, TWorkMode AWorkMode, __int64 AWorkCount);
    void __fastcall ScanVTIndy::InWorkEnd(TObject *Sender, TWorkMode AWorkMode);

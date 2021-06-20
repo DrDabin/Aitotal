@@ -2,7 +2,7 @@ object Form3: TForm3
   Left = 189
   Top = 162
   Caption = 'Aitotal'
-  ClientHeight = 296
+  ClientHeight = 275
   ClientWidth = 876
   Color = clBtnFace
   Font.Charset = RUSSIAN_CHARSET
@@ -111,7 +111,7 @@ object Form3: TForm3
     Left = 0
     Top = 77
     Width = 876
-    Height = 167
+    Height = 146
     ActivePage = TabSheet1
     Align = alClient
     DoubleBuffered = False
@@ -129,7 +129,7 @@ object Form3: TForm3
         Left = 0
         Top = 0
         Width = 868
-        Height = 137
+        Height = 116
         ParentCustomHint = False
         Align = alClient
         Checkboxes = True
@@ -312,7 +312,7 @@ object Form3: TForm3
   end
   object Panel2: TPanel
     Left = 0
-    Top = 244
+    Top = 223
     Width = 876
     Height = 52
     Align = alBottom
