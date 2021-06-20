@@ -71,7 +71,7 @@ void __fastcall TMyOptionsForm::OptionSave(TObject *Sender)
 		Ini->WriteString("Tools", "apikey", OptApikey->Text);
 
 	else
-		Ini->WriteString("Tools", "apikey", "ae3b8044123881cd4f04fa92a709ed6132413ea79bf2f09917b04df5abe47ef9");
+		Ini->WriteString("Tools", "apikey", "3c04a612f2bf23e46dc857ffa0655544ea3a9d0d3c25b007057908eb7c8ca7b1");
 
 	//ставлю ограничение на 19 файлов.
 	if(OpTionFileCount->Text.ToInt() <=0 || OpTionFileCount->Text.ToInt() >20)
@@ -173,13 +173,10 @@ void __fastcall TMyOptionsForm::OptionReadIni(TObject *Sender)
 	   RBTrei->Checked = true;
 
 	//OptApikey->Text = Ini->ReadString("Tools", "apikey", "4d1ee14a3191ba1afde5261326dcd7e81793afacb6aa7e46d0b467bc6ebcd367");
-	UnicodeString ApikeyPot = Ini->ReadString("Tools", "apikey", "ae3b8044123881cd4f04fa92a709ed6132413ea79bf2f09917b04df5abe47ef9");
-	if(ApikeyPot =="" || ApikeyPot =="ae3b8044123881cd4f04fa92a709ed6132413ea79bf2f09917b04df5abe47ef9")
+	UnicodeString ApikeyPot = Ini->ReadString("Tools", "apikey", "3c04a612f2bf23e46dc857ffa0655544ea3a9d0d3c25b007057908eb7c8ca7b1");
+	if(ApikeyPot =="" || ApikeyPot =="3c04a612f2bf23e46dc857ffa0655544ea3a9d0d3c25b007057908eb7c8ca7b1")
 	  OptApikey->Text = "";
 	else   OptApikey->Text = ApikeyPot;
-	//закоментировал, что бы ключ не выводился в форме.
-	//if(OptApikey->Text == "")
-	   //OptApikey->Text = "4d1ee14a3191ba1afde5261326dcd7e81793afacb6aa7e46d0b467bc6ebcd367";
 
 	if(Ini->ReadBool("Tools","MessageErrorArchive", true) == true)
 	  ErrorArchiv->Checked = true;
@@ -307,14 +304,11 @@ void __fastcall TMyOptionsForm::TestProxi(TObject *Sender)
 	  TIdSSLIOHandlerSocketOpenSSL *ssl = new TIdSSLIOHandlerSocketOpenSSL(NULL);
 	  TIdSocksInfo *soketInfo = new TIdSocksInfo(NULL);
 
-	 // bool resultat= false;
-	  //svSocks5; тип сокета.
 	  IndyVT->HandleRedirects = 1;
+	  IndyVT->Request->ContentType = L"application/x-msdownload";
 	  IndyVT->Request->UserAgent = "Mozilla/5.0 (Windows; U; Windows NT 5.1;en-US; rv:1.8.1.1) Gecko/20061204 Firefox/2.0.0.1";
-	  IndyVT->Request->Accept= "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8";
-	  IndyVT->Request->Connection= "keep-alive";
-	  IndyVT->Request->CustomHeaders->Add("Cookie: lang=en");
-
+	  //IndyVT->Request->Accept= "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8";
+	  IndyVT->Request->CustomHeaders->AddValue("x-apikey", "3c04a612f2bf23e46dc857ffa0655544ea3a9d0d3c25b007057908eb7c8ca7b1");
 	  if(ProxyChecked)
 	  {
 		 switch(ComboBox1->ItemIndex)
@@ -421,20 +415,13 @@ void __fastcall TMyOptionsForm::TestProxi(TObject *Sender)
 		 }
 	  }
 
-
-
-	  std::auto_ptr<TIdMultiPartFormDataStream>
-					   PostData(new TIdMultiPartFormDataStream);
-
-	  PostData->AddFormField("resource","EEE79D5C8E221C38DB7616B64237859E","");
-	  PostData->AddFormField("apikey","ae3b8044123881cd4f04fa92a709ed6132413ea79bf2f09917b04df5abe47ef9","");
-	  UnicodeString Url= "https://www.virustotal.com/vtapi/v2/file/report";
+	  UnicodeString Url= "https://www.virustotal.com/api/v3/files/EEE79D5C8E221C38DB7616B64237859E";
 
 	  __try
 	  {
 		 try
 		 {
-			IndyVT->Post(Url, PostData.get());
+			IndyVT->Get(Url);
 			IndyVT->ResponseCode;
 			ShowMessage("Ok");
 		 }
@@ -462,7 +449,7 @@ void __fastcall TMyOptionsForm::TestProxi(TObject *Sender)
 
 void __fastcall TMyOptionsForm::OptRest(TObject *Sender)
 {
-   Ini->WriteString("Tools", "apikey", "ae3b8044123881cd4f04fa92a709ed6132413ea79bf2f09917b04df5abe47ef9");
+   Ini->WriteString("Tools", "apikey", "3c04a612f2bf23e46dc857ffa0655544ea3a9d0d3c25b007057908eb7c8ca7b1");
    Ini->WriteInteger("Tools", "FileCount",5);
    Ini->WriteInteger("Tools", "ThreadCount",20);
    Ini->WriteBool("Tools", "RunDuplicateApplication", false);

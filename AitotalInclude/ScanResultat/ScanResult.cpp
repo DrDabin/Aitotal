@@ -109,24 +109,23 @@ void __fastcall TFormResultScan::FormActivate(TObject *Sender)
 
 		 for( int i = 0; i<ResRescan->Count; i++)
 		 {
-			//правильный метод.
-			//TJSONArray *Jarr = static_cast<TJSONArray*>(obj->Get(i)->JsonValue);
-			TJSONArray *Jarr = static_cast<TJSONArray*>(ResRescan->Pairs[i]->JsonValue);
+			TJSONObject *Jarr = static_cast<TJSONObject*>(ResRescan->Pairs[i]->JsonValue);
+
 
 			ListItem = ListView1->Items->Add();
 			ListItem->Caption = ResRescan->Pairs[i]->JsonString->Value();
 
-			if(((TJSONObject*)(Jarr))->Get("detected")->JsonValue->ClassNameIs("TJSONFalse"))
+			if(Jarr->Get("category")->JsonValue->Value() != "malicious")
 			{
 			   ListItem->SubItems->Add("");
 			}
 			else
 			{
-			   ListItem->SubItems->Add(((TJSONObject*)(Jarr))->Get("result")->JsonValue->Value());
+			   ListItem->SubItems->Add(Jarr->Get("result")->JsonValue->Value());
 			}
 
-			ListItem->SubItems->Add(((TJSONObject*)(Jarr))->Get("version")->JsonValue->Value());
-			update = ((TJSONObject*)(Jarr))->Get("update")->JsonValue->Value();
+			ListItem->SubItems->Add(Jarr->Get("engine_version")->JsonValue->Value());
+			update = Jarr->Get("engine_update")->JsonValue->Value();
 
 			if(update.Length() ==8)
 			{
@@ -144,8 +143,8 @@ void __fastcall TFormResultScan::FormActivate(TObject *Sender)
 	 }
 	 catch(Exception &E)
 	 {
-		ShowMessage("Ошибка парсинга отчёта\n" + E.Message);
-		Form3->ErrorLog("Ошибка парсинга отчёта\n" +VTBase.BaseJesson);
+		ShowMessage("Ошибка парсинга отчёта.\n" + E.Message);
+		Form3->ErrorLog("Ошибка парсинга отчёта. Форма результата.\n" +VTBase.BaseJesson);
 	 }
   }
   else

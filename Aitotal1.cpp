@@ -1,5 +1,6 @@
 ﻿// ---------------------------------------------------------------------------
 #include <vcl.h>
+#include <System.DateUtils.hpp>
 #include <clipbrd.hpp>
 #include <Tlhelp32.h>
 #include <memory>    //std::auto_prt<>
@@ -106,14 +107,7 @@ void toExtracting(const wchar_t* line)
 	(new TStatusBarNotify(String("Распаковка архива. " + String(line)),Form3->stat1))->Notify();
 	Application->ProcessMessages();
 }
-
-/*void toExtractingS(const wchar_t* nameFile, const __int64 line)
-{
-	//Form3->stat1->Panels->Items[0]->Text = String("Имя файла = ") + String(nameFile) + String("  Процент распаковки = ") + line;
-	(new TStatusBarNotify(String("Имя файла = "+String(nameFile) + String("  Процент распаковки = ") + String(line)),Form3->stat1))->Notify();
-	Application->ProcessMessages();
-} */
-
+ //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 void toExtractingS(const wchar_t* nameFile, const __int64 line)
 {
 	//Form3->stat1->Panels->Items[0]->Text = String("Имя файла = ") + String(nameFile) + String("  Процент распаковки = ") + line;
@@ -160,8 +154,10 @@ void __fastcall TForm3::SetForeground(TMessage &msg)
 
 void __fastcall TForm3::WM_QueryEndSession (TMessage &msg)
 {
+	AtOptions.Exit_Trei = true;
+
 	Form3->Close();
-	TForm::Dispatch(&msg);
+	//TForm::Dispatch(&msg);
 }
 
 int Mycompare (int a, int b)
@@ -181,29 +177,28 @@ int SortTabResultat(UnicodeString par1, UnicodeString par2)
 	int per2;// = par2.ToInt();
 	try
 	{
-	   par1 = par1.SubString(0,par1.Pos("/")-1);
-	   per1 = par1.ToInt();
+		par1 = par1.SubString(0,par1.Pos("/")-1);
+	   	per1 = par1.ToInt();
 	}
 	catch(...)
 	{
-	  per1=-1;
+		per1=-1;
 	}
 	try
 	{
-	   par2 = par2.SubString(0,par2.Pos("/")-1);
+		par2 = par2.SubString(0,par2.Pos("/")-1);
 
-	   per2 = par2.ToInt();
+		per2 = par2.ToInt();
 	}
 	catch(...)
 	{
-	  per2=-1;
+		per2=-1;
 	}
 
 	if (per1>per2)
-	   return 1;
+		return 1;
 	if(per1<per2)
-	 return -1;
-
+		return -1;
 
 	return 0;
 }
@@ -220,7 +215,6 @@ int __stdcall SortProc(TListItem *Item1, TListItem *Item2, long Para)
 		 I = AnsiCompareStr(((TListItem *)Item1)->SubItems->Strings[0], ((TListItem *)Item2)->SubItems->Strings[0]);
 		 break;
 	  case 2:
-		 //I = AnsiCompareStr(((TListItem *)Item1)->SubItems->Strings[1], ((TListItem *)Item2)->SubItems->Strings[1]);
 		 I = SortTabResultat(((TListItem *)Item1)->SubItems->Strings[1], ((TListItem *)Item2)->SubItems->Strings[1]);
 		 break;
 	  case 3:
@@ -235,13 +229,13 @@ int __stdcall SortProc(TListItem *Item1, TListItem *Item2, long Para)
 	  case 6:
 		 FormatSettings.DateSeparator = '.';
 		 FormatSettings.TimeSeparator = ':';
-		 FormatSettings.LongDateFormat = "YYYY.MM.DD";
-		 FormatSettings.ShortDateFormat = "YYYY.MM.DD";
+		 FormatSettings.LongDateFormat =  "YYYY.DD.MM";
+		 FormatSettings.ShortDateFormat = "YYYY.DD.MM";
 		 FormatSettings.ShortTimeFormat = "HH:MM:SS";
-		 FormatSettings.LongTimeFormat = "HH:MM:SS";
+		 FormatSettings.LongTimeFormat =  "HH:MM:SS";
 		 dt1 = StrToDateTimeDef(Item1->SubItems->Strings[5], StrToDateTime(UnicodeString("1976.01.01 00:00:00"), FormatSettings), FormatSettings); // Обрати внимание на индекс, на 1 меньше чем case
 		 dt2 = StrToDateTimeDef(Item2->SubItems->Strings[5], StrToDateTime(UnicodeString("1976.01.01 00:00:00"), FormatSettings), FormatSettings);
-		 I = CompareDateTime(dt1, dt2);
+		 I = Idglobalprotocols::CompareDateTime(dt1, dt2);
 		 break;
    }
    if(!bAscend)
@@ -341,37 +335,45 @@ void __fastcall TForm3::FormActivate(TObject *Sender)
    ListView1->FullDrag = true;
    ListView2->FullDrag = true;
    ListView3->FullDrag = true;
-   HINSTANCE hUser;// = NULL;
-   hUser =  LoadLibraryA("user32.dll");
 
    PatchProgramma = L"\\\\?\\" + ExtractFilePath(ParamStr(0));
 
-   if (hUser != NULL)
-   {
-	  typedef BOOL (WINAPI *ChangeMessageFilter)(UINT message, DWORD dwFlag);
-	  ChangeMessageFilter filter = (ChangeMessageFilter)GetProcAddress(hUser, "ChangeWindowMessageFilter");
-	  if (filter != NULL)
-	  {
-		 filter(WM_DROPFILES, MSGFLT_ADD);
-		 filter(WM_COPYDATA, MSGFLT_ADD);
-		 filter(0x0049, MSGFLT_ADD);
-	  }
-	  FreeLibrary(hUser);
-   }
-	//Использую ChangeWindowMessageFilterEx которая объявлена начиная с  Windows7. Надо потестировать. 
-   /*if (hUser != NULL)
-   {
-	  typedef BOOL (WINAPI *ChangeWindowMessageFilterEx)(HWND hWnd,UINT message, DWORD action, PCHANGEFILTERSTRUCT pChangeFilterStruct);
-	  ChangeWindowMessageFilterEx filter = (ChangeWindowMessageFilterEx)GetProcAddress(hUser, "ChangeWindowMessageFilterEx");
-	  if (filter != NULL)
-	  {
-		 filter (Handle, WM_DROPFILES, MSGFLT_ALLOW, NULL);
-		 filter (Handle, WM_COPYDATA, MSGFLT_ALLOW, NULL);
-		 filter (Handle, 0x49, MSGFLT_ALLOW,NULL);
-	  }
-	   FreeLibrary(hUser);
-   } */		 
-   DragAcceptFiles(Handle, true);
+	//Использую ChangeWindowMessageFilterEx которая объявлена начиная с  Windows7. Надо потестировать.
+
+		if(TOSVersion::Check(6,1))//проверяю Windows 7 и выше.
+		{
+			HINSTANCE hUser =  LoadLibrary(TEXT("user32.dll"));
+			if (hUser != NULL)
+			{
+				typedef BOOL (WINAPI *ChangeWindowMessageFilterEx)(HWND hWnd,UINT message, DWORD action, PCHANGEFILTERSTRUCT pChangeFilterStruct);
+				ChangeWindowMessageFilterEx filterEx = (ChangeWindowMessageFilterEx)GetProcAddress(hUser, "ChangeWindowMessageFilterEx");
+				if (filterEx != NULL)
+				{
+					filterEx (Handle, WM_DROPFILES, MSGFLT_ALLOW, NULL);
+					filterEx (Handle, WM_COPYDATA, MSGFLT_ALLOW, NULL);
+					filterEx (Handle, 0x0049, MSGFLT_ALLOW,NULL);
+
+					FreeLibrary(hUser);
+				}
+			}
+
+		}
+		else if(TOSVersion::Check(6,0))  // Только для  Висты.
+		{
+			HINSTANCE hUser =  LoadLibrary(TEXT("user32.dll"));
+			if (hUser != NULL)
+			{
+				typedef BOOL (WINAPI *ChangeMessageFilter)(UINT message, DWORD dwFlag);
+				ChangeMessageFilter filter = (ChangeMessageFilter)GetProcAddress(hUser, "ChangeWindowMessageFilter");
+				if (filter != NULL)
+				{
+					filter(WM_DROPFILES, MSGFLT_ADD);
+					filter(WM_COPYDATA, MSGFLT_ADD);
+					filter(0x0049, MSGFLT_ADD);
+                    FreeLibrary(hUser);
+				}
+			}
+		}
 
    CreateDirectoryW(UnicodeString(PatchProgramma + "AitotalTMP\\").c_str(), NULL);
    CreateDirectoryW(UnicodeString(PatchProgramma + "tools\\").c_str(), NULL);
@@ -426,7 +428,7 @@ void __fastcall TForm3::FormCreate(TObject *Sender)
    SpisokFileName = new TList();
    SpisokNamePotok = new TStringList(NULL);
    SpisokArchivFolder =  new TStringList(NULL);
-
+   DragAcceptFiles(this->Handle, true);
    // праметры передаваемые через батник или командную строку.
 	//При каждой новой копии программы
 	//  Передаю значение делать рескан или нет.
@@ -601,9 +603,9 @@ void __fastcall TForm3::Response(TWMDropFiles &Message)
 {
 	if (GetStatusConnect())
 	{
-		HDROP hdropHandle = (HDROP)Message.Drop;
 		// Переменная для хранения имени файла
 		wchar_t chName[MAX_PATH];
+		HDROP hdropHandle = (HDROP)Message.Drop;
 		// Число буксируемых файлов
 		int viNumber = DragQueryFile(hdropHandle, -1, NULL, NULL);
 
@@ -1549,39 +1551,7 @@ void __fastcall TForm3::ExtArchiv(UnicodeString ArcName, int rescan)
 	  //if(Parse_Head_Guid(head, GuidArchiv))
 	  if(Parse_Head_Guid_New(head, GuidArchiv))
 	  {
-		 //Распаковка zip архива
-			//BEGIN
-		 //if(GuidArchiv == 2)
-		 //{
-		 //	 stat1->Panels->Items[0]->Text = L"Начало распаковки архива .zip";
-		 //	 if(ExtZip(ArcName,Dir))
-		 //		ParsingArchiv(DirPatchArchiv, rescan);
-		 //
-		 //	 else
-		 //	 {
-		 //		 if(AtOptions.ErrorArchiv)
-		 //			 ShowMessage(L"Ошибка распаковки архива.\n" + NameArchiv);
-		 //
-		 //		 ErrorLog(L"Ошибка распаковки архива.\n " + head +"\n"+ NameArchiv);
-		 //    }
-		 //}
-			  //END
-
-		 //else// распаковка остальных архивов
-		 //{
-
-		   //-----------Begin-----------
-			/* if (extract2(ArcName.w_str(), Dir.w_str(), GuidArchiv, PatchProgramma))
-			 {
-				 ParsingArchiv(DirPatchArchiv, rescan);
-			 }
-			 else
-			 {
-				 if(AtOptions.ErrorArchiv)
-					 ShowMessage(L"Ошибка распаковки архива.\n" + NameArchiv);
-
-				 ErrorLog(L"Ошибка распаковки архива. " + head +L"\n"+ NameArchiv);
-			 } */
+	
 
 			 std::auto_ptr<TStringList>Password(new TStringList(NULL));
 
@@ -1638,7 +1608,7 @@ void __fastcall TForm3::ExtArchiv(UnicodeString ArcName, int rescan)
 
 					 case errorDataPass:
 						 continue;
-						 break;
+						 //break;  //Закоментировал 03.06.2021 Что бы убрать варнинг
 
 					 /*default:
 						 if(AtOptions.ErrorArchiv)
@@ -1720,13 +1690,13 @@ void __fastcall TForm3::OptionReadIni()
 	   {
 		 if(i == 0)
 		 {
-			UnicodeString key = IniOptions->ReadString("Tools", "apikey", "ae3b8044123881cd4f04fa92a709ed6132413ea79bf2f09917b04df5abe47ef9");
+			UnicodeString key = IniOptions->ReadString("Tools", "apikey", "3c04a612f2bf23e46dc857ffa0655544ea3a9d0d3c25b007057908eb7c8ca7b1");
 			AtOptions.Apikey.insert(AtOptions.Apikey.end(),key);
 		 }
 		 else
 		 {
 			UnicodeString num = L"apikey"+IntToStr(i);
-			UnicodeString key = IniOptions->ReadString("Tools", num, "ae3b8044123881cd4f04fa92a709ed6132413ea79bf2f09917b04df5abe47ef9");
+			UnicodeString key = IniOptions->ReadString("Tools", num, "3c04a612f2bf23e46dc857ffa0655544ea3a9d0d3c25b007057908eb7c8ca7b1");
 			AtOptions.Apikey.insert(AtOptions.Apikey.end(),key);
 		 }
 	   }
@@ -1872,9 +1842,7 @@ void __fastcall TForm3::CopyTListToListViewofStream()
 						OtWetErrorSizeFile(FileItem.MyPatch,"", FileItem.SizeFile, "");
 					else
 					{
-						FileItem.Md5File = CalksStreamMD5(fs).LowerCase();
-
-						try
+                        try
 						{
 							FileItem.SHA256 = THashSHA2::GetHashString(fs, THashSHA2::TSHA2Version::SHA256);
 						}
@@ -1882,7 +1850,11 @@ void __fastcall TForm3::CopyTListToListViewofStream()
 						{
 							stat1->Panels->Items[1]->Text  = "Error SHA256.1";
 							ErrorLog("Ошибка расчета Sha256.1  CopyTListToListViewofStream()\n" + E.ToString());
-                        }
+						}
+
+						FileItem.Md5File = CalksStreamMD5(fs).LowerCase();
+
+
 
 						if(FileItem.Md5File == "")
 						{
@@ -2009,18 +1981,17 @@ void TForm3::StartThreadVT()
 
 				VTIndy[filenumber] = new ScanVTIndy(true);
 
-				TDateTime Prob = Time();
-				//Увеличиваю время на 15 мин.
-				Prob = Prob+15./24/60;
-				VTIndy[filenumber]->TimeBreak = FormatDateTime("YYYY.MM.DD",Date())+ " " + FormatDateTime("HH:NN:SS",Prob);
+				//Увеличиваю время на 10 мин.
+				//Prob = Prob +10./24/60;
+				TDateTime Prob = IncMinute(Now(), 10); //Увеличиваю время на 10 мин.
+				VTIndy[filenumber]->TimeBreak = FormatDateTime("YYYY.MM.DD HH:NN:SS",Prob);
 				VTIndy[filenumber]->VtBase.BasePatchFileName = ListView1->Items->Item[0]->SubItems->Strings[0];
 				VTIndy[filenumber]->VtBase.BaseMD5 = ListView1->Items->Item[0]->SubItems->Strings[2];
 				VTIndy[filenumber]->VtBase.BaseSizeFile = ListView1->Items->Item[0]->SubItems->Strings[1].ToInt();
 				//Устанавливаем вести логирование или нет. Читается в ини файле.
 				VTIndy[filenumber]->logirovanie =  logirovanie;
 				VTIndy[filenumber]->VtBase.BaseSHA256 = ListView1->Items->Item[0]->SubItems->Strings[3];
-				VTIndy[filenumber]->VtBase.BasePredScanData = FormatDateTime("YYYY.MM.DD",Date())+ " " + FormatDateTime("HH:NN:SS",Time());
-
+				VTIndy[filenumber]->VtBase.BasePredScanData = FormatDateTime("YYYY.MM.DD HH:NN:SS",Now());
 				VTIndy[filenumber]->PotokNumber = filenumber;
 				VTIndy[filenumber]->FileNumber = ((numchek*)ListView1->Items->Item[0]->Data)->NumBer;
 				VTIndy[filenumber]->VtBase.FileNumber = ((numchek*)ListView1->Items->Item[0]->Data)->NumBer;
@@ -2640,7 +2611,8 @@ void __fastcall TForm3::FormDestroy(TObject *Sender)
 	ClearSpisokFileName();
 	delete  SpisokFileName;
 	delete SpisokArchivFolder;
-
+    // ну, и по привычке, чистим за собой перед выходом
+	DragAcceptFiles(this->Handle, false);
 
 }
 //---------------------------------------------------------------------------
@@ -3521,6 +3493,24 @@ SpisokFileName->Add(new StructFileList(0,1,UnicodeString("sfjshfj"), 54456,Unico
 
 }
 //++++++++++++++
+
+TDateTime UTCToLocalTime(TDateTime AValue)
+{
+	TSystemTime ST1, ST2;
+	TTimeZoneInformation TZ;
+
+	// TZ - локальные настройки Windows
+	GetTimeZoneInformationForYear(YearOf(AValue), NULL, &TZ);
+
+	// Преобразование TDateTime к WindowsSystemTime
+	DateTimeToSystemTime(AValue, ST1);
+
+	// Применение локальных настроек ко времени
+	SystemTimeToTzSpecificLocalTime(&TZ, &ST1, &ST2);
+
+	// Приведение SystemTime к TDateTime
+	return SystemTimeToDateTime(ST2);
+}
 void __fastcall TForm3::Button2Click(TObject *Sender)
 {
 	if(TDirectory::Exists(L"\\\\?\\" +ExtractFilePath(ParamStr(0)) +"AitotalTMP\\archiw\\"))
@@ -3733,23 +3723,22 @@ bool __fastcall TForm3::ReportVT (UnicodeString chesch)
 	   IndyVT->IOHandler = ssl;
    }
 
-   IndyVT->Request->Accept = "text/html, */*";
+   IndyVT->Request->Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8";
 
 
    std::auto_ptr<TIdMultiPartFormDataStream>
 					   PostData(new TIdMultiPartFormDataStream);
 
-	PostData->AddFormField("resource",chesch,"");
-	PostData->AddFormField("apikey",AtOptions.Apikey[0],"");
+	UnicodeString Url= "https://www.virustotal.com/api/v3/files/" + Edit1->Text + "/analyse";
+	//UnicodeString Url= "https://www.virustotal.com/api/v3/files/"+ Edit1->Text;
 
-	UnicodeString Url= "https://www.virustotal.com/vtapi/v2/file/report";
 	try
 	{
 	   IndyVT->Request->Host = "http://www.virustotal.com";
 	   IndyVT->Request->ContentType = "application/x-www-form-urlencoded";
-	   BaseJesson = IndyVT->Post(Url, PostData.get());
+	   IndyVT->Request->CustomHeaders->AddValue("x-apikey", AtOptions.Apikey[0]);
+	   IndyVT->Post(Url,PostData.get());
 	   http_response_code = IndyVT->ResponseCode;
-
 	   /*std::auto_ptr<TStringList> SpisokLV2 (new TStringList(NULL));
 	   SpisokLV2->Text =   BaseJesson;
 	   SpisokLV2->SaveToFile("BaseJesson");  */

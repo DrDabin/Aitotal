@@ -21,42 +21,19 @@
 class ScanVTIndy : public TThread
 {
 private:
-   bool __fastcall ScanVTIndy::UploadFileVT (UnicodeString file_path);
-   // Совместил две функции (ReportVT и RescanVT), при передачи передаю ещё url.
-   bool __fastcall ScanVTIndy::RescanToReportVT (UnicodeString chesch, UnicodeString Url);
    void __fastcall ScanVTIndy::InOnWorkBegin(TObject *ASender, TWorkMode AWorkMode,__int64 AWorkCountMax);
    void __fastcall ScanVTIndy::InWork(TObject *ASender, TWorkMode AWorkMode, __int64 AWorkCount);
    void __fastcall ScanVTIndy::InWorkEnd(TObject *Sender, TWorkMode AWorkMode);
-   void __fastcall ScanVTIndy::ScanApiZapros();// Основной процесс сканирования
-   // вывожу адресс сылки во вторую таблицу.
-   void __fastcall ScanVTIndy::ZapisPermalinkLV();
-   // Смотрю есть данные по донной хеш суммы или нет.
-   //Если нет то false.
-   bool __fastcall ScanVTIndy::PostHesh(UnicodeString Hesh);
    // Вывожу типо прогресса, что делается или какая ошибка
    void __fastcall ScanVTIndy::ScanProgres();
    // Переношу всё во вторую вкладку при начале проверки "Сканирование"
    void __fastcall ScanVTIndy::AtScanBegin();
-   //извлекаем код из джексона. Если 1 то файл проверялся, если 0 то нет.
-   // смотреть доку на Вирустотале
-   int __fastcall ScanVTIndy::JSONParseResponzeCode();
-   // Общая функция загрузки. идет проверка загрузился файл или нет.
-   // если ответ сервера 204, то проводим повторную отправку файла.
-   bool __fastcall ScanVTIndy::LoadingFile();
    // Удаляем значение из списка номера потока, что бы было ограничение на количество загрузок а не проверок.
    void __fastcall ScanVTIndy::DelSpisokNamePotok();
-   // Делаю запрос проверился ли файл или нет.
-   // И так до тех пор пока файл не проверится или не истечет 15мин.
-   void __fastcall ScanVTIndy::ApiReportFile();
    // Функция действия при ошибке
    void __fastcall ScanVTIndy::OtwetOshibka();
-   //Парсинг джексона на детект, дату, SHA256, ссылки.
-   void __fastcall ScanVTIndy::JSONParseDetect();
-   // перевожу дату из формата ****-**-** в формат ****.**.**
-   void __fastcall ScanVTIndy::DateTime();
-   bool __fastcall ScanVTIndy::DateTimeR(UnicodeString &Date);
    //Функция ответа. Переношу всё в фкладку Результат.
-   void __fastcall ScanVTIndy::Otwet();
+   //void __fastcall ScanVTIndy::Otwet();
    // Проверяю количество загружаемых файлов.
    //если их меньше чем в настройках то заношу в список номер PotokNumber и FileUpload = true.
    // если одинаково то FileUpload = false
@@ -64,15 +41,6 @@ private:
    TDateTime ScanVTIndy::UTCToLocalTime(TDateTime AValue);
    // Вывожу прогресс при загрузки файла.
    void __fastcall ScanVTIndy::UploadProgress();
-   void __fastcall ScanVTIndy::ApiReScanFalse();
-   //Извлекаю дату из джейсона.
-   AnsiString ScanVTIndy::JSONParseResponzeDate();
-   // Провожу рескан.
-   // Делаю запросы Репорт до тех пор пока не будет новый результат или не истечёт 15 мин.
-   void __fastcall ScanVTIndy::ApiReScan();
-   // Делаю Репорт и извлекаю дату из джейсона.
-   //Репорт делаю до тех пор пока не получу код JSONParseResponzeCode = 1.
-   AnsiString ScanVTIndy::ApiPostDateToStr(AnsiString Hesh);
    // Заношу ошибки в список и сразуже сохраняю.
    void __fastcall ScanVTIndy::ErrorLog();
    // Переношу в третью вкладку когда размер файла более 32Мб но менее 128Мб и если он до этого не проверялся.
@@ -84,11 +52,47 @@ private:
    UnicodeString LogMessage; // текст логирования.
    UnicodeString Progress;// Содержит, что делается
    bool FileUpload;
+
+   /* Новые функциии для нового изменения на VT.
+	  Поменялась версия на v3.
+   */
+   // Делаю запрос есть такой файл или нет.
+   //Если есть выводит всю информацию о нем.
+   // Если данного хеш нет, то выдает код ответа 404.
+   bool __fastcall ScanVTIndy::VTFilesID (UnicodeString chesch);
+   //загрузка файла.
+   bool __fastcall ScanVTIndy::VTFiles(UnicodeString FileName);
+   //Общая функция сканирования/проверки файла.
+   // Используется в Execute.
+   void __fastcall ScanVTIndy::ScanFiles();
+   // Функция поиска хеша на VT
+   // Использует функцию VTFilesID
+   //Вывод false/true
+   bool __fastcall ScanVTIndy::SearchHesh(UnicodeString Hesh);
+   //Обрабатывается когда Не нужен реанализ проверенного файла.
+   void __fastcall ScanVTIndy::ReScanFalse();
+   void __fastcall ScanVTIndy::VTJSONParseDetect();
+   void __fastcall ScanVTIndy::VIOtwet();
+   //Проводит реанализ файла, и ждет отчета новой провеки?
+   void __fastcall ScanVTIndy::ReScanVT();
+   //Реанализ файла.
+   bool __fastcall ScanVTIndy::VTAnalyse (UnicodeString chesch);
+   //Получаем результат по ID после VTAnalyse
+   bool __fastcall ScanVTIndy::VTAnalysasID ();
+   //Извлекаю из ответа ID для Get analyses id
+   bool __fastcall ScanVTIndy::JSONParseAnalysisID();
+   //Парсинг после Analyses для вывода отчета.
+   void __fastcall ScanVTIndy::VTJSONParseDetectAnalysasID();
+   // Извлекаем статус проверки, в VTAnalysasID()
+   // статусы
+   // "completed" - завершен.
+   // "queued" в ожидание.
+   // "in-progress" в процессе.
+   bool __fastcall ScanVTIndy::JSONParseAnalysisStatus();
 protected:
 	void __fastcall Execute();
 public:
 	__fastcall ScanVTIndy(bool CreateSuspended);
-	void __fastcall ScanVTIndy::JSONGetPermalink();
 	//Номер потока, удаляется изсписка после загрузки файла, или начало
 	// рескана
 	int PotokNumber;
@@ -102,8 +106,7 @@ public:
 	//Функция логирования.
 	void __fastcall ScanVTIndy::Logirovanie();
 	Base VtBase;
-	//CTest *ProbaDate;
-	//UnicodeString PathFileName;
+
 	UnicodeString TimeBreak;
 	// Переменная хранить дату и время завержение ожидания проверки файла.
 	// использую при добавление к файлу логирования
@@ -123,3 +126,4 @@ public:
 };
 //---------------------------------------------------------------------------
 #endif
+

@@ -2,8 +2,8 @@ object Form3: TForm3
   Left = 189
   Top = 162
   Caption = 'Aitotal'
-  ClientHeight = 275
-  ClientWidth = 876
+  ClientHeight = 263
+  ClientWidth = 969
   Color = clBtnFace
   Font.Charset = RUSSIAN_CHARSET
   Font.Color = clWindowText
@@ -23,14 +23,14 @@ object Form3: TForm3
   object Panel1: TPanel
     Left = 0
     Top = 0
-    Width = 876
+    Width = 969
     Height = 77
     Align = alTop
     DoubleBuffered = True
     ParentDoubleBuffered = False
     TabOrder = 0
     DesignSize = (
-      876
+      969
       77)
     object Label1: TLabel
       Left = 4
@@ -46,7 +46,7 @@ object Form3: TForm3
       ParentFont = False
     end
     object ChReSca: TCheckBox
-      Left = 788
+      Left = 881
       Top = 48
       Width = 61
       Height = 17
@@ -57,7 +57,7 @@ object Form3: TForm3
       TabOrder = 4
     end
     object Button1: TButton
-      Left = 788
+      Left = 881
       Top = 10
       Width = 84
       Height = 25
@@ -69,7 +69,7 @@ object Form3: TForm3
     object ProgressBar1: TProgressBar
       Left = 4
       Top = 50
-      Width = 778
+      Width = 871
       Height = 15
       Anchors = [akLeft, akTop, akRight]
       TabOrder = 5
@@ -77,7 +77,7 @@ object Form3: TForm3
     object Edit1: TEdit
       Left = 83
       Top = 12
-      Width = 528
+      Width = 621
       Height = 21
       Anchors = [akLeft, akTop, akRight]
       ParentShowHint = False
@@ -86,7 +86,7 @@ object Form3: TForm3
       OnKeyPress = Edit1KeyPress
     end
     object Button3: TButton
-      Left = 699
+      Left = 792
       Top = 10
       Width = 83
       Height = 25
@@ -110,9 +110,9 @@ object Form3: TForm3
   object PageControl1: TPageControl
     Left = 0
     Top = 77
-    Width = 876
-    Height = 146
-    ActivePage = TabSheet1
+    Width = 969
+    Height = 134
+    ActivePage = TabSheet3
     Align = alClient
     DoubleBuffered = False
     Font.Charset = RUSSIAN_CHARSET
@@ -125,17 +125,22 @@ object Form3: TForm3
     TabOrder = 1
     object TabSheet1: TTabSheet
       Caption = #1060#1072#1081#1083' '#1087#1088#1086#1074#1077#1088#1082#1080
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object ListView1: TListView
         Left = 0
         Top = 0
-        Width = 868
-        Height = 116
+        Width = 961
+        Height = 144
         ParentCustomHint = False
         Align = alClient
         Checkboxes = True
         Columns = <
           item
             Caption = #1048#1084#1103' '#1092#1072#1081#1083#1072
+            Tag = 1000
             Width = 145
           end
           item
@@ -188,8 +193,8 @@ object Form3: TForm3
       object ListView2: TListView
         Left = 0
         Top = 0
-        Width = 868
-        Height = 201
+        Width = 961
+        Height = 144
         Align = alClient
         Checkboxes = True
         Columns = <
@@ -247,15 +252,11 @@ object Form3: TForm3
     object TabSheet3: TTabSheet
       Caption = #1056#1077#1079#1091#1083#1100#1090#1072#1090
       ImageIndex = 2
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object ListView3: TListView
         Left = 0
         Top = 0
-        Width = 868
-        Height = 201
+        Width = 961
+        Height = 104
         Align = alClient
         Checkboxes = True
         Columns = <
@@ -312,8 +313,8 @@ object Form3: TForm3
   end
   object Panel2: TPanel
     Left = 0
-    Top = 223
-    Width = 876
+    Top = 211
+    Width = 969
     Height = 52
     Align = alBottom
     TabOrder = 2
@@ -335,7 +336,7 @@ object Form3: TForm3
     object TLabelCountProwerki: TLabel
       Left = 281
       Top = 1
-      Width = 336
+      Width = 429
       Height = 26
       Align = alClient
       AutoSize = False
@@ -349,7 +350,7 @@ object Form3: TForm3
       ExplicitHeight = 32
     end
     object TLabelCountProwereno: TLabel
-      Left = 617
+      Left = 710
       Top = 1
       Width = 258
       Height = 26
@@ -367,7 +368,7 @@ object Form3: TForm3
     object stat1: TStatusBar
       Left = 1
       Top = 27
-      Width = 874
+      Width = 967
       Height = 24
       Panels = <
         item
@@ -582,8 +583,8 @@ object Form3: TForm3
     end
   end
   object OpenDialog1: TOpenDialog
-    Left = 640
-    Top = 150
+    Left = 780
+    Top = 138
   end
   object PopupMenu3: TPopupMenu
     Left = 171
@@ -668,8 +669,8 @@ object Form3: TForm3
     Visible = True
     OnBalloonClick = TrayIcon1BalloonClick
     OnClick = TreyIc
-    Left = 704
-    Top = 194
+    Left = 876
+    Top = 366
   end
   object PopupTrayIcon: TPopupMenu
     Left = 245
@@ -682,8 +683,8 @@ object Form3: TForm3
   object SaveDialog1: TSaveDialog
     FileName = 'log.csv'
     Filter = '|*.csv|'
-    Left = 643
-    Top = 206
+    Left = 775
+    Top = 194
   end
   object IdSSLIOHandlerSocketOpenSSL1: TIdSSLIOHandlerSocketOpenSSL
     MaxLineAction = maException
@@ -692,17 +693,17 @@ object Form3: TForm3
     SSLOptions.Mode = sslmUnassigned
     SSLOptions.VerifyMode = []
     SSLOptions.VerifyDepth = 0
-    Left = 404
-    Top = 162
+    Left = 584
+    Top = 146
   end
   object SaveJeson: TSaveDialog
     Filter = '|*.json'
-    Left = 716
-    Top = 134
+    Left = 904
+    Top = 138
   end
   object OpenJeson: TOpenDialog
     Filter = 'jesson|*.json'
-    Left = 812
-    Top = 142
+    Left = 900
+    Top = 194
   end
 end

@@ -2,11 +2,11 @@
 
 #include "AitotalVersion.h"
 
-LANGUAGE 9, 1 \
+LANGUAGE 9,1
 1 VERSIONINFO
-FILEVERSION MY_VER_MAJOR,MY_VER_MINOR,MY_VER_BUILD,0 \
+FILEVERSION MY_VER_MAJOR,MY_VER_MINOR,MY_VER_BUILD,0
 
-PRODUCTVERSION MY_VER_MAJOR \
+PRODUCTVERSION MY_VER_MAJOR
 
 FILEFLAGSMASK  VS_FFI_FILEFLAGSMASK
 FILEFLAGS VS_FF_PRERELEASE
@@ -19,12 +19,12 @@ FILETYPE VFT_APP
       BLOCK "041904B0"
       {
 
-         VALUE "FileVersion", MY_VERSION \
-         VALUE "ProductName", "Aitotal\000" \
-         VALUE "InternalName", "Aitotal.exe\000" \
-         Value "OriginalFilename", "Aitotal.exe\000" \
-         VALUE "LegalCopyright", MY_COPYRIGHT \
-         VALUE "ProductVersion", MY_VERSION \
+         VALUE "FileVersion", MY_VERSION
+         VALUE "ProductName", "Aitotal\000"
+         VALUE "InternalName", "Aitotal.exe\000"
+         Value "OriginalFilename", "Aitotal.exe\000"
+         VALUE "LegalCopyright", MY_COPYRIGHT
+         VALUE "ProductVersion", MY_VERSION
       }
    }
 

@@ -5,6 +5,7 @@ struct Base
 {
 	UnicodeString BaseFileName;
 	UnicodeString BasePatchFileName;
+    UnicodeString BaseIDVT;
 	UnicodeString BaseMD5;
 	UnicodeString BaseSHA256;
 	UnicodeString BaseSizeFile;
@@ -14,6 +15,7 @@ struct Base
 	UnicodeString BasePatchFileArchiv;
 	UnicodeString BaseJesson;
 	UnicodeString BasePredScanData;
+	UnicodeString BaseStatusAnalyzeID;
    	int FileNumber;
 };
 struct Proxy

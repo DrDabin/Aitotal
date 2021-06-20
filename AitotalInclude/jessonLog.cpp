@@ -6,7 +6,6 @@
 
 #pragma hdrstop
 
-//nclude "jessonLog.h"
 #include "Aitotal1.h"
 #include "AitotalInclude/Struct.h"//Структуры. Перенесу туда все мои структуры. И надо будет их обьединить.
 
