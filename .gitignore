@@ -50,10 +50,12 @@ __recovery/
 *.bat
 *.txt
 AitotalTMP/
-Release\Aitotal\tools/
+Release/
 UnpackTo7Z/
 архивы/
 файлы/
+LogTMP/
+
 
 
 # Директория Win32
