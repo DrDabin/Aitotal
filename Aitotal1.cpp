@@ -15,7 +15,7 @@
 
 #include "Aitotal1.h"
 #include "Aitotal.cpp"
-//#include "AitotalInclude/sha256.h"
+
 #include "AitotalInclude/ScanVTIndy/ScanVTIndy1.h"
 #include "AitotalInclude/ScanResultat/ScanResult.h"// Форма результата.
 #include "AitotalInclude/About/About.h"//справка о программе

@@ -2,7 +2,7 @@ object Form3: TForm3
   Left = 189
   Top = 162
   Caption = 'Aitotal'
-  ClientHeight = 263
+  ClientHeight = 355
   ClientWidth = 969
   Color = clBtnFace
   Font.Charset = RUSSIAN_CHARSET
@@ -111,8 +111,8 @@ object Form3: TForm3
     Left = 0
     Top = 77
     Width = 969
-    Height = 134
-    ActivePage = TabSheet3
+    Height = 226
+    ActivePage = TabSheet1
     Align = alClient
     DoubleBuffered = False
     Font.Charset = RUSSIAN_CHARSET
@@ -123,42 +123,42 @@ object Form3: TForm3
     ParentDoubleBuffered = False
     ParentFont = False
     TabOrder = 1
+    ExplicitHeight = 114
     object TabSheet1: TTabSheet
       Caption = #1060#1072#1081#1083' '#1087#1088#1086#1074#1077#1088#1082#1080
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object ListView1: TListView
         Left = 0
         Top = 0
         Width = 961
-        Height = 144
+        Height = 197
         ParentCustomHint = False
         Align = alClient
         Checkboxes = True
         Columns = <
           item
             Caption = #1048#1084#1103' '#1092#1072#1081#1083#1072
-            Tag = 1000
             Width = 145
           end
           item
             Caption = #1055#1086#1083#1085#1086#1077' '#1080#1084#1103' '#1092#1072#1081#1083#1072
+            Tag = 1
             Width = 232
           end
           item
             Caption = #1056#1072#1079#1084#1077#1088
+            Tag = 2
             Width = 85
           end
           item
             Caption = 'MD5'
+            Tag = 3
             Width = 188
           end
           item
             AutoSize = True
             Caption = 'SHA256'
             MinWidth = 295
+            Tag = 4
           end>
         DoubleBuffered = False
         Font.Charset = RUSSIAN_CHARSET
@@ -186,15 +186,11 @@ object Form3: TForm3
     object TabSheet2: TTabSheet
       Caption = #1057#1082#1072#1085#1080#1088#1086#1074#1072#1085#1080#1077
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object ListView2: TListView
         Left = 0
         Top = 0
         Width = 961
-        Height = 144
+        Height = 197
         Align = alClient
         Checkboxes = True
         Columns = <
@@ -204,27 +200,33 @@ object Form3: TForm3
           end
           item
             Caption = #1055#1086#1083#1085#1086#1077' '#1080#1084#1103' '#1092#1072#1081#1083#1072
+            Tag = 1
             Width = 150
           end
           item
             Caption = #1056#1072#1079#1084#1077#1088
+            Tag = 2
             Width = 85
           end
           item
             Caption = 'MD5 '#1092#1072#1081#1083#1072
+            Tag = 3
             Width = 80
           end
           item
             Caption = 'SHA256'
+            Tag = 4
           end
           item
             Caption = '% '#1047#1072#1075#1088#1091#1079#1082#1080'\'#1087#1088#1086#1074#1077#1088#1082#1080
             MinWidth = 110
+            Tag = 5
             Width = 219
           end
           item
             AutoSize = True
             Caption = #1057#1089#1099#1083#1082#1072' '#1085#1072' '#1086#1090#1095#1105#1090
+            Tag = 6
           end>
         DoubleBuffered = False
         Font.Charset = RUSSIAN_CHARSET
@@ -252,11 +254,12 @@ object Form3: TForm3
     object TabSheet3: TTabSheet
       Caption = #1056#1077#1079#1091#1083#1100#1090#1072#1090
       ImageIndex = 2
+      ExplicitHeight = 85
       object ListView3: TListView
         Left = 0
         Top = 0
         Width = 961
-        Height = 104
+        Height = 197
         Align = alClient
         Checkboxes = True
         Columns = <
@@ -265,27 +268,34 @@ object Form3: TForm3
           end
           item
             Caption = #1055#1086#1083#1085#1086#1077' '#1080#1084#1103' '#1092#1072#1081#1083#1072
+            Tag = 1
           end
           item
             Caption = #1056#1077#1079#1091#1083#1100#1090#1072#1090
+            Tag = 2
             Width = 70
           end
           item
             Caption = #1056#1072#1079#1084#1077#1088
+            Tag = 3
           end
           item
             Caption = 'MD5'
+            Tag = 4
           end
           item
             Caption = 'SHA256'
+            Tag = 5
           end
           item
             Caption = #1044#1072#1090#1072' '#1087#1088#1086#1074#1077#1088#1082#1080
+            Tag = 6
           end
           item
             AutoSize = True
             Caption = #1057#1089#1099#1083#1082#1072' '#1085#1072' '#1086#1090#1095#1105#1090
             MinWidth = 150
+            Tag = 7
           end>
         DoubleBuffered = False
         Font.Charset = RUSSIAN_CHARSET
@@ -308,16 +318,18 @@ object Form3: TForm3
         OnDblClick = LV3PokaztRelt
         OnDeletion = LW3OnDeletions
         OnInsert = LW3OnInsert
+        ExplicitHeight = 85
       end
     end
   end
   object Panel2: TPanel
     Left = 0
-    Top = 211
+    Top = 303
     Width = 969
     Height = 52
     Align = alBottom
     TabOrder = 2
+    ExplicitTop = 191
     object TLabelItogo: TLabel
       Left = 1
       Top = 1
@@ -583,8 +595,8 @@ object Form3: TForm3
     end
   end
   object OpenDialog1: TOpenDialog
-    Left = 780
-    Top = 138
+    Left = 828
+    Top = 114
   end
   object PopupMenu3: TPopupMenu
     Left = 171
@@ -683,8 +695,8 @@ object Form3: TForm3
   object SaveDialog1: TSaveDialog
     FileName = 'log.csv'
     Filter = '|*.csv|'
-    Left = 775
-    Top = 194
+    Left = 823
+    Top = 178
   end
   object IdSSLIOHandlerSocketOpenSSL1: TIdSSLIOHandlerSocketOpenSSL
     MaxLineAction = maException
@@ -693,17 +705,17 @@ object Form3: TForm3
     SSLOptions.Mode = sslmUnassigned
     SSLOptions.VerifyMode = []
     SSLOptions.VerifyDepth = 0
-    Left = 584
-    Top = 146
+    Left = 752
+    Top = 226
   end
   object SaveJeson: TSaveDialog
     Filter = '|*.json'
-    Left = 904
-    Top = 138
+    Left = 912
+    Top = 106
   end
   object OpenJeson: TOpenDialog
     Filter = 'jesson|*.json'
     Left = 900
-    Top = 194
+    Top = 170
   end
 end

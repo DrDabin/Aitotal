@@ -172,7 +172,6 @@ void __fastcall TMyOptionsForm::OptionReadIni(TObject *Sender)
 	else
 	   RBTrei->Checked = true;
 
-	//OptApikey->Text = Ini->ReadString("Tools", "apikey", "4d1ee14a3191ba1afde5261326dcd7e81793afacb6aa7e46d0b467bc6ebcd367");
 	UnicodeString ApikeyPot = Ini->ReadString("Tools", "apikey", "3c04a612f2bf23e46dc857ffa0655544ea3a9d0d3c25b007057908eb7c8ca7b1");
 	if(ApikeyPot =="" || ApikeyPot =="3c04a612f2bf23e46dc857ffa0655544ea3a9d0d3c25b007057908eb7c8ca7b1")
 	  OptApikey->Text = "";

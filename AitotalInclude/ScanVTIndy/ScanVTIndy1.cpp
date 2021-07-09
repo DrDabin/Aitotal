@@ -360,8 +360,7 @@ void __fastcall ScanVTIndy::OtwetErrorSizeFile()
 }
 //++++++++++++++++++++++++++++++++++++++++++++
 
-// Функции для 3 версии
-
+// Функции для 3 версии  +++++++++++++++++++++
 
 bool __fastcall ScanVTIndy::SearchHesh(UnicodeString Hesh)
 {
@@ -647,9 +646,15 @@ bool __fastcall ScanVTIndy::VTFilesID (UnicodeString chesch)
 	IndyVT->IOHandler = ssl.get();
 	ssl->TransparentProxy = soketInfo.get();
 
+	if(logirovanie)
+	{
+		LogMessage = " в VTFilesID (UnicodeString chesch)";
+		Synchronize(&Logirovanie);
+	}
 	try
 	{
 		VtBase.BaseJesson = IndyVT->Get("https://www.virustotal.com/api/v3/files/"+ chesch);
+		JessonInSearchHech = VtBase.BaseJesson;
 		ScanIndyVT.http_response_code = IndyVT->ResponseCode;
 		if(logirovanie)
 		{
@@ -766,12 +771,8 @@ bool __fastcall ScanVTIndy::VTAnalyse (UnicodeString chesch)
 	IndyVT->IOHandler = ssl.get();
 	ssl->TransparentProxy = soketInfo.get();
 
-
-	std::auto_ptr<TIdMultiPartFormDataStream> PostData(new TIdMultiPartFormDataStream);
-
-
 	UnicodeString Url= "https://www.virustotal.com/api/v3/files/" + chesch + "/analyse";
-
+	std::auto_ptr<TIdMultiPartFormDataStream> PostData(new TIdMultiPartFormDataStream);
 	try
 	{
 		VtBase.BaseJesson = IndyVT->Post(Url,PostData.get());
@@ -1249,7 +1250,7 @@ void __fastcall ScanVTIndy::VIOtwet()
 		  if(obj !=NULL)
 		  {
 			 ListItem->Data = new String(obj->ToString());
-             VtBase.BaseJesson = obj->ToString();
+			 VtBase.BaseJesson = obj->ToString();
 
 		  }
 	   }
@@ -1591,8 +1592,8 @@ void __fastcall ScanVTIndy::ReScanVT()
 					 int timeBrec = AnsiCompareStr(FormatDateTime("YYYY.MM.DD",Date())+ " " + FormatDateTime("HH:NN:SS",Time()),TimeBreak);
 					 if(timeBrec >=0)
 					 {
-						//JSONParseDetect(); //Удалил так как ответ JSON другой
-						//DateTime(); //Удалил так как ответ JSON другой
+						VtBase.BaseJesson = JessonInSearchHech;
+						VTJSONParseDetect();
 						Synchronize(&VIOtwet);
 						if(logirovanie)
 						{

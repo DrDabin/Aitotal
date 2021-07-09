@@ -175,7 +175,7 @@ object MyOptionsForm: TMyOptionsForm
             Top = 105
             Width = 335
             Height = 24
-            EditLabel.Width = 90
+            EditLabel.Width = 82
             EditLabel.Height = 16
             EditLabel.Caption = #1050#1083#1102#1095' API key'
             EditLabel.Font.Charset = RUSSIAN_CHARSET
