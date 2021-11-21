@@ -772,10 +772,10 @@ bool __fastcall ScanVTIndy::VTAnalyse (UnicodeString chesch)
 	ssl->TransparentProxy = soketInfo.get();
 
 	UnicodeString Url= "https://www.virustotal.com/api/v3/files/" + chesch + "/analyse";
-	std::auto_ptr<TIdMultiPartFormDataStream> PostData(new TIdMultiPartFormDataStream);
+	//std::auto_ptr<TIdMultiPartFormDataStream> PostData(new TIdMultiPartFormDataStream);
 	try
 	{
-		VtBase.BaseJesson = IndyVT->Post(Url,PostData.get());
+		VtBase.BaseJesson = IndyVT->Post(Url,/*PostData.get()*/"");
 		ScanIndyVT.http_response_code = IndyVT->ResponseCode;
 		if(logirovanie)
 		{

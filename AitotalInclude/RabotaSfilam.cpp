@@ -13,7 +13,6 @@
 #include "RabotaSfilam.h"
 #include "AitotalInclude/Struct.h"//Структуры. Перенесу туда все мои структуры. И надо будет их обьединить.
 #include "AitotalInclude/cheshMD5/md5.hpp"
-#include "AitotalInclude/sha256.h"
 
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
