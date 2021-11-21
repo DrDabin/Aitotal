@@ -38,7 +38,7 @@ rm -R -f GitHub-tmp
 # This is required for the first commit (to create .git folder locally)
 if [ ! -d ".git" ]; then
   git init
-  git remote add origin git@github.com:dragokas/$repo.git
+  git remote add origin git@github.com:DrDabin/$repo.git
 fi
 
 git checkout master
