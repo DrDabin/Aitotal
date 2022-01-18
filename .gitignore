@@ -35,7 +35,7 @@
 # Файл истории
 *.~[1234567890]~
 __history/
-__history/
+About/__history/
 __recovery/
 # Разное
 *.#
