@@ -2794,7 +2794,7 @@ void __fastcall TForm3::LV3PokaztRelt(TObject *Sender)
 		 VTBase.BaseJesson = *(String*) ListView3->Selected->Data;
 		 FormResultScan->VTBase = VTBase;
 		 FormResultScan->Tompost = false;
-		 FormResultScan->ShowModal();
+		  FormResultScan->ShowModal();
 	  }
 	  else
 		 ShowMessage("Нет результата.");

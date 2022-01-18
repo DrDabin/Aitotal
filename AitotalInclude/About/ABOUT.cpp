@@ -16,7 +16,7 @@ __fastcall TAboutBox::TAboutBox(TComponent* AOwner)
 void __fastcall TAboutBox::FormCreate(TObject *Sender)
 {
    Label2->Caption = MY_VERSION;
-   Label7->Caption = MY_DATE;
+    Label7->Caption = MY_DATE;
 }
 //---------------------------------------------------------------------------
 
