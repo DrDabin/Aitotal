@@ -1,8 +1,8 @@
 ﻿// CodeGear C++Builder
-// Copyright (c) 1995, 2016 by Embarcadero Technologies, Inc.
+// Copyright (c) 1995, 2020 by Embarcadero Technologies, Inc.
 // All rights reserved
 
-// (DO NOT EDIT: machine generated header) 'md5.pas' rev: 32.00 (Windows)
+// (DO NOT EDIT: machine generated header) 'md5.pas' rev: 34.00 (Windows)
 
 #ifndef Md5HPP
 #define Md5HPP

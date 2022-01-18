@@ -112,7 +112,7 @@ object Form3: TForm3
     Top = 77
     Width = 969
     Height = 226
-    ActivePage = TabSheet1
+    ActivePage = TabSheet3
     Align = alClient
     DoubleBuffered = False
     Font.Charset = RUSSIAN_CHARSET
@@ -123,14 +123,15 @@ object Form3: TForm3
     ParentDoubleBuffered = False
     ParentFont = False
     TabOrder = 1
-    ExplicitHeight = 114
+    ExplicitLeft = -1
+    ExplicitTop = 72
     object TabSheet1: TTabSheet
       Caption = #1060#1072#1081#1083' '#1087#1088#1086#1074#1077#1088#1082#1080
       object ListView1: TListView
         Left = 0
         Top = 0
         Width = 961
-        Height = 197
+        Height = 196
         ParentCustomHint = False
         Align = alClient
         Checkboxes = True
@@ -190,7 +191,7 @@ object Form3: TForm3
         Left = 0
         Top = 0
         Width = 961
-        Height = 197
+        Height = 196
         Align = alClient
         Checkboxes = True
         Columns = <
@@ -254,12 +255,11 @@ object Form3: TForm3
     object TabSheet3: TTabSheet
       Caption = #1056#1077#1079#1091#1083#1100#1090#1072#1090
       ImageIndex = 2
-      ExplicitHeight = 85
       object ListView3: TListView
         Left = 0
         Top = 0
         Width = 961
-        Height = 197
+        Height = 196
         Align = alClient
         Checkboxes = True
         Columns = <
@@ -318,7 +318,6 @@ object Form3: TForm3
         OnDblClick = LV3PokaztRelt
         OnDeletion = LW3OnDeletions
         OnInsert = LW3OnInsert
-        ExplicitHeight = 85
       end
     end
   end
@@ -329,7 +328,6 @@ object Form3: TForm3
     Height = 52
     Align = alBottom
     TabOrder = 2
-    ExplicitTop = 191
     object TLabelItogo: TLabel
       Left = 1
       Top = 1

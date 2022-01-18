@@ -202,7 +202,7 @@ object FormResultScan: TFormResultScan
     end
     object Button1: TButton
       Left = 452
-      Top = 5
+      Top = 6
       Width = 155
       Height = 25
       Anchors = [akTop, akRight]

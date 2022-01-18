@@ -233,10 +233,12 @@ void __fastcall TFormResultScan::LBSvoistvoFila(TObject *Sender)
 
 void __fastcall TFormResultScan::OpenBrauzer(TObject *Sender)
 {
-   if (permalink != "")
+   //изменил так как сейчас нет ссылки на результат.
+   /*if (permalink != "")
    {
 	   ShellExecuteW(Handle, NULL,permalink.w_str(),0,0,SW_SHOWNORMAL);
-   }
+   }*/
+   ShellExecuteW(Handle, NULL,VTBase.BaseAdress.w_str(),0,0,SW_SHOWNORMAL);
 }
 //---------------------------------------------------------------------------
 
