@@ -1,14 +1,17 @@
 ﻿#ifndef StructH
 #define StructH
 #include <vector>
+
 struct Base
 {
 	UnicodeString BaseFileName;
 	UnicodeString BasePatchFileName;
-    UnicodeString BaseIDVT;
+	UnicodeString BaseIDVT;
+	UnicodeString BaseUploadFile;
 	UnicodeString BaseMD5;
 	UnicodeString BaseSHA256;
 	UnicodeString BaseSizeFile;
+	__int64 MaxFileSize;
 	UnicodeString BaseDataProverki;
 	UnicodeString BaseDetect;
 	UnicodeString BaseAdress;
@@ -44,6 +47,7 @@ struct Options
 	bool Exit_Trei;//если труе мы закрываем программы, елзе - сворачиваем в трей
 	bool ErrorArchiv;// Определяем выводить уведомление при ошибки распаковки архивов.
 	bool BallonHint;
+	__int64 MaxSizeVale;//максимальный размер файла для загрузки.
 	std::vector<UnicodeString> Apikey;
 };
 

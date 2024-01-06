@@ -37,7 +37,6 @@ __published:	// IDE-managed Components
 	TEdit *OpTionFileCount;
 	TLabeledEdit *OptProxiPassword;
 	TLabeledEdit *OptProxiLogin;
-	TCheckBox *ProxyChecked;
 	TLabel *Label2;
 	TLabel *Label3;
 	TRadioButton *RBExit;
@@ -53,16 +52,27 @@ __published:	// IDE-managed Components
 	TLabel *TypSocket;
 	TComboBox *ComboBox1;
 	TCheckBox *CBBallonhint;
+	TLabeledEdit *LEMaxFileSize;
+	TLabel *Label6;
+	TRadioGroup *RadioGroup1;
+	TRadioButton *RBOptionsIE;
+	TRadioButton *RBProxy;
+	TLabel *OptLabLang;
+	TComboBox *OptComboLang;
 	void __fastcall OptionSave(TObject *Sender);
 	void __fastcall FormCreate(TObject *Sender);
 	void __fastcall OptionReadIni(TObject *Sender);
 	void __fastcall OpTionFileCountKeyPress(TObject *Sender, System::WideChar &Key);
-	void __fastcall ProxyCheckedClick(TObject *Sender);
 	void __fastcall OpTionFileCountChange(TObject *Sender);
 	void __fastcall FormKeyDown(TObject *Sender, WORD &Key, TShiftState Shift);
 	void __fastcall TestProxi(TObject *Sender);
 	void __fastcall OptRest(TObject *Sender);
 	void __fastcall OpTionCountThreadChange(TObject *Sender);
+	void __fastcall RBProxyClick(TObject *Sender);
+	void __fastcall RBOptionsIEClick(TObject *Sender);
+	void __fastcall FormActivate(TObject *Sender);
+	void __fastcall OptComboLangClick(TObject *Sender);
+	//void __fastcall OptComboLangClick(TObject *Sender);
 
 
 

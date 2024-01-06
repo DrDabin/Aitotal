@@ -12,7 +12,7 @@
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 
-
+ UnicodeString LnMesErrorNouTablSaveScaning = "Таблицы пустые. Файл сканирования не сохранён.";
 void __fastcall LVItemsToTextINJssonProg(UnicodeString NameFileJson)
 {
    std::auto_ptr<TStringList>ListJesson(new TStringList(NULL));
@@ -113,7 +113,7 @@ void __fastcall LVItemsToTextINJssonProg(UnicodeString NameFileJson)
 	   if(ListJesson->Text !="")
 	      ListJesson->SaveToFile(NameFileJson + ".json");
 	   else
-		  ShowMessage("Таблицы пустые. Файл сканирования не сохранён.");
+		  ShowMessage(LnMesErrorNouTablSaveScaning);
    }
    __finally
    {

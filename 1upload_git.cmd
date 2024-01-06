@@ -56,7 +56,7 @@ echo ""
 
 echo "Ready to upload ..."
 echo ""
-echo -e "ENTER NEW VERSION AND COMMENT IN FILE version_comment.txt AND PRESS ENTER: \c"
+echo -e "ENTER NEW VERSION AND COMMENT IN FILE 2version_comment.txt AND PRESS ENTER: \c"
 
 read -r line
 echo ""
@@ -67,4 +67,5 @@ git commit -a -F 2version_comment.txt
 echo ""
 echo ""
 git push -u origin master
+
 echo ""

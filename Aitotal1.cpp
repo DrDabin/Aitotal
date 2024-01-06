@@ -14,7 +14,6 @@
 #pragma hdrstop
 
 #include "Aitotal1.h"
-#include "Aitotal.cpp"
 
 #include "AitotalInclude/ScanVTIndy/ScanVTIndy1.h"
 #include "AitotalInclude/ScanResultat/ScanResult.h"// Форма результата.
@@ -37,6 +36,57 @@
 
 TForm3 *Form3;
 
+UnicodeString LnMesUnpakArchiv = "Распаковка архива";
+UnicodeString LnMesUnpak = "Процент распаковки = ";
+UnicodeString LnMesNoCMDParam = "\n Нет такого параметра коммандной строки.\n";
+UnicodeString LnMesErrorToFunc = "Ошибка в функции";
+UnicodeString LnMesNoInterConect = "Нет соединение с интернетом";
+UnicodeString LnMesChoosingFolder = "Выбор папки"  ;
+UnicodeString LnMesAttentionError = "Внимание ошибка" ;
+UnicodeString LnMesResNotFound = "Ресурс не найден"  ;
+UnicodeString LnMesFileSize = "Размер файла"      ;
+UnicodeString LnMesFileSizeMore = "Размер файла больше Мб" ;
+UnicodeString LnMesErrorSizeFile = "Ошибка определения размера файла" ;
+UnicodeString LnMesErrorCalcSHA256 = "Ошибка расчета SHA256" ;
+UnicodeString LnMesErrorRenamFile = "Ошибка переименовывания файла" ;
+UnicodeString LnMesAVZArchivParsing = "Парсинг архива AVZ. Файл" ;
+UnicodeString LnMesUVSArchivParsing ="Парсинг архива UVS. Файл";
+UnicodeString LnMesTDScillerArchivParsing = "Парсинг архива TDSciller. Файл"  ;
+UnicodeString LnMesArchivParsing = "Парсинг архива";
+UnicodeString LnMesParsingComplette = "Парсинг окончен ";
+UnicodeString LnMesListEmti = "Список пуст, похоже архив пустой" ;
+UnicodeString LnMesArchivStartUnpache = "Начало распаковки архива" ;
+UnicodeString LnMesArchivErrorUnpacking = "Ошибка распаковки архива. ";
+UnicodeString LnMesProcessParsingList = "Разбор списка файлов. Обработано" ;
+UnicodeString LnMesErrorHechSumm = "Ошибка определения хеш суммы. Возможно файл не доступен.";
+UnicodeString LnMesErroDetectMD5 = "Ошибка определения MD5" ;
+UnicodeString LnMesEror = "Ошибка";
+UnicodeString LnMesUnableOpenFile = "Не удалось открыть файл.";
+UnicodeString LnMesInternetNotConnect = "Интернет не подключен";
+UnicodeString LnMesNoresult = "Результата нет";
+UnicodeString LnMesInvalidCharacter = " Не допустимый символ MD5.";
+UnicodeString LnMesCharacter = "Символ ";
+UnicodeString LnMesFileName = "Имя файла" ;
+UnicodeString LnMesFilePatch = "Путь к файлу";
+UnicodeString LnMesResult = "Результат ";
+UnicodeString LnMesSize = "Размер" ;
+UnicodeString LnMesDate = "Дата"  ;
+UnicodeString LnMesLink = "Ссылка" ;
+UnicodeString LnMesChekFolderKarantin = "Выбор папки с карантином ";
+UnicodeString LnMesErrorOpenRegistr = "Ошибка открытия реестра ";
+UnicodeString LnMesWarnVistaVer ="Извините. Данная опция работает только с версии Vista и выше";
+UnicodeString LnMesErrorDelRegistry ="Ошибка удаления ключа реестра";
+UnicodeString LnMesInQueue = "На очереди = ";
+UnicodeString LnMesFileToBeChek = "Проверяется файлов";
+UnicodeString LnMesFilesChek = "Проверено файлов ";
+UnicodeString LnMesErrorDeletion = "Ошибка удаления ";
+UnicodeString LnMesErrorDelUnpackArchiv = "Ошибка удаления распакованного архива";
+UnicodeString LnMesUploadCheking = "%Загрузки/проверки";
+UnicodeString LnMesFileChekBusy = "Проверка на занятость файла.";
+UnicodeString LnMesSessionRestor = "Восстановление сессии";
+UnicodeString LnMesIfSesionIsRestor = "При восстановление сессии результаты текущей проверки будут утеряны.\nВы хотите продолжить восстановление сессии?";
+UnicodeString LnMesNouInternet = "Нет интернета";
+
 TIniFile *IniOptions;
 
 int nSortColumn=0;
@@ -45,13 +95,12 @@ bool bAscend = false;
 int filenumber = 0;
 int ApikeyNumber =0;
 
-
 std::auto_ptr<TStringList>FileSpisokProwerki(new TStringList(NULL));
 
 std::auto_ptr<TStringList>ErrorListArchivExtrakt(new TStringList(NULL));
 
 //Удаление не пустой директории, вариант для Unicode
-int Remove_dirW(wchar_t * pPath)
+/*int Remove_dirW(wchar_t * pPath)
 {
 	SHFILEOPSTRUCTW sh;
 	ZeroMemory(&sh,sizeof(SHFILEOPSTRUCTW));
@@ -60,11 +109,11 @@ int Remove_dirW(wchar_t * pPath)
 	sh.pFrom =  pPath;//удаляемая директория
 	sh.fFlags = FOF_NOCONFIRMATION | FOF_SILENT | FOF_NORECURSION;
 	return SHFileOperationW(&sh);
-}
+}*/
 
 //++++++++++++
 
-class TStatusBarNotify: public TIdNotify // Для потокобезопастностного добавления текста в лог
+class TStatusBarNotify: public TIdNotify // Для потокобезопасного добавления текста в лог
 {
 	public:
 		__fastcall TStatusBarNotify( const String& ALine,TStatusBar* AStatusBar)
@@ -104,7 +153,7 @@ void toExtracting(const wchar_t* line)
 {
 	//Form3->stat1->Panels->Items[0]->Text = String("Распаковка архива. ") + String(line);
 
-	(new TStatusBarNotify(String("Распаковка архива. " + String(line)),Form3->stat1))->Notify();
+	(new TStatusBarNotify(String(LnMesUnpakArchiv + ". " + String(line)),Form3->stat1))->Notify();
 	Application->ProcessMessages();
 }
  //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -112,7 +161,7 @@ void toExtractingS(const wchar_t* nameFile, const __int64 line)
 {
 	//Form3->stat1->Panels->Items[0]->Text = String("Имя файла = ") + String(nameFile) + String("  Процент распаковки = ") + line;
 	//(new TStatusBarNotify(String("Имя файла = "+String(nameFile) + String("  Процент распаковки = ") + String(line)),Form3->stat1))->Notify();
-	(new TStatusBarNotify(String(" Процент распаковки = ") + String(line),Form3->stat1))->Notify();
+	(new TStatusBarNotify(String(LnMesUnpak) + String(line),Form3->stat1))->Notify();
 	Application->ProcessMessages();
 } 
 //---------------------------------------------------------------------------
@@ -136,7 +185,7 @@ void __fastcall TForm3::GetMessage(TWMCopyData &msg)
 			else if(SpisokFileArchiv->Strings[i].Trim()== "/min")
 				ShowWindow(Handle, SW_SHOWMINNOACTIVE);
 			else{
-				ShowMessage(SpisokFileArchiv->Strings[i]+"\n Нет такого параметра коммандной строки.\n");
+				ShowMessage(SpisokFileArchiv->Strings[i]+LnMesNoCMDParam);
 				return;
 			}
 
@@ -170,7 +219,7 @@ int Mycompare (int a, int b)
 
 	return 0;
 }
-//ф-я сортировка столбца результат
+//ф-я сортировки столбца результат
 int SortTabResultat(UnicodeString par1, UnicodeString par2)
 {
 	int per1;// = par1.ToInt();
@@ -385,7 +434,7 @@ void __fastcall TForm3::FormActivate(TObject *Sender)
    }
    catch(  Exception &E)
    {
-	   ErrorLog("Ошибка в функции IdOpenSSLSetLibPath = " + E.Message);
+	   ErrorLog(LnMesErrorToFunc + " IdOpenSSLSetLibPath = " + E.Message);
 	   ShowMessage(E.Message);
 	   ShowMessage(E.ToString());
    }
@@ -446,7 +495,7 @@ void __fastcall TForm3::FormCreate(TObject *Sender)
 			else if(ParamStr(i)== "/min")
 				ShowWindow(Handle, SW_SHOWMINNOACTIVE);
 			else{
-				ShowMessage(ParamStr(i)+"\n Нет такого параметра коммандной строки.\n");
+				ShowMessage(ParamStr(i)+LnMesNoCMDParam);
 				return;
 			}
 
@@ -473,7 +522,7 @@ void __fastcall TForm3::MmOpenFile(TObject *Sender)
 		}
 	}
 	else
-		MessageBoxA(0, "Нет соединение с интернетом", 0, MB_OK + MB_ICONSTOP);
+		MessageBox(0, LnMesNoInterConect.c_str(), 0, MB_OK + MB_ICONSTOP);
 }
 
 // ---------------------------------------------------------------------------
@@ -493,7 +542,7 @@ void __fastcall TForm3::MmOpenDir(TObject *Sender)
 			info.hwndOwner = 0;
 			info.pidlRoot = NULL;
 			info.pszDisplayName = szDisplayName;
-			info.lpszTitle = L"Выбор папки";
+			info.lpszTitle = LnMesChoosingFolder.c_str();
 			info.ulFlags = BIF_RETURNONLYFSDIRS | BIF_STATUSTEXT | BIF_USENEWUI;
 			pidl = SHBrowseForFolderW(&info);
 
@@ -510,7 +559,7 @@ void __fastcall TForm3::MmOpenDir(TObject *Sender)
 		}
 	}
 	else
-		MessageBoxW(0, L"Нет соединение с интернетом", L"Внимание ошибка",
+		MessageBoxW(0, LnMesNoInterConect.c_str(), LnMesAttentionError.c_str(),
 		MB_OK + MB_ICONSTOP);
 }
 
@@ -522,7 +571,7 @@ bool TForm3::ExtractResource(UnicodeString NameResource, UnicodeString NameFile)
    HRSRC hSrsrc=FindResourceW(HInstance,NameResource.c_str(),pchResType);
    if(hSrsrc ==NULL)
    {
-	  ShowMessage("Ресурс не найден");
+	  ShowMessage(LnMesResNotFound);
 	  ErrorLog("Ресурс не найден" + NameResource);
 	  return false;
    }
@@ -552,8 +601,8 @@ bool TForm3::ExtractResource(UnicodeString NameResource, UnicodeString NameFile)
 	   }
 	   else
 	   {
-		  MessageBoxW(NULL,L"Not resource",L"error",MB_OK);
-		  ErrorLog("Ресурс не найден" + NameResource);
+		  MessageBoxW(NULL,LnMesResNotFound.c_str(),LnMesEror.c_str(),MB_OK);
+		  ErrorLog(LnMesResNotFound + NameResource);
 		  return false;
 	   }
    }
@@ -619,7 +668,7 @@ void __fastcall TForm3::Response(TWMDropFiles &Message)
 		ScanFile();
 	}
 	else
-		MessageBoxA(0, "Нет соединение с интернетом", 0, MB_OK + MB_ICONSTOP);
+		MessageBoxW(0, LnMesNoInterConect.c_str(), 0, MB_OK + MB_ICONSTOP);
 }
 // ---------------------------------------------------------------------------
 void __fastcall TForm3::Pm1Select(TObject *Sender)
@@ -722,19 +771,19 @@ void __fastcall TForm3::OtWetErrorSizeFile(UnicodeString FileNime, UnicodeString
 
    if(sizefile == 0)
    {
-	  String resultat = "Размер файла = 0 байт";
+	  String resultat = LnMesFileSize + " = 0 байт";
 	  ZanoshuVListWiew3PriOshibki(MoveFileName, sizefile ,  resultat , Md5, "", false);
    }
-   if(sizefile > 134271701)
+   if(sizefile > AtOptions.MaxSizeVale)
    {
 
-	  String resultat = "Размер файла больше 128 Мб";
+	  String resultat = LnMesFileSizeMore;
 	  ZanoshuVListWiew3PriOshibki(MoveFileName, sizefile , resultat , Md5, "",false);
    }
    if(sizefile < 0)
    {
-	  String resultat = "Ошибка определения размера файла";
-	  ErrorLog(MoveFileName + "\n Ошибка определения размера файла");
+	  String resultat = LnMesErrorSizeFile;
+	  ErrorLog(MoveFileName + "\n" +  LnMesErrorSizeFile);
 	  ZanoshuVListWiew3PriOshibki(MoveFileName, sizefile , resultat , Md5, "", false );
    }
 }
@@ -744,7 +793,7 @@ void __fastcall TForm3::ParsingArchivAVZ_dta(UnicodeString FileName, TList *Spis
    //++++++++Begin AVZ .dta++++++++
    try
    {
-			stat1->Panels->Items[0]->Text = L"Парсинг архива AVZ. Файл " + ExtractFileName(FileName);
+			stat1->Panels->Items[0]->Text = LnMesAVZArchivParsing + ExtractFileName(FileName);
 
 			std::auto_ptr<TIniFile>  Ini  (new TIniFile(ExtractFilePath(FileName) + ExstractFileNameBezExt(ExtractFileName(FileName)) + ".ini"));
 			UnicodeString name = Ini->ReadString("InfectedFile","Src","").LowerCase();
@@ -754,7 +803,7 @@ void __fastcall TForm3::ParsingArchivAVZ_dta(UnicodeString FileName, TList *Spis
 
 			if(FileExists(FileName))
 			{
-			   if((sizefile >0) && (sizefile < 134271701))
+			   if((sizefile >0) && (sizefile < AtOptions.MaxSizeVale))
 			   {
 				  MyMd5 = CalkFileMD5(FileName).LowerCase();
 				  //SHA256 = Mysha256ver2(FileName);
@@ -764,7 +813,7 @@ void __fastcall TForm3::ParsingArchivAVZ_dta(UnicodeString FileName, TList *Spis
 				  }
 				  catch(Exception &e)
 				  {
-					  ErrorLog("Ошибка расчета SHA256.  ParsingArchivAVZ_dta()" +e.ToString());
+					  ErrorLog(LnMesErrorCalcSHA256 +".  ParsingArchivAVZ_dta()" + e.ToString());
 				  }
 				  //Application->ProcessMessages();
 				  if( (MyMd5 !="") && (MyMd5) != "nou")
@@ -790,7 +839,7 @@ void __fastcall TForm3::ParsingArchivAVZ_dta(UnicodeString FileName, TList *Spis
 							  }
 							  else
 							  {
-								 ErrorLog("Ошибка переименовывания файла " + FileName + "\n в " +fileOut +"\n");
+								 ErrorLog(LnMesErrorRenamFile +" " + FileName + "\n в " +fileOut +"\n");
 								 break;
 							  }
 						   }
@@ -811,7 +860,7 @@ void __fastcall TForm3::ParsingArchivAVZ_dta(UnicodeString FileName, TList *Spis
 						   SpisokFileKarantin->Add(new DuplicatListFile(name,MyMd5));
 						}
 						else
-						   ErrorLog("Ошибка переименовывания файла " + FileName+ "\n в " +nameFy +"\n");
+						   ErrorLog(LnMesErrorRenamFile + " "  + FileName+ "\n в " +nameFy +"\n");
 					 }
 				  }
 			   }
@@ -836,12 +885,11 @@ void __fastcall TForm3::ParsingArchivAVZ_dat(UnicodeString FileName, TList *Spis
 			UnicodeString MyMd5 = "";
 			UnicodeString SHA256="";
 
-			stat1->Panels->Items[0]->Text = L"Парсинг архива AVZ. Файл " + ExtractFileName(FileName);
-			//Application->ProcessMessages();
+			stat1->Panels->Items[0]->Text = LnMesAVZArchivParsing +" " + ExtractFileName(FileName);
 
 			if(FileExists(FileName))
 			{
-			   if((sizefile >0) && (sizefile < 134271701))
+			   if((sizefile >0) && (sizefile < AtOptions.MaxSizeVale))
 			   {
 				  MyMd5 = CalkFileMD5(FileName).LowerCase();
 				  //SHA256 = Mysha256ver2(FileName);
@@ -851,7 +899,7 @@ void __fastcall TForm3::ParsingArchivAVZ_dat(UnicodeString FileName, TList *Spis
 				  }
 				  catch(Exception &e)
 				  {
-					  ErrorLog("Ошибка расчета SHA256.  ParsingArchivAVZ_dat()\n" +e.ToString());
+					  ErrorLog(LnMesErrorCalcSHA256 + ".  ParsingArchivAVZ_dat()\n" +e.ToString());
 				  }
 				  if( (MyMd5 !=""))
 				  {
@@ -874,7 +922,7 @@ void __fastcall TForm3::ParsingArchivAVZ_dat(UnicodeString FileName, TList *Spis
 							  }
 							  else
 							  {
-								 ErrorLog("Ошибка переименовывания файла " + FileName + "\n в " +fileOut +"\n");
+								 ErrorLog(LnMesErrorRenamFile + " " + FileName + "\n в " +fileOut +"\n");
 								 break;
 							  }
 						   }
@@ -898,7 +946,7 @@ void __fastcall TForm3::ParsingArchivAVZ_dat(UnicodeString FileName, TList *Spis
 						   SpisokFileKarantin->Add(new DuplicatListFile(name,MyMd5));
 						}
 						else
-						   ErrorLog("Ошибка переименовывания файла " + FileName + "\n в " +nameFy +"\n");
+						   ErrorLog(LnMesErrorRenamFile + " " + FileName + "\n в " +nameFy +"\n");
 					 }
 				  }
 			   }
@@ -919,11 +967,11 @@ void __fastcall TForm3::ParsingArchivUVS(UnicodeString FileName, TList *SpisokFi
    UnicodeString MyMd5 = "";
    UnicodeString SHA256="";
 
-   stat1->Panels->Items[0]->Text = L"Парсинг архива UVS. Файл " + ExtractFileName(FileName);
+   stat1->Panels->Items[0]->Text = LnMesAVZArchivParsing + " " + ExtractFileName(FileName);
 
    if(FileExists(FileName))
    {
-	  if((sizefile >0) && (sizefile < 134271701))
+	  if((sizefile >0) && (sizefile < AtOptions.MaxSizeVale))
 	  {
 		 MyMd5 = CalkFileMD5(FileName).LowerCase();
 		 //SHA256 = Mysha256ver2(FileName);
@@ -934,7 +982,7 @@ void __fastcall TForm3::ParsingArchivUVS(UnicodeString FileName, TList *SpisokFi
 		 }
 		 catch(Exception &e)
 		 {
-			ErrorLog("Ошибка расчета SHA256.  ParsingArchivUVS()" +e.ToString());
+			ErrorLog(LnMesErrorCalcSHA256 + ".  ParsingArchivUVS()" +e.ToString());
 		 }
 
 		 if(MyMd5 !="")
@@ -979,7 +1027,7 @@ void __fastcall TForm3::ParsingArchivUVS(UnicodeString FileName, TList *SpisokFi
 						   }
 						   else
 						   {
-							  ErrorLog("Ошибка переименовывания файла " + FileName + "\n в " +fileOut +"\n");
+							  ErrorLog(LnMesErrorRenamFile + " " + FileName + "\n в " +fileOut +"\n");
 							  break;
 						   }
 						}
@@ -1004,7 +1052,7 @@ void __fastcall TForm3::ParsingArchivUVS(UnicodeString FileName, TList *SpisokFi
 						SpisokFileKarantin->Add(new DuplicatListFile(name, MyMd5));
 					 }
 					 else
-						ErrorLog("Ошибка переименовывания файла " + FileName + "\n в " +fileOut +"\n");
+						ErrorLog(LnMesErrorRenamFile + " " + FileName + "\n в " +fileOut +"\n");
 
 				  }
 			   }//if(name !="")
@@ -1032,7 +1080,7 @@ void __fastcall TForm3::ParsingArchivUVS(UnicodeString FileName, TList *SpisokFi
 						   }
 						   else
 						   {
-							  ErrorLog("Ошибка переименовывания файла " + FileName + "\n в " +fileOut +"\n");
+							  ErrorLog(LnMesErrorRenamFile + " " + FileName + "\n в " +fileOut +"\n");
 							  break;
 						   }
 
@@ -1058,7 +1106,7 @@ void __fastcall TForm3::ParsingArchivUVS(UnicodeString FileName, TList *SpisokFi
 						SpisokFileKarantin->Add(new DuplicatListFile(name,MyMd5));
 					 }
 					 else
-						ErrorLog("Ошибка переименовывания файла " + FileName + "\n в " +fileOut +"\n");
+						ErrorLog(LnMesErrorRenamFile + " " + FileName + "\n в " +fileOut +"\n");
 				  }
 			   }
 			}//if(FileExists(FileName + ".txt"))
@@ -1086,7 +1134,7 @@ void __fastcall TForm3::ParsingArchivUVS(UnicodeString FileName, TList *SpisokFi
 						}
 						else
 						{
-						   ErrorLog("Ошибка переименовывания файла " + FileName + "\n в " +fileOut +"\n");
+						   ErrorLog(LnMesErrorRenamFile + " " + FileName + "\n в " +fileOut +"\n");
 						   break;
 						}
 					 }
@@ -1111,7 +1159,7 @@ void __fastcall TForm3::ParsingArchivUVS(UnicodeString FileName, TList *SpisokFi
 					 SpisokFileKarantin->Add(new DuplicatListFile(name, MyMd5));
 				  }
 				  else
-					 ErrorLog("Ошибка переименовывания файла " + FileName + "\n в " +fileOut +"\n");
+					 ErrorLog(LnMesErrorRenamFile + " " + FileName + "\n в " +fileOut +"\n");
 			   }
 			}
 
@@ -1129,7 +1177,7 @@ void __fastcall TForm3::ParsingArchivTDSciller(UnicodeString FileName, TList *Sp
    // проверяю присутствует файл ини или нет.
    if(FileExists(FileName))
    {
-	  stat1->Panels->Items[0]->Text = L"Парсинг архива TDSciller. Файл " + ExtractFileName(FileName);
+	  stat1->Panels->Items[0]->Text = LnMesTDScillerArchivParsing  + ExtractFileName(FileName);
 	  //Application->ProcessMessages();
 
 	  __int64 sizefile = FileSizeStatic(FileName);
@@ -1147,7 +1195,7 @@ void __fastcall TForm3::ParsingArchivTDSciller(UnicodeString FileName, TList *Sp
 		 }
 		 catch(Exception &e)
 		 {
-			ErrorLog("Ошибка расчета SHA256.  ParsingArchivTDSciller()" +e.ToString());
+			ErrorLog(LnMesErrorCalcSHA256 + ".  ParsingArchivTDSciller()" +e.ToString());
 		 }
 		 //Application->ProcessMessages();
 		 if( (MyMd5 !=""))
@@ -1237,7 +1285,7 @@ void __fastcall TForm3::ParsingArchivTDSciller(UnicodeString FileName, TList *Sp
 							   }
 							   else
 							   {
-								  ErrorLog("Ошибка переименовывания файла " + FileName + "\n в " +fileOut +"\n");
+								  ErrorLog(LnMesErrorRenamFile +" "  + FileName + "\n в " +fileOut +"\n");
 							   }
 							}
 							else
@@ -1259,7 +1307,7 @@ void __fastcall TForm3::ParsingArchivTDSciller(UnicodeString FileName, TList *Sp
 							SpisokFileKarantin->Add(new DuplicatListFile(name, MyMd5));
 						 }
 						 else
-							ErrorLog("Ошибка переименовывания файла " + FileName + "\n в " +nameFy +"\n");
+							ErrorLog(LnMesErrorRenamFile +" "+ FileName + "\n в " +nameFy +"\n");
 
 					  }
 					  // Надо будет переправить на использования TList.
@@ -1355,7 +1403,7 @@ void __fastcall TForm3::ParsingArchivTDSciller(UnicodeString FileName, TList *Sp
 						   }
 						   else
 						   {
-							  ErrorLog("Ошибка переименовывания файла " + FileName + "\n в " +fileOut +"\n");
+							  ErrorLog(LnMesErrorRenamFile +" "+ FileName + "\n в " +fileOut +"\n");
 						   }
 
 						}
@@ -1377,7 +1425,7 @@ void __fastcall TForm3::ParsingArchivTDSciller(UnicodeString FileName, TList *Sp
 						SpisokFileKarantin->Add(new DuplicatListFile(name, MyMd5));
 					 }
 					 else
-						ErrorLog("Ошибка переименовывания файла " + FileName + "\n в " +nameFy +"\n");
+						ErrorLog(LnMesErrorRenamFile +" " + FileName + "\n в " +nameFy +"\n");
 
 				  }
 				  // из списка удаляю две последние записи. так как там будет файл "object.ini"
@@ -1424,7 +1472,7 @@ void __fastcall TForm3::ParsingArchiv(UnicodeString DirPatchArchiv, int rescan)
 
    SpisokFileArchiv->Text = MyFiledDirArchiv(DirPatchArchiv);
 
-   stat1->Panels->Items[0]->Text = L"Парсинг архива";
+   stat1->Panels->Items[0]->Text = LnMesArchivParsing;
 
    if( SpisokFileArchiv->Text !="")
    {
@@ -1493,15 +1541,15 @@ void __fastcall TForm3::ParsingArchiv(UnicodeString DirPatchArchiv, int rescan)
 
 			 Application->ProcessMessages();
 		 }
-		 stat1->Panels->Items[0]->Text = L"Парсинг окончен";
+		 stat1->Panels->Items[0]->Text = LnMesParsingComplette;
 		 stat1->Panels->Items[0]->Text = L"";
    }
    else
    {
-	  stat1->Panels->Items[0]->Text = L"Список пуст, похоже архив пустой.";
+	  stat1->Panels->Items[0]->Text = LnMesListEmti;
 	  stat1->Panels->Items[0]->Text = L"";
 
-	  ErrorLog("Список пуст, похоже архив пустой.\n" +DirPatchArchiv);
+	  ErrorLog(LnMesListEmti +".\n" +DirPatchArchiv);
    }
 	delete SpisokFileArchiv;
 	//delete SpisokFileKarantin;
@@ -1524,7 +1572,7 @@ void __fastcall TForm3::ExtArchiv(UnicodeString ArcName, int rescan)
 
 	UnicodeString Dir = "", head="", DirPatchArchiv = "";
 
-  stat1->Panels->Items[0]->Text = L"Начало распаковки архива";
+  stat1->Panels->Items[0]->Text = LnMesArchivStartUnpache;
 
 
   if(ArcName.LowerCase().Pos("aitotaltmp\\archiw")==0)
@@ -1591,19 +1639,19 @@ void __fastcall TForm3::ExtArchiv(UnicodeString ArcName, int rescan)
 						 return;
 					 case errorlibdll:
 						 if(AtOptions.ErrorArchiv)
-							 ShowMessage(L"Ошибка распаковки архива.\n" + NameArchiv);
-						 ErrorLog(L"Ошибка распаковки архива. " + head +L"\n"+ NameArchiv);
+							 ShowMessage(LnMesArchivErrorUnpacking + "\n" + NameArchiv);
+						 ErrorLog(LnMesArchivErrorUnpacking + head +L"\n"+ NameArchiv);
 						 return;
 
 					 case erroropenarchiv:
 						 if(AtOptions.ErrorArchiv)
-							 ShowMessage(L"Ошибка распаковки архива.\n" + NameArchiv);
-						 ErrorLog(L"Ошибка распаковки архива. " + head +L"\n"+ NameArchiv);
+							 ShowMessage(LnMesArchivErrorUnpacking + "\n" + NameArchiv);
+						 ErrorLog(LnMesArchivErrorUnpacking + head +L"\n"+ NameArchiv);
 						 return;
 					 case errorHead:
 						 if(AtOptions.ErrorArchiv)
-							 ShowMessage(L"Ошибка распаковки архива.\n" + NameArchiv);
-						 ErrorLog(L"Ошибка распаковки архива. " + head +L"\n"+ NameArchiv);
+							 ShowMessage(LnMesArchivErrorUnpacking + "\n" + NameArchiv);
+						 ErrorLog(LnMesArchivErrorUnpacking  + head +L"\n"+ NameArchiv);
 						 return;
 
 					 case errorDataPass:
@@ -1674,6 +1722,7 @@ void __fastcall TForm3::OptionReadIni()
 	AtOptions.FileCount = IniOptions->ReadInteger("Tools", "FileCount",5);
 	AtOptions.Thread =  IniOptions->ReadInteger("Tools", "ThreadCount",20);
 	AtOptions.ErrorArchiv = IniOptions->ReadBool("Tools","MessageErrorArchive", false);
+	AtOptions.MaxSizeVale = IniOptions->ReadInt64("Tools","MaxSizeFile",202);
 	ApikeyCount = IniOptions->ReadInteger("Tools", "ApikeyCount",0);
 
 	if(ApikeyCount == 0)
@@ -1701,6 +1750,8 @@ void __fastcall TForm3::OptionReadIni()
 		 }
 	   }
 	}
+
+
 	Application->ProcessMessages();
 	delete IniOptions;
 
@@ -1747,7 +1798,7 @@ void __fastcall TForm3::MyFiledDir(UnicodeString Dir, int rescan)
 
 void __fastcall TForm3::MyTools(TObject *Sender)
 {
-   Application->CreateForm(__classid(TMyOptionsForm), &MyOptionsForm);
+   //Application->CreateForm(__classid(TMyOptionsForm), &MyOptionsForm);
    MyOptionsForm->ShowModal();
 }
 //---------------------------------------------------------------------------
@@ -1820,7 +1871,7 @@ void __fastcall TForm3::CopyTListToListViewofStream()
 		FileItem.SHA256 = "";
 		for (int i = 0; i < SpisokFileName->Count; i++)
 		{
-			stat1->Panels->Items[0]->Text = L"Разбор списка файлов. Обработано " + String(i*100/ SpisokFileName->Count) +L"%";
+			stat1->Panels->Items[0]->Text = LnMesProcessParsingList +" " + String(i*100/ SpisokFileName->Count) +L"%";
 
 			FileItem.Cheked = ((StructFileList*)SpisokFileName->Items[i])->rescan;
 			FileItem.MyPatch = ((StructFileList*)SpisokFileName->Items[i])->filename;
@@ -1838,7 +1889,7 @@ void __fastcall TForm3::CopyTListToListViewofStream()
 
 					FileItem.SizeFile = fs->Size;
 
-					if((FileItem.SizeFile <=0)  || (FileItem.SizeFile > 134271701))
+					if((FileItem.SizeFile <=0)  || (FileItem.SizeFile > AtOptions.MaxSizeVale*1024*1024))
 						OtWetErrorSizeFile(FileItem.MyPatch,"", FileItem.SizeFile, "");
 					else
 					{
@@ -1849,7 +1900,7 @@ void __fastcall TForm3::CopyTListToListViewofStream()
 						catch(Exception &E)
 						{
 							stat1->Panels->Items[1]->Text  = "Error SHA256.1";
-							ErrorLog("Ошибка расчета Sha256.1  CopyTListToListViewofStream()\n" + E.ToString());
+							ErrorLog(LnMesErrorCalcSHA256 + ".1  CopyTListToListViewofStream()\n" + E.ToString());
 						}
 
 						FileItem.Md5File = CalksStreamMD5(fs).LowerCase();
@@ -1860,11 +1911,11 @@ void __fastcall TForm3::CopyTListToListViewofStream()
 						{
 							ZanoshuVListWiew3PriOshibki(FileItem.MyPatch,
 												  FileItem.SizeFile,
-												  "Ошибка определения хеш суммы. Возможно файл не доступен.",
+												  LnMesErrorHechSumm,
 												  "",
 												  "",
 												  false);
-							ErrorLog(FileItem.MyPatch +"\nОшибка определения MD5");
+							ErrorLog(FileItem.MyPatch +"\n" + LnMesErroDetectMD5);
 							continue;
 						}
 						else
@@ -1895,8 +1946,8 @@ void __fastcall TForm3::CopyTListToListViewofStream()
 				}
 				catch(Exception &E)
 				{
-					ShowMessage("Ошибка = " + FileItem.MyPatch +  "\n Не удалось открыть файл.\n" + E.ToString());
-					ErrorLog("Ошибка = " + FileItem.MyPatch +  "\n Не удалось открыть файл. CopyTListToListViewofStream(). \n" + E.ToString());
+					ShowMessage(LnMesEror + " = " + FileItem.MyPatch +  "\n" + LnMesUnableOpenFile + ".\n" + E.ToString());
+					ErrorLog(LnMesEror + " = " + FileItem.MyPatch +  "\n" + LnMesUnableOpenFile + ". CopyTListToListViewofStream(). \n" + E.ToString());
 				}
 			}
 			else
@@ -1956,7 +2007,7 @@ void TForm3::StartThreadVT()
 			 if(!StopInet)
 			 {
 				StopInet = true;
-				ShowMessage("Интернет не подключен");
+				ShowMessage(LnMesInternetNotConnect);
 			 }
 			 break;
 	   }
@@ -1991,10 +2042,11 @@ void TForm3::StartThreadVT()
 				//Устанавливаем вести логирование или нет. Читается в ини файле.
 				VTIndy[filenumber]->logirovanie =  logirovanie;
 				VTIndy[filenumber]->VtBase.BaseSHA256 = ListView1->Items->Item[0]->SubItems->Strings[3];
-				VTIndy[filenumber]->VtBase.BasePredScanData = FormatDateTime("YYYY.MM.DD HH:NN:SS",Now());
+				VTIndy[filenumber]->VtBase.BasePredScanData = FormatDateTime("YYYY.MM.DD HH_NN_SS",Now());
 				VTIndy[filenumber]->PotokNumber = filenumber;
 				VTIndy[filenumber]->FileNumber = ((numchek*)ListView1->Items->Item[0]->Data)->NumBer;
 				VTIndy[filenumber]->VtBase.FileNumber = ((numchek*)ListView1->Items->Item[0]->Data)->NumBer;
+				VTIndy[filenumber]->VtBase.MaxFileSize = AtOptions.MaxSizeVale;
 				VTIndy[filenumber]->OnTerminate = &AtThreadTerminated;
 
 				VTIndy[filenumber]->ScanIndyVT.Proverka = false;
@@ -2023,7 +2075,7 @@ void TForm3::StartThreadVT()
 				filenumber++;
 				ApikeyNumber++;
 				ProgressBar1->StepBy(1);
-				Application->ProcessMessages();
+				//Application->ProcessMessages();
 			 }
 		  }
 	}
@@ -2055,7 +2107,7 @@ void __fastcall TForm3::CreateStartVT(Base VT,bool Proverka, int ApikeyNumber)
 	  if(!StopInet)
 	  {
 		 StopInet = true;
-		 ShowMessage("Интернет не подключен");
+		 ShowMessage(LnMesInternetNotConnect);
 	  }
 	  return;
    }
@@ -2301,7 +2353,7 @@ void __fastcall TForm3::Pm3OpenReZultat(TObject *Sender)
 	   {
 		  if(ListView3->Items->Item[q]->SubItems->Strings[6] == "")
 		  {
-			 ShowMessage("Результата нет");
+			 ShowMessage(LnMesNoresult);
 			 return;
 		  }
 		  ShellExecuteW(Handle, NULL,ListView3->Items->Item[q]->SubItems->Strings[6].w_str(),0,0,SW_SHOWNORMAL);
@@ -2339,7 +2391,7 @@ void __fastcall TForm3::Edit1KeyPress(TObject *Sender, System::WideChar &Key)
 
 	else
 	{
-	   ShowMessage("Символ "+AnsiString(Key) + " Не допустимый символ MD5.");
+	   ShowMessage(LnMesCharacter +AnsiString(Key) + LnMesInvalidCharacter);
 	   Key =0;
 	}
 }
@@ -2575,7 +2627,7 @@ void __fastcall TForm3::Button3Click(TObject *Sender)
 		  Button3->Enabled =true;
 	   }
 	   else
-		  ShowMessage("Интернет не подключен");
+		  ShowMessage(LnMesNouInternet);
 
 	}
 }
@@ -2757,7 +2809,7 @@ void __fastcall TForm3::LV3SaveRezult(TObject *Sender)
    std::auto_ptr<TStringList> SpisokLV3 (new TStringList(NULL));
    UnicodeString Stroka = "";
 
-   SpisokLV3->Add("Имя файла;Путь к файлу;Результат;Размер;MD5;SHA256;Дата;ССылка");
+   SpisokLV3->Add(LnMesFileName+";"+LnMesFilePatch+";"+LnMesResult+";"+LnMesSize+";"+"MD5;SHA256"+";"+LnMesDate+";"+LnMesLink);
    for(int i=0; i < ListView3->Items->Count; i++)
    {
 	  Stroka = ListView3->Items->Item[i]->Caption;
@@ -2781,7 +2833,7 @@ void __fastcall TForm3::LV3PokaztRelt(TObject *Sender)
    {
 	  if(ListView3->Selected->Data != NULL)
 	  {
-		 Application->CreateForm(__classid(TFormResultScan), &FormResultScan);
+		 //Application->CreateForm(__classid(TFormResultScan), &FormResultScan);
 		 Base VTBase;
 		 VTBase.BaseFileName = ListView3->Selected->Caption;
 		 VTBase.BasePatchFileName = ListView3->Selected->SubItems->Strings[0];
@@ -2797,7 +2849,7 @@ void __fastcall TForm3::LV3PokaztRelt(TObject *Sender)
 		  FormResultScan->ShowModal();
 	  }
 	  else
-		 ShowMessage("Нет результата.");
+		 ShowMessage(LnMesNoresult);
    }
 }
 //---------------------------------------------------------------------------
@@ -2843,7 +2895,7 @@ void __fastcall TForm3::Pm2ScanCheked(TObject *Sender)
 			{
 			   if(!GetStatusConnect())
 			   {
-				  ShowMessage("Интернет не подключен");
+				  ShowMessage(LnMesInternetNotConnect);
 				  break;
 			   }
 				  if(StopThreadPopupMenu)
@@ -2881,7 +2933,7 @@ void __fastcall TForm3::Pm3OpenReZultCheked(TObject *Sender)
 		  {
 			 if(ListView3->Items->Item[i]->SubItems->Strings[6] == "")
 			 {
-				MessageBoxA(0,"Результата нет", 0,MB_OK);
+				MessageBox(0,LnMesNoresult.c_str(), 0,MB_OK);
 			 }
 			 if(q<10)
 			 {
@@ -3173,7 +3225,7 @@ void __fastcall TForm3::TrayIcon1BalloonClick(TObject *Sender)
 			  FormResultScan->ShowModal();
 		   }
 		   else
-			  ShowMessage("Нет результата.");
+			  ShowMessage(LnMesNoresult);
 	   }
    }
 
@@ -3313,7 +3365,7 @@ void __fastcall TForm3::MM1ScanFolderArchiv(TObject *Sender)
 			info.hwndOwner = 0;
 			info.pidlRoot = NULL;
 			info.pszDisplayName = szDisplayName;
-			info.lpszTitle = L"Выбор папки с карантином";
+			info.lpszTitle = LnMesChekFolderKarantin.c_str();
 			info.ulFlags = BIF_RETURNONLYFSDIRS | BIF_STATUSTEXT | BIF_USENEWUI;
 
 			pidl = SHBrowseForFolderW(&info);
@@ -3331,7 +3383,7 @@ void __fastcall TForm3::MM1ScanFolderArchiv(TObject *Sender)
 		}
 	}
 	else
-		MessageBoxW(0, L"Нет соединение с интернетом", L"Внимание ошибка",
+		MessageBoxW(0, LnMesNoInterConect.c_str(), LnMesAttentionError.c_str(),
 		MB_OK + MB_ICONSTOP);
 }
 //---------------------------------------------------------------------------
@@ -3353,7 +3405,7 @@ void __fastcall TForm3::InsertToReestrMenu(TObject *Sender)
 			 reg->CloseKey();
 		  }
 		  else
-			 ShowMessage("Ошибка открытия реестра AllFilesystemObjects\\shell\\Aitotal");
+			 ShowMessage(LnMesErrorOpenRegistr +" AllFilesystemObjects\\shell\\Aitotal");
 
 		  reg->RootKey=HKEY_CURRENT_USER;
 		  if(reg->OpenKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\CommandStore\\shell\\AiTotal1",true))
@@ -3366,7 +3418,7 @@ void __fastcall TForm3::InsertToReestrMenu(TObject *Sender)
 			 reg->CloseKey();   //Закрываем ключ
 		  }
 		  else
-			 ShowMessage("Ошибка открытия реестра shell\\AiTotal1");
+			 ShowMessage(LnMesErrorOpenRegistr + " shell\\AiTotal1");
 
 		  if(reg->OpenKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\CommandStore\\shell\\AiTotal2",true))
 		  {
@@ -3378,12 +3430,12 @@ void __fastcall TForm3::InsertToReestrMenu(TObject *Sender)
 			 reg->CloseKey();
 		  }
 		  else
-			 ShowMessage("Ошибка открытия реестра shell\\AiTotal2");
+			 ShowMessage(LnMesErrorOpenRegistr +" shell\\AiTotal2");
 	  }
 	  delete reg;
    }
    else
-	  ShowMessage("Извините. Данная опция работает только с версии Vista и выше");
+	  ShowMessage(LnMesWarnVistaVer);
 
 
 }
@@ -3397,20 +3449,20 @@ void __fastcall TForm3::DeleteReestr(TObject *Sender)
    if(reg->KeyExists("AllFilesystemObjects\\shell\\Aitotal"))
    {
 	  if(!reg->DeleteKey("AllFilesystemObjects\\shell\\Aitotal"))
-		 ShowMessage("Ошибка удаления ключа реестра");  //Удаляем ключ
+		 ShowMessage(LnMesErrorDelRegistry);  //Удаляем ключ
    }
 
    reg->RootKey=HKEY_LOCAL_MACHINE;
    if(reg->KeyExists("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\CommandStore\\shell\\AiTotal1"))
    {
 	  if(!reg->DeleteKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\CommandStore\\shell\\AiTotal1"))
-		 ShowMessage("Ошибка удаления ключа реестра AiTotal1");
+		 ShowMessage(LnMesErrorDelRegistry +" AiTotal1");
    }
 
    if(reg->KeyExists("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\CommandStore\\shell\\AiTotal12"))
    {
 	  if(!reg->DeleteKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\CommandStore\\shell\\AiTotal2"))
-		 ShowMessage("Ошибка удаления ключа реестра AiTotal2");
+		 ShowMessage(LnMesErrorDelRegistry + " AiTotal2");
    }
    delete reg;
 }
@@ -3424,12 +3476,12 @@ void __fastcall TForm3::LW1OnDeletion(TObject *Sender, TListItem *Item)
 	if(q==0)
 		TLabelItogo->Caption = "";
 	else
-	   TLabelItogo->Caption = "На очереди = " + IntToStr(q);
+	   TLabelItogo->Caption = LnMesInQueue + IntToStr(q);
 }
 //---------------------------------------------------------------------------
 void __fastcall TForm3::LW1OnInsert(TObject *Sender, TListItem *Item)
 {
-	TLabelItogo->Caption = "На очереди = " + IntToStr(ListView1->Items->Count);
+	TLabelItogo->Caption = LnMesInQueue + IntToStr(ListView1->Items->Count);
 }
 //---------------------------------------------------------------------------
 
@@ -3455,13 +3507,13 @@ void __fastcall TForm3::LW2OnDeletion(TObject *Sender, TListItem *Item)
 	if(q==0)
 		TLabelCountProwerki->Caption = "";
 	else
-		TLabelCountProwerki->Caption = "Проверяется файлов = " + IntToStr(q);
+		TLabelCountProwerki->Caption = LnMesFileToBeChek+ " = " + IntToStr(q);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TForm3::LE2OnInsert(TObject *Sender, TListItem *Item)
 {
-   TLabelCountProwerki->Caption = "Проверяется файлов = " +  IntToStr(ListView2->Items->Count);
+   TLabelCountProwerki->Caption = LnMesFileToBeChek+ " = " +  IntToStr(ListView2->Items->Count);
 }
 //---------------------------------------------------------------------------
 
@@ -3471,7 +3523,7 @@ void __fastcall TForm3::LW3OnDeletions(TObject *Sender, TListItem *Item)
 {
    int q =  ListView3->Items->Count-1;
    if(q!=0)
-	  TLabelCountProwereno->Caption = "Проверено файлов = " + IntToStr(q);
+	  TLabelCountProwereno->Caption = LnMesFilesChek + " = " + IntToStr(q);
    else
 	  TLabelCountProwereno->Caption ="";
 
@@ -3481,7 +3533,7 @@ void __fastcall TForm3::LW3OnDeletions(TObject *Sender, TListItem *Item)
 
 void __fastcall TForm3::LW3OnInsert(TObject *Sender, TListItem *Item)
 {
-   TLabelCountProwereno->Caption = "Проверено файлов = " + IntToStr(ListView3->Items->Count);
+   TLabelCountProwereno->Caption = LnMesFilesChek + " = " + IntToStr(ListView3->Items->Count);
 }
 //---------------------------------------------------------------------------
 void __fastcall TForm3::SpisokFileTList()
@@ -3513,7 +3565,7 @@ TDateTime UTCToLocalTime(TDateTime AValue)
 }
 void __fastcall TForm3::Button2Click(TObject *Sender)
 {
-	if(TDirectory::Exists(L"\\\\?\\" +ExtractFilePath(ParamStr(0)) +"AitotalTMP\\archiw\\"))
+	/*if(TDirectory::Exists(L"\\\\?\\" +ExtractFilePath(ParamStr(0)) +"AitotalTMP\\archiw\\"))
 	{
 	   try
 	   {
@@ -3523,7 +3575,8 @@ void __fastcall TForm3::Button2Click(TObject *Sender)
 	   {
 		   ErrorLog("Ошибка удаления AitotalTMP\\archiw\\ "+ E.Message + E.ClassName());
 	   }
-	}
+	} */
+	;//((TFormResultScan*)FormResultScan)->Langua("en.lng");
 }
 //---------------------------------------------------------------------------
 
@@ -3539,7 +3592,7 @@ void __fastcall TForm3::DeleteDirectoryTempArchiv()
 			}
 			catch(Exception &E)
 			{
-				ErrorLog("Ошибка удаления рапсакованного архива SpisokArchivFolder->Strings[i] "+ E.Message + E.ClassName());
+				ErrorLog(LnMesErrorDelUnpackArchiv +  SpisokArchivFolder->Strings[i] + E.Message + E.ClassName());
 			}
 		}
 	}
@@ -3561,7 +3614,7 @@ void __fastcall TForm3::Pm2SaveLog(TObject *Sender)
    std::auto_ptr<TStringList> SpisokLV2 (new TStringList(NULL));
    UnicodeString Stroka = "";
 
-   SpisokLV2->Add("Имя файла;Путь к файлу;Размер;MD5;SHA256;%Загрузки/проверки;ССылка");
+   SpisokLV2->Add(LnMesFileName+";"+LnMesFilePatch+";"+LnMesSize+";"+"MD5;SHA256"+";"+LnMesUploadCheking+";"+LnMesLink);
    for(int i=0; i < ListView2->Items->Count; i++)
    {
 	  Stroka = ListView2->Items->Item[i]->Caption;
@@ -3589,12 +3642,12 @@ bool __fastcall TForm3::ProverkaNaIspolFila(UnicodeString filename)
    }
    catch(EFOpenError &E)
    {
-	   ErrorLog(filename + "\n Проверка на занятость файлаа. EFOpenError\n" + E.Message);
+	   ErrorLog(filename + "\n "+ LnMesFileChekBusy+". EFOpenError\n" + E.Message);
 	   return true;
    }
    catch(Exception &E)
    {
-	   ErrorLog(filename + "\n Проверка на занятость файлаа. \n" + E.Message);
+	   ErrorLog(filename + "\n "+ LnMesFileChekBusy+". EFOpenError\n" + E.Message);
 	   return true;
    }
 }
@@ -3797,8 +3850,8 @@ void __fastcall TForm3::ScanRevers(TObject *Sender)
 	{
 		int msgboxID = MessageBox(
 			NULL,
-			L"При восстановление сессии результаты текущей проверки будут утеряны.\nВы хотите продолжить восстановление сессии? ",
-			L"Восстановление сессии",
+			LnMesIfSesionIsRestor.c_str(),
+			LnMesSessionRestor.c_str(),
 			MB_ICONWARNING | MB_YESNO | MB_DEFBUTTON2
 
 		);

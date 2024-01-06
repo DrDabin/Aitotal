@@ -57,6 +57,7 @@ __published:	// IDE-managed Components
 	void __fastcall PmOpenFilePatch(TObject *Sender);
 	void __fastcall PmSaveToFile(TObject *Sender);
 	void __fastcall exitResult(TObject *Sender);
+	void __fastcall FormCreate(TObject *Sender);
 private:	// User declarations
    TListItem *ListItem;
 
@@ -67,6 +68,13 @@ public:		// User declarations
 	bool Tompost; // Если труето форму результат выводить поверхвсех окон.
 	void __fastcall TFormResultScan::SortProgramming(int i);
 	__fastcall TFormResultScan(TComponent* Owner);
+	void __fastcall TFormResultScan::Execute(UnicodeString Lng) ;
+	void __fastcall TFormResultScan::Langua(UnicodeString Lng);
+	struct TLanguageRec {
+		UnicodeString id;
+		PUnicodeString var;
+	};
+
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TFormResultScan *FormResultScan;

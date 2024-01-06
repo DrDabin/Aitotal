@@ -34,9 +34,6 @@ Coordinates=10,282,54,36
 [ToolsReset]
 Coordinates=136,10,79,58
 
-[ProxyChecked]
-Coordinates=363,146,114,58
-
 [OptProxi]
 Coordinates=288,146,65,58
 
@@ -90,7 +87,7 @@ Coordinates=471,365,78,36
 Coordinates=331,10,70,58
 
 []
-Coordinates=716,111,89,36
+Coordinates=363,146,114,58
 
 [ComboBox1]
 Coordinates=577,1,101,124

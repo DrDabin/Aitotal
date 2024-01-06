@@ -6,6 +6,8 @@
 #include <IdIOHandlerStack.hpp>
 #include <IdSSL.hpp>
 #include <IdSSLOpenSSL.hpp>
+#include <urlmon.h> //Для настроек прокси как в IE.
+#pragma comment(lib, "urlmon.lib")
 
 #pragma hdrstop
 
@@ -13,6 +15,7 @@
 #include <memory>    //std::auto_prt<  >
 #include "Aitotal1.h"
 #include "AitotalInclude/InternetConnected.h"
+#include "AitotalInclude/ScanResultat/ScanResult.h"// Форма результата.
 #include "Options1.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
@@ -20,6 +23,9 @@
 
 #pragma resource "*.dfm"
 TMyOptionsForm *MyOptionsForm;
+UnicodeString LnMesMaxFileUpload = "Количество файлов при загрузке  не должно быть 0 или более 20";
+UnicodeString LnMesMaxFileScaning = "Общее количество проверяемых файлов не должно быть 0 или более 50" ;
+UnicodeString LnMesErrorsizeFileMin0 = "максимальный размер файла <= 0";
 
 TIniFile * Ini;
 //---------------------------------------------------------------------------
@@ -28,7 +34,7 @@ __fastcall TMyOptionsForm::TMyOptionsForm(TComponent* Owner)
 {
 }
 //---------------------------------------------------------------------------
-static size_t write_data(char *ptr, size_t size, size_t nmemb, UnicodeString* data)
+/*static size_t write_data(char *ptr, size_t size, size_t nmemb, UnicodeString* data)
 {
 	if (data)
 	{
@@ -37,7 +43,7 @@ static size_t write_data(char *ptr, size_t size, size_t nmemb, UnicodeString* da
 		 return size*nmemb;
 	}
 	else return 0;  // будет ошибка
-}
+} */
 //++++++++++++++++++++++++++++++
 //++++++++++++++++++++++++++++++++++++++
 
@@ -45,7 +51,7 @@ void __fastcall TMyOptionsForm::OptionSave(TObject *Sender)
 {
 	std::auto_ptr<TStringStream>s(new TStringStream());
 	// проверка использовать прокси или нет.
-	if(ProxyChecked->Checked)
+	if(RBProxy->Checked)
 	{
 	   if(OptProxi->Text !="")
 		  Ini->WriteString("Network","Proxi",OptProxi->Text);
@@ -65,7 +71,7 @@ void __fastcall TMyOptionsForm::OptionSave(TObject *Sender)
 	   }
 	}
 
-	Ini->WriteBool("Network","ProxiChecked" , ProxyChecked->Checked);
+	Ini->WriteBool("Network","ProxiChecked" , RBProxy->Checked);
 
 	if(OptApikey->Text !="")
 		Ini->WriteString("Tools", "apikey", OptApikey->Text);
@@ -77,7 +83,7 @@ void __fastcall TMyOptionsForm::OptionSave(TObject *Sender)
 	if(OpTionFileCount->Text.ToInt() <=0 || OpTionFileCount->Text.ToInt() >20)
 	{
 		//OpTionFileCount->Text = 5;
-		MessageBoxA(0, "Количество файлов при загрузке  не должно быть 0 или более 20", 0, MB_OK);
+		MessageBox(0, LnMesMaxFileUpload.c_str(), 0, MB_OK);
 		return;
 	}
 	else
@@ -86,11 +92,17 @@ void __fastcall TMyOptionsForm::OptionSave(TObject *Sender)
 	if(OptionThreadCount->Text.ToInt() <=0 || OptionThreadCount->Text.ToInt() >50)
 	{
 	   //OptionThreadCount->Text = 20;
-	   MessageBoxA(0, "Общее количество проверяемых файлов не должно быть 0 или более 50", 0, MB_OK);
+	   MessageBox(0, LnMesMaxFileScaning.c_str(), 0, MB_OK);
 	   return;
 	}
 	else
 	   Ini->WriteInteger("Tools", "ThreadCount", OptionThreadCount->Text.ToInt());
+
+	// устанавливаем максимальный размер файла при загрузки.
+	if(LEMaxFileSize->Text.ToInt()<=0)
+		MessageBox(0, LnMesErrorsizeFileMin0.c_str(), 0, MB_OK);
+	else
+		Ini->WriteInt64("Tools","MaxSizeFile",LEMaxFileSize->Text.ToInt());
 
 	//если труе мы закрываем программы, елзе - сворачиваем в трей
 	Ini->WriteBool("Tools", "Exit_Tray", RBExit->Checked);
@@ -100,7 +112,8 @@ void __fastcall TMyOptionsForm::OptionSave(TObject *Sender)
 	Ini->WriteBool("Tools","MessageErrorArchive", ErrorArchiv->Checked);
 	//"RunDuplicateApplication" Если труе, то можно запускать копии программы, если фалс то нет.
 	Ini->WriteBool("Tools","RunDuplicateApplication", RunAplicatDubl->Checked);
-	
+
+
 	Form3->OptionReadIni();
 
 	MyOptionsForm->Close();
@@ -110,8 +123,9 @@ void __fastcall TMyOptionsForm::OptionSave(TObject *Sender)
 
 void __fastcall TMyOptionsForm::FormCreate(TObject *Sender)
 {
-	KeyPreview = True;
 
+
+	KeyPreview = True;
 	MyOptionsPage->ActivePage =  MyOptionsGlobal;
 	if(FileExists(ExtractFilePath(Application->ExeName) + "tools\\options.ini"))
 	{
@@ -132,11 +146,12 @@ void __fastcall TMyOptionsForm::FormCreate(TObject *Sender)
 
 void __fastcall TMyOptionsForm::OptionReadIni(TObject *Sender)
 {
-	ProxyChecked->Checked = Ini->ReadBool("Network","ProxiChecked" , false);
-	std::auto_ptr<TStringStream>s(new TStringStream());
+	RBProxy->Checked = Ini->ReadBool("Network","ProxiChecked" , false);
+
 	// проверка использовать прокси или нет.
-	if(ProxyChecked->Checked)
+	if(RBProxy->Checked)
 	{
+		std::auto_ptr<TStringStream>s(new TStringStream());
 		OptProxi->Text = Ini->ReadString("Network","Proxi","");
 		OptIpPort->Text = Ini->ReadString("Network","IpPort","");
 		OptProxiLogin->Text = Ini->ReadString("Network","ProxiLogin","");
@@ -152,8 +167,11 @@ void __fastcall TMyOptionsForm::OptionReadIni(TObject *Sender)
 		OptProxiPassword->Enabled =false;
 		ComboBox1->Enabled = false;
 		TypSocket->Enabled = false;
-		BtTestProxi->Visible = false;
+		RBOptionsIE->Checked = true;
     }
+
+	// устанавливаем максимальный размер файла при загрузки.
+	LEMaxFileSize->Text = Ini->ReadInt64("Tools","MaxSizeFile",202);
 
 	if(Ini->ReadInteger("Tools", "FileCount",0) <= 0 || Ini->ReadInteger("Tools", "FileCount",0) >20)
 	   OpTionFileCount->Text = 5;
@@ -205,33 +223,6 @@ void __fastcall TMyOptionsForm::OpTionFileCountKeyPress(TObject *Sender, System:
 	Key = 0;
 }
 //---------------------------------------------------------------------------
-
-void __fastcall TMyOptionsForm::ProxyCheckedClick(TObject *Sender)
-{
-   // проверка использовать прокси или нет.
-   if(ProxyChecked->Checked)
-   {
-	  OptProxi->Enabled = true;
-	  OptIpPort->Enabled = true;
-	  OptProxiLogin->Enabled = true;
-	  OptProxiPassword->Enabled = true;
-	  ComboBox1->Enabled = true;
-	  TypSocket->Enabled = true;
-	  BtTestProxi->Visible = true;
-   }
-   else
-   {
-	  OptProxi->Enabled = false;
-	  OptIpPort->Enabled = false;
-	  OptProxiLogin->Enabled = false;
-	  OptProxiPassword->Enabled = false;
-	  ComboBox1->Enabled = false;
-	  TypSocket->Enabled = false;
-	  BtTestProxi->Visible = false;
-   }
-}
-//---------------------------------------------------------------------------
-
 void __fastcall TMyOptionsForm::OpTionFileCountChange(TObject *Sender)
 {
    if(OpTionFileCount->Text !="")
@@ -250,7 +241,7 @@ void __fastcall TMyOptionsForm::OpTionFileCountChange(TObject *Sender)
 	   if(num<1 || num>20)
 	   {
 		  //MessageBoxW(0, L"Количество файлов при загрузке не должно быть 0 или более 20", 0, MB_OK);
-		  ShowMessage("Количество файлов при загрузке не должно быть 0 или более 20");
+		  ShowMessage(LnMesMaxFileUpload);
 		  OpTionFileCount->Text = Form3->AtOptions.FileCount;
 	   }
    }
@@ -275,7 +266,7 @@ void __fastcall TMyOptionsForm::OpTionCountThreadChange(TObject *Sender)
 	  if(num<1 || num>50)
 	  {
 		 //MessageBoxW(0, L"Общее количество проверяемых файлов не должно быть 0 или более 50", 0, MB_OK);
-		 ShowMessage("Общее количество проверяемых файлов не должно быть 0 или более 50");
+		 ShowMessage(LnMesMaxFileScaning);
 		 OptionThreadCount->Text = Form3->AtOptions.Thread;
 		 //MyOptionsForm->Activate();
 	  }
@@ -308,7 +299,7 @@ void __fastcall TMyOptionsForm::TestProxi(TObject *Sender)
 	  IndyVT->Request->UserAgent = "Mozilla/5.0 (Windows; U; Windows NT 5.1;en-US; rv:1.8.1.1) Gecko/20061204 Firefox/2.0.0.1";
 	  //IndyVT->Request->Accept= "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8";
 	  IndyVT->Request->CustomHeaders->AddValue("x-apikey", "3c04a612f2bf23e46dc857ffa0655544ea3a9d0d3c25b007057908eb7c8ca7b1");
-	  if(ProxyChecked)
+	  if(RBProxy->Checked)
 	  {
 		 switch(ComboBox1->ItemIndex)
 		 {
@@ -416,10 +407,17 @@ void __fastcall TMyOptionsForm::TestProxi(TObject *Sender)
 
 	  UnicodeString Url= "https://www.virustotal.com/api/v3/files/EEE79D5C8E221C38DB7616B64237859E";
 
-	  __try
+	  try
 	  {
 		 try
 		 {
+			if(!RBProxy->Checked)
+			{
+				INTERNET_PROXY_INFO dfdg;
+				dfdg.dwAccessType = INTERNET_OPEN_TYPE_PRECONFIG;
+				UrlMkSetSessionOption(INTERNET_OPTION_PROXY,&dfdg, sizeof(dfdg),0);
+            }
+
 			IndyVT->Get(Url);
 			IndyVT->ResponseCode;
 			ShowMessage("Ok");
@@ -452,6 +450,8 @@ void __fastcall TMyOptionsForm::OptRest(TObject *Sender)
    Ini->WriteInteger("Tools", "FileCount",5);
    Ini->WriteInteger("Tools", "ThreadCount",20);
    Ini->WriteBool("Tools", "RunDuplicateApplication", false);
+   // устанавливаем максимальный размер файла при загрузки.
+	Ini->WriteInt64("Tools","MaxSizeFile",202);
    //если труе мы закрываем программу, елзе - сворачиваем в трей
    Ini->WriteBool("Tools", "Exit_Tray", false);
 
@@ -463,4 +463,83 @@ void __fastcall TMyOptionsForm::OptRest(TObject *Sender)
 //---------------------------------------------------------------------------
 
 
+
+void __fastcall TMyOptionsForm::RBProxyClick(TObject *Sender)
+{
+	if(RBProxy->Checked)
+   {
+	  OptProxi->Enabled = true;
+	  OptIpPort->Enabled = true;
+	  OptProxiLogin->Enabled = true;
+	  OptProxiPassword->Enabled = true;
+	  ComboBox1->Enabled = true;
+	  TypSocket->Enabled = true;
+	  //BtTestProxi->Visible = true;
+   }
+   else
+   {
+	  OptProxi->Enabled = false;
+	  OptIpPort->Enabled = false;
+	  OptProxiLogin->Enabled = false;
+	  OptProxiPassword->Enabled = false;
+	  ComboBox1->Enabled = false;
+	  TypSocket->Enabled = false;
+	  //BtTestProxi->Visible = false;
+   }
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TMyOptionsForm::RBOptionsIEClick(TObject *Sender)
+{
+	if(RBOptionsIE->Checked)
+	{
+		OptProxi->Enabled = false;
+		OptIpPort->Enabled = false;
+		OptProxiLogin->Enabled = false;
+		OptProxiPassword->Enabled = false;
+		ComboBox1->Enabled = false;
+		TypSocket->Enabled = false;
+	}
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TMyOptionsForm::FormActivate(TObject *Sender)
+{
+	std::auto_ptr<TIniFile> ini (new TIniFile(ExtractFilePath(Application->ExeName) + "tools\\options.ini"));
+	ini->ReadString("Tools","LanguageFile","Russian");
+	if(ini->ReadString("Tools","LanguageFile","Russian")== "English")
+		OptComboLang->ItemIndex =1;
+
+	else
+		OptComboLang->ItemIndex =0;
+
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TMyOptionsForm::OptComboLangClick(TObject *Sender)
+{
+	std::auto_ptr<TIniFile> ini (new TIniFile(ExtractFilePath(Application->ExeName) + "tools\\options.ini"));
+	switch(OptComboLang->ItemIndex)
+	{
+		case 0: ini->WriteString("Tools","LanguageFile","Russian");
+				((TFormResultScan*)FormResultScan)->Langua("Russian");
+				//OptComboLang->Text = OptComboLang->Items->Strings[0];
+				OptComboLang->ItemIndex=0;
+				break;
+		case 1: ini->WriteString("Tools","LanguageFile","English");
+				((TFormResultScan*)FormResultScan)->Langua("English");
+				//OptComboLang->Text = OptComboLang->Items->Strings[1];
+				OptComboLang->ItemIndex=1;
+				break;
+
+		default: ini->WriteString("Tools","LanguageFile","Russian");
+				((TFormResultScan*)FormResultScan)->Langua("Russian");
+				//OptComboLang->Text = OptComboLang->Items->Strings[0];
+				OptComboLang->ItemIndex=0;
+
+
+	}
+}
+//---------------------------------------------------------------------------
 

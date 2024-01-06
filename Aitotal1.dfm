@@ -2,7 +2,7 @@ object Form3: TForm3
   Left = 189
   Top = 162
   Caption = 'Aitotal'
-  ClientHeight = 355
+  ClientHeight = 375
   ClientWidth = 969
   Color = clBtnFace
   Font.Charset = RUSSIAN_CHARSET
@@ -47,7 +47,7 @@ object Form3: TForm3
     end
     object ChReSca: TCheckBox
       Left = 881
-      Top = 48
+      Top = 41
       Width = 61
       Height = 17
       Anchors = [akTop, akRight]
@@ -75,7 +75,7 @@ object Form3: TForm3
       TabOrder = 5
     end
     object Edit1: TEdit
-      Left = 83
+      Left = 87
       Top = 12
       Width = 621
       Height = 21
@@ -98,7 +98,7 @@ object Form3: TForm3
     end
     object Button2: TButton
       Left = 617
-      Top = 10
+      Top = 19
       Width = 75
       Height = 25
       Caption = 'Button2'
@@ -111,8 +111,8 @@ object Form3: TForm3
     Left = 0
     Top = 77
     Width = 969
-    Height = 226
-    ActivePage = TabSheet3
+    Height = 246
+    ActivePage = TabSheet1
     Align = alClient
     DoubleBuffered = False
     Font.Charset = RUSSIAN_CHARSET
@@ -125,15 +125,11 @@ object Form3: TForm3
     TabOrder = 1
     object TabSheet1: TTabSheet
       Caption = #1060#1072#1081#1083' '#1087#1088#1086#1074#1077#1088#1082#1080
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object ListView1: TListView
         Left = 0
         Top = 0
         Width = 961
-        Height = 196
+        Height = 216
         ParentCustomHint = False
         Align = alClient
         Checkboxes = True
@@ -197,7 +193,7 @@ object Form3: TForm3
         Left = 0
         Top = 0
         Width = 961
-        Height = 196
+        Height = 216
         Align = alClient
         Checkboxes = True
         Columns = <
@@ -261,11 +257,15 @@ object Form3: TForm3
     object TabSheet3: TTabSheet
       Caption = #1056#1077#1079#1091#1083#1100#1090#1072#1090
       ImageIndex = 2
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object ListView3: TListView
         Left = 0
         Top = 0
         Width = 961
-        Height = 196
+        Height = 216
         Align = alClient
         Checkboxes = True
         Columns = <
@@ -329,7 +329,7 @@ object Form3: TForm3
   end
   object Panel2: TPanel
     Left = 0
-    Top = 303
+    Top = 323
     Width = 969
     Height = 52
     Align = alBottom
@@ -362,8 +362,8 @@ object Form3: TForm3
       Font.Name = 'Microsoft Sans Serif'
       Font.Style = []
       ParentFont = False
-      ExplicitWidth = 337
-      ExplicitHeight = 32
+      ExplicitLeft = 287
+      ExplicitTop = 2
     end
     object TLabelCountProwereno: TLabel
       Left = 710
@@ -685,8 +685,8 @@ object Form3: TForm3
     Visible = True
     OnBalloonClick = TrayIcon1BalloonClick
     OnClick = TreyIc
-    Left = 876
-    Top = 366
+    Left = 612
+    Top = 158
   end
   object PopupTrayIcon: TPopupMenu
     Left = 245

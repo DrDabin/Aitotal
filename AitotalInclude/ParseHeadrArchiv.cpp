@@ -12,6 +12,12 @@
 #pragma package(smart_init)
  //---------------------------------------------------------------------------
 UnicodeString FilePatch;
+UnicodeString LnMesArchivErrorUnpacking = "Ошибка распаковки архива. ";
+UnicodeString LnMesErroeReadSignArchiv = "\n Ошибка. Чтения сигнатуры архива.\n";
+UnicodeString LnMesErrorArchivCorupted = "Возможно битый архив";
+UnicodeString LnMesErrorNouSign = "\n Ошибка. Нет совпадение сигнатур архива";
+UnicodeString LnMesErrorNouArchivSign = "Не известный архив";
+
  bool Read_head_file_New(UnicodeString FileName, UnicodeString &head)
  {
    try
@@ -43,7 +49,7 @@ UnicodeString FilePatch;
    }
    catch(Exception &E)
 	{
-	   Form3->ErrorLog(FileName + "\n Ошибка. Чтения сигнатуры архива.\n"+ E.Message);
+	   Form3->ErrorLog(FileName + LnMesErroeReadSignArchiv+ E.Message);
 	   MessageBoxW(0, E.Message.w_str(), 0, MB_OK + MB_ICONSTOP);
 	}
    return false;
@@ -85,13 +91,13 @@ bool Read_head_file(UnicodeString FileName, UnicodeString &head)
 	  }
 	  else
 	  {
-		 ShowMessage("Ошибка. Чтения сигнатуры архива.\n Возможно битый архив");
+		 ShowMessage(LnMesErroeReadSignArchiv + LnMesErrorArchivCorupted);
 		 return false ;
 	  }
    }
    catch(Exception &E)
 	{
-	   Form3->ErrorLog(FileName + "\n Ошибка. Чтения сигнатуры архива.\n"+ E.Message);
+	   Form3->ErrorLog(FileName + LnMesErroeReadSignArchiv+ E.Message);
 	   MessageBoxW(0, E.Message.w_str(), 0, MB_OK + MB_ICONSTOP);
 	}
    return false;
@@ -134,8 +140,8 @@ bool Parse_Head_Guid(UnicodeString guidParse,unsigned int &GuidArchiv)
 		  return true;
 	   }
 
-	  Form3->ErrorLog(FilePatch + "\n Ошибка. Нет совпадение сигнатур архива guidParse. /n" +guidParse);
-	  ShowMessage("Ошибка распаковки архива");
+	  Form3->ErrorLog(FilePatch + LnMesErrorNouSign +" guidParse. /n" +guidParse);
+	  ShowMessage(LnMesArchivErrorUnpacking);
 	   return false;
 }
 
@@ -181,7 +187,7 @@ bool Parse_Head_Guid_New(UnicodeString guidParse,unsigned int &GuidArchiv)
 	    }
 	}
 
-	Form3->ErrorLog(FilePatch + "\n Ошибка. Не известный архив его ./n guidParse = " +guidParse);
-	ShowMessage("Ошибка распаковки архива. Не известный архив. ");
+	Form3->ErrorLog(FilePatch + LnMesErrorNouArchivSign + " его ./n guidParse = " +guidParse);
+	ShowMessage(LnMesArchivErrorUnpacking +LnMesErrorNouArchivSign);
 	return false;
 }

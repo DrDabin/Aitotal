@@ -33,7 +33,5 @@ FILETYPE VFT_APP
 7zdll BINARY "img/7z.dll"
 libeay32 BINARY "img/libeay32.dll"
 ssleay32 BINARY "img/ssleay32.dll"
-
-//ZVUK1 WAVE "img/zvuk1.wav"
-
-
+English       BINARY "img/English.lng"
+Russian       BINARY "img/Russian.lng"

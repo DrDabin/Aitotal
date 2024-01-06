@@ -16,6 +16,8 @@
 
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
+UnicodeString LnMesErorCalcSizeFileOpe = "/nОшибка определения размера файла. Ошибка при открытие файла =";
+UnicodeString LnMesErorCalcSizeFileCalc = "/nОшибка определения размера файла. Ошибка при расчете размера = ";
 
 struct stati64 statbuf;
 
@@ -48,7 +50,7 @@ __int64 MyFileSize2(UnicodeString Path)
 	{
 		CloseHandle(file);
 		//ShowMessage(SysErrorMessage(GetLastError()));
-		Form3->ErrorLog(Path + "/nОшибка определения размера файла. Ошибка при открытие файла =  "   +   SysErrorMessage(GetLastError())  );
+		Form3->ErrorLog(Path + LnMesErorCalcSizeFileOpe   +   SysErrorMessage(GetLastError())  );
 		return -1;
 	}
 	   //ShowMessage("Non fatal error - File cannot be opened because this file is in use.");
@@ -61,7 +63,7 @@ __int64 MyFileSize2(UnicodeString Path)
 
 	  if (dwSize == INVALID_FILE_SIZE)
 	  {
-		 Form3->ErrorLog(Path + "/nОшибка определения размера файла. Ошибка при расчете размера =  "   +   SysErrorMessage(GetLastError())  );
+		 Form3->ErrorLog(Path + LnMesErorCalcSizeFileCalc   +   SysErrorMessage(GetLastError())  );
 		 // Получим код ошибки.
 		 return -2;
 	  }

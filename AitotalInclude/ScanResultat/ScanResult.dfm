@@ -17,6 +17,7 @@ object FormResultScan: TFormResultScan
   OldCreateOrder = False
   Position = poDesigned
   OnActivate = FormActivate
+  OnCreate = FormCreate
   OnKeyDown = FormKeyDown
   PixelsPerInch = 96
   TextHeight = 16

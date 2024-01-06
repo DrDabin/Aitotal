@@ -59,41 +59,36 @@ private:
    // Делаю запрос есть такой файл или нет.
    //Если есть выводит всю информацию о нем.
    // Если данного хеш нет, то выдает код ответа 404.
-   bool __fastcall ScanVTIndy::VTFilesID (UnicodeString chesch);
-   //загрузка файла.
-   bool __fastcall ScanVTIndy::VTFiles(UnicodeString FileName);
-   //Общая функция сканирования/проверки файла.
-   // Используется в Execute.
-   void __fastcall ScanVTIndy::ScanFiles();
-   // Функция поиска хеша на VT
-   // Использует функцию VTFilesID
    //Вывод false/true
    bool __fastcall ScanVTIndy::SearchHesh(UnicodeString Hesh);
+   //Новая Общая функция сканирования/проверки файла.
+   // Используется в Execute.
+	void __fastcall ScanVTIndy::NewScanFiles();
    //Обрабатывается когда Не нужен реанализ проверенного файла.
    void __fastcall ScanVTIndy::ReScanFalse();
    void __fastcall ScanVTIndy::VTJSONParseDetect();
    void __fastcall ScanVTIndy::VIOtwet();
    //Проводит реанализ файла, и ждет отчета новой провеки?
    void __fastcall ScanVTIndy::ReScanVT();
-   //Реанализ файла.
-   bool __fastcall ScanVTIndy::VTAnalyse (UnicodeString chesch);
-   //Получаем результат по ID после VTAnalyse
-   bool __fastcall ScanVTIndy::VTAnalysasID ();
    //Извлекаю из ответа ID для Get analyses id
    bool __fastcall ScanVTIndy::JSONParseAnalysisID();
    //Парсинг после Analyses для вывода отчета.
    void __fastcall ScanVTIndy::VTJSONParseDetectAnalysasID();
+   //Извлекаем адрес с сылки при загрузки файла размером более 32Мб
+	bool __fastcall ScanVTIndy::VTAnalysasFileUploadID ();
    // Извлекаем статус проверки, в VTAnalysasID()
    // статусы
    // "completed" - завершен.
    // "queued" в ожидание.
    // "in-progress" в процессе.
    bool __fastcall ScanVTIndy::JSONParseAnalysisStatus();
+   // создаю одну функцию для всех запросов.
+   bool __fastcall ScanVTIndy::PosGetZapross (UnicodeString Url, const wchar_t Zapros, UnicodeString PatchFile);
 protected:
 	void __fastcall Execute();
 public:
 	__fastcall ScanVTIndy(bool CreateSuspended);
-	//Номер потока, удаляется изсписка после загрузки файла, или начало
+	//Номер потока, удаляется из списка после загрузки файла, или начало
 	// рескана
 	int PotokNumber;
 	//Содержит ответ, при поиски хешсуммы на VT.
@@ -122,9 +117,6 @@ public:
 	   bool Proverka; // false проводится первичная проверка. true повторная проверка.
 	   int http_response_code;// ответ сервера 200, 204. ƒругие не обробатываютс¤
 	   int VT_response_code;// значение jsson  response_code
-	   //использую в UploadFileVT и LoadingFile.
-	   //Если 1 то это исключение инди которые обробатываются. 0 это не обрабатываются исключения сразу выход.
-	   int CodeErrorUpload;
 	}ScanIndyVT;
 };
 //---------------------------------------------------------------------------

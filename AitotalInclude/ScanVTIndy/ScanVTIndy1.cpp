@@ -7,6 +7,9 @@
 
 #include <IdComponent.hpp>
 
+#include <IdConnectThroughHttpProxy.hpp>
+#include <urlmon.h> //Для настроек прокси как в IE.
+#pragma comment(lib, "urlmon.lib")
 
 #pragma hdrstop
 
@@ -33,7 +36,31 @@
 //        Form1->Caption = "Updated in a thread";
 //      }
 //---------------------------------------------------------------------------
+UnicodeString LnMesEror = "Ошибка";
+UnicodeString LnMesErrorCalcSHA256 = "Ошибка расчета SHA256" ;
+UnicodeString LnMesSize = "Размер" ;
+UnicodeString LnMesNoInterConect = "Нет соединение с интернетом";
 
+UnicodeString LnMesNouInternet = "Нет интернета";
+
+ UnicodeString LnMesStartOfScaning = "Начало сканирование";
+UnicodeString LnMesScaningIsStoped = "Проверка остановлена" ;
+UnicodeString LnMesUplodCompl = "Загрузка завершена в";
+UnicodeString LnMesPerenosVTablScan = "Переношу всё в вкладку сканирование";
+UnicodeString LnMesErrorNetwork = "Ошибка сети.";
+UnicodeString LnMesSearchHessshBaseVT = "Ищем хеш в базе VT";
+UnicodeString LnMesDisplToTablScan = "Вывожу в таблицу о начале сканирования";
+UnicodeString LnMesScanStopped = "Проверка остановлена";
+UnicodeString LnMesNouLimitApiKey = "Превышен лимит";
+UnicodeString LnMesUploadFile = "Загрузка файла";
+UnicodeString LnMesFileMax32MB = "Файл более 32МБ";
+UnicodeString LnMesErrorUploadFile = "Ошибка в загрузки файла.";
+UnicodeString LnMesAnalizFile = "Идет анализ файла";
+UnicodeString LnMesObrabotResult = "Обработка результата" ;
+UnicodeString LnMesNoSovpadSHA256 = "Не совпадает sha256: у меня =";
+UnicodeString LnMesToVT =  "На сайте =";
+UnicodeString LnMesFileVerified = "Файл проверен";
+UnicodeString LnMesOtwetNarescan = "Ждём ответа на повторный анализ";
 __fastcall ScanVTIndy::ScanVTIndy(bool CreateSuspended)
 	: TThread(CreateSuspended)
 {
@@ -42,18 +69,19 @@ __fastcall ScanVTIndy::ScanVTIndy(bool CreateSuspended)
 //---------------------------------------------------------------------------
 void __fastcall ScanVTIndy::Execute()
 {
-   NameLogError = ExtractFilePath(ParamStr(0)) + "AitotalTMP\\Error.log";
-   VtBase.BaseFileName = ExtractFileName(VtBase.BasePatchFileName);
-   FileUpload = false;
+	NameLogError = ExtractFilePath(ParamStr(0)) + "AitotalTMP\\Error.log";
+	VtBase.BaseFileName = ExtractFileName(VtBase.BasePatchFileName);
+	FileUpload = false;
 
-   TimeLogirovanie  =  StringReplace(VtBase.BasePredScanData,":","_",TReplaceFlags()<<rfReplaceAll);;
-   if(logirovanie)
-   {
-	  LogMessage = "Начало сканирование";
-	  Synchronize(&Logirovanie);
-   }
+	TimeLogirovanie  =  VtBase.BasePredScanData;//сразу изменил в запуске потока из Aitotal1.cpp
+	if(logirovanie)
+	{
+		LogMessage = LnMesStartOfScaning;
+		Synchronize(&Logirovanie);
+	}
 
-   ScanFiles();
+	//ScanFiles();
+	NewScanFiles();
 
 }
 //+++++++++++++++++++++++++++++++++++++++++++++
@@ -104,7 +132,7 @@ void __fastcall ScanVTIndy::InWork(TObject *ASender, TWorkMode AWorkMode, __int6
 	if(Terminated)
 	{
 		http->Socket->Close();
-		Progress ="Проверка остановлена";
+		Progress =LnMesScaningIsStoped;
 		Synchronize(&ScanProgres);
 	}
 	if(AWorkCount !=0 && VTFileSize !=0)
@@ -123,7 +151,7 @@ void __fastcall ScanVTIndy::InWork(TObject *ASender, TWorkMode AWorkMode, __int6
 //++++++++++++++++++
 void __fastcall ScanVTIndy::InWorkEnd(TObject *Sender, TWorkMode AWorkMode)
 {
-	Progress = "Загрузка завершена в InWorkEnd";
+	Progress = LnMesUplodCompl;
 	Synchronize(&ScanProgres);
 }
 //+++++++++++++++++++++++++++++++
@@ -232,7 +260,7 @@ void __fastcall ScanVTIndy::AtScanBegin()
 	{
 		if(logirovanie)
 		{
-			LogMessage = " в AtScanBegin()\n Переношу всё в вкладку сканирование." ;
+			LogMessage = " в AtScanBegin()\n" + LnMesPerenosVTablScan ;
 			Synchronize(&Logirovanie);
 		}
 
@@ -302,7 +330,7 @@ void __fastcall ScanVTIndy::ScanProgres()
 void __fastcall ScanVTIndy::OtwetOshibka()
 
 {
-   Progress = "Ошибка";
+   Progress = LnMesEror;
    Synchronize(&ScanProgres);
    Synchronize(&DelSpisokNamePotok);
    if(logirovanie)
@@ -323,7 +351,7 @@ void __fastcall ScanVTIndy::OtwetErrorSizeFile()
 	}
 	catch(Exception &e)
 	{
-		ErrorMessage = "Ошибка расчета Sha256. ScanVTIndy::OtwetErrorSizeFile() THashSHA2::GetHashStringFromFile" + e.ToString();
+		ErrorMessage = LnMesErrorCalcSHA256 +". ScanVTIndy::OtwetErrorSizeFile() THashSHA2::GetHashStringFromFile" + e.ToString();
 		Synchronize(&ErrorLog);;
 	}
 
@@ -346,7 +374,7 @@ void __fastcall ScanVTIndy::OtwetErrorSizeFile()
 
    ListItem->SubItems->Add(VtBase.BaseDataProverki);//Дата проверки
 
-   ListItem->SubItems->Add("Размер файла превышает 32Мб");// ссылка на результат.
+   ListItem->SubItems->Add(LnMesSize + " = " + VtBase.BaseSizeFile);// ссылка на результат.
 
   for(int i = 0; i < Form3->ListView2->Items->Count ; i++)
    {
@@ -369,7 +397,7 @@ bool __fastcall ScanVTIndy::SearchHesh(UnicodeString Hesh)
    {
 	  if(Terminated)
 	  {
-		 Progress ="Проверка остановлена";
+		 Progress =LnMesScanStopped;
 		 Synchronize(&ScanProgres);
 		 if(logirovanie)
 		 {
@@ -381,9 +409,9 @@ bool __fastcall ScanVTIndy::SearchHesh(UnicodeString Hesh)
 
 	  if(!GetStatusConnect())
 	  {
-		 Progress ="Ошибка сети. Нет Интернета.";
+		 Progress =LnMesErrorNetwork + LnMesNoInterConect;
 		 // Вывожу в таблицу о начале загрузке.
-		 ErrorMessage = "Ошибка сети. Нет Интернета.";
+		 ErrorMessage = LnMesErrorNetwork + LnMesNoInterConect;
 		 Synchronize(&ErrorLog);
 		 Synchronize(&ScanProgres);
          if(logirovanie)
@@ -399,7 +427,8 @@ bool __fastcall ScanVTIndy::SearchHesh(UnicodeString Hesh)
 			Synchronize(&Logirovanie);
 	  }
 
-	  if(VTFilesID(VtBase.BaseMD5))
+	  //if(VTFilesID(VtBase.BaseMD5))
+	  if(PosGetZapross("https://www.virustotal.com/api/v3/files/" + VtBase.BaseMD5,'G',""))
 	  {
 		 if(logirovanie)
 		 {
@@ -426,26 +455,23 @@ bool __fastcall ScanVTIndy::SearchHesh(UnicodeString Hesh)
 			}
 			scan = true;
 			break;
-         }
-
-		 //посмотреть код ответа при исчерпании лимита.
-		 //else
+		 }
 			//Sleep(2000);
 	  }
 	  else
 	  {
-        if(logirovanie)
-			{
-			   LogMessage = "в SearchHesh(UnicodeString Hesh) \n else (VTFilesID(VtBase.BaseMD5))";
-			   Synchronize(&Logirovanie);
-			}
+		if(logirovanie)
+		{
+			LogMessage = "в SearchHesh(UnicodeString Hesh) \n else (VTFilesID(VtBase.BaseMD5))";
+			Synchronize(&Logirovanie);
+		}
 
 		break;
 	  }
    }
    if(Terminated)
    {
-	  Progress ="Проверка остановлена";
+	  Progress =LnMesScanStopped;
 	  Synchronize(&ScanProgres);
 	  if(logirovanie)
 	  {
@@ -456,683 +482,177 @@ bool __fastcall ScanVTIndy::SearchHesh(UnicodeString Hesh)
    return scan;
 }
 //+++++++++++++++++++++++++++++++++++++
-//Загрузка файла
-bool __fastcall ScanVTIndy::VTFiles(UnicodeString FileName)
+void __fastcall ScanVTIndy::NewScanFiles()
 {
-	std::auto_ptr<TIdHTTP> IndyVT (new TIdHTTP(NULL) );
-	std::auto_ptr<TIdSSLIOHandlerSocketOpenSSL> ssl ( new TIdSSLIOHandlerSocketOpenSSL(NULL));
-	std::auto_ptr<TIdSocksInfo> soketInfo (new TIdSocksInfo(NULL));
-	bool resultat= false;
-	IndyVT->HandleRedirects = 1;
-	IndyVT->Request->ContentType = L"application/x-msdownload";
-	IndyVT->Request->Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8";
-	IndyVT->Request->UserAgent = "Mozilla/5.0 (Windows; U; Windows NT 5.1;en-US; rv:1.8.1.1) Gecko/20061204 Firefox/2.0.0.1";
-	IndyVT->Request->CustomHeaders->AddValue("x-apikey", ScanIndyVT.ApiKey);
-    IndyVT->OnWorkBegin = InOnWorkBegin;
-	IndyVT->OnWork = InWork;
-	IndyVT->OnWorkEnd = InWorkEnd;
-
-	if(ScanIndyVT.ProxyVT.ProxiChecked)
-	{
-		switch(ScanIndyVT.ProxyVT.Socket)
-		{
-			case 0:
-			{
-				soketInfo->Version = svNoSocks;
-				break;
-			}
-
-			case 1:
-			{
-				soketInfo->Version = svSocks4;
-				break;
-			}
-			case 2:
-			{
-				soketInfo->Version = svSocks5;
-				break;
-			}
-		}
-		if(ScanIndyVT.ProxyVT.Proxy !=" " || ScanIndyVT.ProxyVT.Proxy.Length() !=0)
-		{
-			soketInfo->Host = ScanIndyVT.ProxyVT.Proxy;
-		}
-
-		if(ScanIndyVT.ProxyVT.IpPort !=0)
-			soketInfo->Port = ScanIndyVT.ProxyVT.IpPort;
-
-		if(ScanIndyVT.ProxyVT.OptProxiLogin !=" " || ScanIndyVT.ProxyVT.OptProxiLogin.Length() != 0)
-			soketInfo->Username = ScanIndyVT.ProxyVT.OptProxiLogin;
-
-		if(ScanIndyVT.ProxyVT.OptProxiPassword !=" " || ScanIndyVT.ProxyVT.OptProxiPassword.Length() != 0)
-		{
-			soketInfo->Password = ScanIndyVT.ProxyVT.OptProxiPassword;
-			soketInfo->Authentication = saUsernamePassword;
-		}
-		else
-			soketInfo->Authentication = saNoAuthentication;
-	}
-	ssl->SSLOptions->SSLVersions = TIdSSLVersions() << sslvSSLv23;
-	ssl->SSLOptions->VerifyMode = TIdSSLVerifyModeSet();
-	ssl->SSLOptions->Mode =  sslmClient;
-	IndyVT->IOHandler = ssl.get();
-	ssl->TransparentProxy = soketInfo.get();
-
-
-	std::auto_ptr<TIdMultiPartFormDataStream> PostData(new TIdMultiPartFormDataStream);
-
-
-
-	std::auto_ptr<TFileStream> fs (new TFileStream(FileName, fmOpenRead | fmShareDenyNone));
-
-	PostData->AddFormField("file","","",fs.get(),FileName);
-
-	try
-	{
-		VtBase.BaseJesson = IndyVT->Post("https://www.virustotal.com/api/v3/files",PostData.get());
-		ScanIndyVT.http_response_code = IndyVT->ResponseCode;
-		if(logirovanie)
-		{
-			LogMessage = " в VTFiles (UnicodeString FileName) прошла успешно. response code = " + ScanIndyVT.http_response_code + String("\n") + VtBase.BaseJesson;
-			Synchronize(&Logirovanie);
-		}
-		resultat = true;
-	}
-	catch(EIdHTTPProtocolException &E)
-	{
-		;
-	}
-
-	catch(EIdOSSLConnectError &E)
-	{
-		;
-	}
-	catch (EIdSocketError &E)
-	{
-	   ;
-	}
-	catch (EIdOpenSSLAPISSLError &E)
-	{
-		;
-	}
-	catch (EIdConnClosedGracefully &E)
-	{
-		;
-	}
-
-	catch(EIdException &E)// Другие исключения Indy
-	{
-		ErrorMessage = "Ошибка: try (DrIn)Res\""+E.Message+"\"" + "Класс ошибки = " +E.ClassName();
-		Synchronize(&ErrorLog);
-		if(logirovanie)
-		{
-			LogMessage = "Ошибка: try (DrIn)Res\""+E.Message+"\"" + "Класс ошибки = " +E.ClassName() ;
-			Synchronize(&Logirovanie);
-		}
-		ScanVTIndy::Terminate();
-	}
-
-	catch(Exception &E)   // Другие НЕ Indy исключения
-	{
-		ErrorMessage = "Ошибка: try (nouIn) Res\""+E.Message+"\""+ "Класс ошибки = " +E.ClassName();
-		Synchronize(&ErrorLog);
-		if(logirovanie)
-		{
-			LogMessage = "Ошибка: try (nouIn) Res\""+E.Message+"\""+ "Класс ошибки = " +E.ClassName();
-			Synchronize(&Logirovanie);
-		}
-		ScanVTIndy::Terminate();
-	}
-
-	return resultat;
-
-}
-///+++++++++++++++++++++++++++++++++++
-bool __fastcall ScanVTIndy::VTFilesID (UnicodeString chesch)
-{
-	std::auto_ptr<TIdHTTP> IndyVT (new TIdHTTP(NULL) );
-	std::auto_ptr<TIdSSLIOHandlerSocketOpenSSL> ssl ( new TIdSSLIOHandlerSocketOpenSSL(NULL));
-	std::auto_ptr<TIdSocksInfo> soketInfo (new TIdSocksInfo(NULL));
-	bool resultat= false;
-	IndyVT->HandleRedirects = 1;
-	IndyVT->Request->ContentType = L"application/x-msdownload";
-	IndyVT->Request->Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8";
-	IndyVT->Request->UserAgent = "Mozilla/5.0 (Windows; U; Windows NT 5.1;en-US; rv:1.8.1.1) Gecko/20061204 Firefox/2.0.0.1";
-	IndyVT->Request->CustomHeaders->AddValue("x-apikey", ScanIndyVT.ApiKey);
-
-	if(ScanIndyVT.ProxyVT.ProxiChecked)
-	{
-		switch(ScanIndyVT.ProxyVT.Socket)
-		{
-			case 0:
-			{
-				soketInfo->Version = svNoSocks;
-				break;
-			}
-
-			case 1:
-			{
-				soketInfo->Version = svSocks4;
-				break;
-			}
-			case 2:
-			{
-				soketInfo->Version = svSocks5;
-				break;
-			}
-		}
-		if(ScanIndyVT.ProxyVT.Proxy !=" " || ScanIndyVT.ProxyVT.Proxy.Length() !=0)
-		{
-			soketInfo->Host = ScanIndyVT.ProxyVT.Proxy;
-		}
-
-		if(ScanIndyVT.ProxyVT.IpPort !=0)
-			soketInfo->Port = ScanIndyVT.ProxyVT.IpPort;
-
-		if(ScanIndyVT.ProxyVT.OptProxiLogin !=" " || ScanIndyVT.ProxyVT.OptProxiLogin.Length() != 0)
-			soketInfo->Username = ScanIndyVT.ProxyVT.OptProxiLogin;
-
-		if(ScanIndyVT.ProxyVT.OptProxiPassword !=" " || ScanIndyVT.ProxyVT.OptProxiPassword.Length() != 0)
-		{
-			soketInfo->Password = ScanIndyVT.ProxyVT.OptProxiPassword;
-			soketInfo->Authentication = saUsernamePassword;
-		}
-		else
-			soketInfo->Authentication = saNoAuthentication;
-	}
-	ssl->SSLOptions->SSLVersions = TIdSSLVersions() << sslvSSLv23;
-	ssl->SSLOptions->VerifyMode = TIdSSLVerifyModeSet();
-	ssl->SSLOptions->Mode =  sslmClient;
-	IndyVT->IOHandler = ssl.get();
-	ssl->TransparentProxy = soketInfo.get();
-
+	VtBase.BaseDataProverki = "";
+	Progress = LnMesSearchHessshBaseVT;
+	// Вывожу в таблицу о начале сканирования
+	Synchronize(&AtScanBegin);
 	if(logirovanie)
-	{
-		LogMessage = " в VTFilesID (UnicodeString chesch)";
+    {
+		LogMessage = LnMesDisplToTablScan +" \n ScanFiles()";
 		Synchronize(&Logirovanie);
-	}
-	try
-	{
-		VtBase.BaseJesson = IndyVT->Get("https://www.virustotal.com/api/v3/files/"+ chesch);
-		JessonInSearchHech = VtBase.BaseJesson;
-		ScanIndyVT.http_response_code = IndyVT->ResponseCode;
-		if(logirovanie)
-		{
-			LogMessage = " в VTFilesID (UnicodeString chesch) прошла успешно. response code = " + ScanIndyVT.http_response_code + String("\n") + VtBase.BaseJesson;
-			Synchronize(&Logirovanie);
-		}
-		resultat = true;
-	}
-	catch(EIdHTTPProtocolException &E)
-	{
-		;
-	}
+    }
 
-	catch(EIdOSSLConnectError &E)
-	{
-		;
-	}
-	catch (EIdSocketError &E)
-	{
-	   ;
-	}
-	catch (EIdOpenSSLAPISSLError &E)
-	{
-		;
-	}
-	catch (EIdConnClosedGracefully &E)
-	{
-		;
-	}
-
-	catch(EIdException &E)// Другие исключения Indy
-	{
-		ErrorMessage = "Ошибка: try (DrIn)Res\""+E.Message+"\"" + "Класс ошибки = " +E.ClassName();
-		Synchronize(&ErrorLog);
-		if(logirovanie)
-		{
-			LogMessage = "Ошибка: try (DrIn)Res\""+E.Message+"\"" + "Класс ошибки = " +E.ClassName() ;
-			Synchronize(&Logirovanie);
-		}
-		ScanVTIndy::Terminate();
-	}
-
-	catch(Exception &E)   // Другие НЕ Indy исключения
-	{
-		ErrorMessage = "Ошибка: try (nouIn) Res\""+E.Message+"\""+ "Класс ошибки = " +E.ClassName();
-		Synchronize(&ErrorLog);
-		if(logirovanie)
-		{
-			LogMessage = "Ошибка: try (nouIn) Res\""+E.Message+"\""+ "Класс ошибки = " +E.ClassName();
-			Synchronize(&Logirovanie);
-		}
-		ScanVTIndy::Terminate();
-	}
-
-	return resultat;
-
-}
-///+++++++++++++++++++++++++++++++++++
-bool __fastcall ScanVTIndy::VTAnalyse (UnicodeString chesch)
-{
-	std::auto_ptr<TIdHTTP> IndyVT (new TIdHTTP(NULL) );
-	std::auto_ptr<TIdSSLIOHandlerSocketOpenSSL> ssl ( new TIdSSLIOHandlerSocketOpenSSL(NULL));
-	std::auto_ptr<TIdSocksInfo> soketInfo (new TIdSocksInfo(NULL));
-	bool resultat= false;
-	IndyVT->HandleRedirects = 1;
-	IndyVT->Request->ContentType = L"application/x-msdownload";
-	IndyVT->Request->Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8";
-	IndyVT->Request->UserAgent = "Mozilla/5.0 (Windows; U; Windows NT 5.1;en-US; rv:1.8.1.1) Gecko/20061204 Firefox/2.0.0.1";
-	IndyVT->Request->CustomHeaders->AddValue("x-apikey", ScanIndyVT.ApiKey);
-
-	if(ScanIndyVT.ProxyVT.ProxiChecked)
-	{
-		switch(ScanIndyVT.ProxyVT.Socket)
-		{
-			case 0:
-			{
-				soketInfo->Version = svNoSocks;
-				break;
-			}
-
-			case 1:
-			{
-				soketInfo->Version = svSocks4;
-				break;
-			}
-			case 2:
-			{
-				soketInfo->Version = svSocks5;
-				break;
-			}
-		}
-		if(ScanIndyVT.ProxyVT.Proxy !=" " || ScanIndyVT.ProxyVT.Proxy.Length() !=0)
-		{
-			soketInfo->Host = ScanIndyVT.ProxyVT.Proxy;
-		}
-
-		if(ScanIndyVT.ProxyVT.IpPort !=0)
-			soketInfo->Port = ScanIndyVT.ProxyVT.IpPort;
-
-		if(ScanIndyVT.ProxyVT.OptProxiLogin !=" " || ScanIndyVT.ProxyVT.OptProxiLogin.Length() != 0)
-			soketInfo->Username = ScanIndyVT.ProxyVT.OptProxiLogin;
-
-		if(ScanIndyVT.ProxyVT.OptProxiPassword !=" " || ScanIndyVT.ProxyVT.OptProxiPassword.Length() != 0)
-		{
-			soketInfo->Password = ScanIndyVT.ProxyVT.OptProxiPassword;
-			soketInfo->Authentication = saUsernamePassword;
-		}
-		else
-			soketInfo->Authentication = saNoAuthentication;
-	}
-	ssl->SSLOptions->SSLVersions = TIdSSLVersions() << sslvSSLv23;
-	ssl->SSLOptions->VerifyMode = TIdSSLVerifyModeSet();
-	ssl->SSLOptions->Mode =  sslmClient;
-	IndyVT->IOHandler = ssl.get();
-	ssl->TransparentProxy = soketInfo.get();
-
-	UnicodeString Url= "https://www.virustotal.com/api/v3/files/" + chesch + "/analyse";
-	//std::auto_ptr<TIdMultiPartFormDataStream> PostData(new TIdMultiPartFormDataStream);
-	try
-	{
-		VtBase.BaseJesson = IndyVT->Post(Url,/*PostData.get()*/"");
-		ScanIndyVT.http_response_code = IndyVT->ResponseCode;
-		if(logirovanie)
-		{
-			LogMessage = " в VTFilesID (UnicodeString chesch) прошла успешно. response code = " + ScanIndyVT.http_response_code + String("\n") + VtBase.BaseJesson;
-			Synchronize(&Logirovanie);
-		}
-		resultat = true;
-	}
-	catch(EIdHTTPProtocolException &E)
-	{
-		;
-	}
-
-	catch(EIdOSSLConnectError &E)
-	{
-		;
-	}
-	catch (EIdSocketError &E)
-	{
-	   ;
-	}
-	catch (EIdOpenSSLAPISSLError &E)
-	{
-		;
-	}
-	catch (EIdConnClosedGracefully &E)
-	{
-		;
-	}
-
-	catch(EIdException &E)// Другие исключения Indy
-	{
-		ErrorMessage = "Ошибка: try (DrIn)Res\""+E.Message+"\"" + "Класс ошибки = " +E.ClassName();
-		Synchronize(&ErrorLog);
-		if(logirovanie)
-		{
-			LogMessage = "Ошибка: try (DrIn)Res\""+E.Message+"\"" + "Класс ошибки = " +E.ClassName() ;
-			Synchronize(&Logirovanie);
-		}
-		ScanVTIndy::Terminate();
-	}
-
-	catch(Exception &E)   // Другие НЕ Indy исключения
-	{
-		ErrorMessage = "Ошибка: try (nouIn) Res\""+E.Message+"\""+ "Класс ошибки = " +E.ClassName();
-		Synchronize(&ErrorLog);
-		if(logirovanie)
-		{
-			LogMessage = "Ошибка: try (nouIn) Res\""+E.Message+"\""+ "Класс ошибки = " +E.ClassName();
-			Synchronize(&Logirovanie);
-		}
-		ScanVTIndy::Terminate();
-	}
-
-	return resultat;
-
-}
-///+++++++++++++++++++++++++++++++++++
-bool __fastcall ScanVTIndy::VTAnalysasID ()
-{
-	std::auto_ptr<TIdHTTP> IndyVT (new TIdHTTP(NULL) );
-	std::auto_ptr<TIdSSLIOHandlerSocketOpenSSL> ssl ( new TIdSSLIOHandlerSocketOpenSSL(NULL));
-	std::auto_ptr<TIdSocksInfo> soketInfo (new TIdSocksInfo(NULL));
-	bool resultat= false;
-	IndyVT->HandleRedirects = 1;
-	IndyVT->Request->ContentType = L"application/x-msdownload";
-	IndyVT->Request->Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8";
-	IndyVT->Request->UserAgent = "Mozilla/5.0 (Windows; U; Windows NT 5.1;en-US; rv:1.8.1.1) Gecko/20061204 Firefox/2.0.0.1";
-	IndyVT->Request->CustomHeaders->AddValue("x-apikey", ScanIndyVT.ApiKey);
-
-	if(ScanIndyVT.ProxyVT.ProxiChecked)
-	{
-		switch(ScanIndyVT.ProxyVT.Socket)
-		{
-			case 0:
-			{
-				soketInfo->Version = svNoSocks;
-				break;
-			}
-
-			case 1:
-			{
-				soketInfo->Version = svSocks4;
-				break;
-			}
-			case 2:
-			{
-				soketInfo->Version = svSocks5;
-				break;
-			}
-		}
-		if(ScanIndyVT.ProxyVT.Proxy !=" " || ScanIndyVT.ProxyVT.Proxy.Length() !=0)
-		{
-			soketInfo->Host = ScanIndyVT.ProxyVT.Proxy;
-		}
-
-		if(ScanIndyVT.ProxyVT.IpPort !=0)
-			soketInfo->Port = ScanIndyVT.ProxyVT.IpPort;
-
-		if(ScanIndyVT.ProxyVT.OptProxiLogin !=" " || ScanIndyVT.ProxyVT.OptProxiLogin.Length() != 0)
-			soketInfo->Username = ScanIndyVT.ProxyVT.OptProxiLogin;
-
-		if(ScanIndyVT.ProxyVT.OptProxiPassword !=" " || ScanIndyVT.ProxyVT.OptProxiPassword.Length() != 0)
-		{
-			soketInfo->Password = ScanIndyVT.ProxyVT.OptProxiPassword;
-			soketInfo->Authentication = saUsernamePassword;
-		}
-		else
-			soketInfo->Authentication = saNoAuthentication;
-	}
-	ssl->SSLOptions->SSLVersions = TIdSSLVersions() << sslvSSLv23;
-	ssl->SSLOptions->VerifyMode = TIdSSLVerifyModeSet();
-	ssl->SSLOptions->Mode =  sslmClient;
-	IndyVT->IOHandler = ssl.get();
-	ssl->TransparentProxy = soketInfo.get();
-
-
-	try
-	{
-		VtBase.BaseJesson = IndyVT->Get("https://www.virustotal.com/api/v3/analyses/"+ VtBase.BaseIDVT);
-		ScanIndyVT.http_response_code = IndyVT->ResponseCode;
-		if(logirovanie)
-		{
-			LogMessage = " в VTAnalysasID () прошла успешно. response code = " + ScanIndyVT.http_response_code + String("\n") + VtBase.BaseJesson;
-			Synchronize(&Logirovanie);
-		}
-		resultat = true;
-	}
-	catch(EIdHTTPProtocolException &E)
-	{
-		;
-	}
-
-	catch(EIdOSSLConnectError &E)
-	{
-		;
-	}
-	catch (EIdSocketError &E)
-	{
-	   ;
-	}
-	catch (EIdOpenSSLAPISSLError &E)
-	{
-		;
-	}
-	catch (EIdConnClosedGracefully &E)
-	{
-		;
-	}
-
-	catch(EIdException &E)// Другие исключения Indy
-	{
-		ErrorMessage = "Ошибка: try (DrIn)Res\""+E.Message+"\"" + "Класс ошибки = " +E.ClassName();
-		Synchronize(&ErrorLog);
-		if(logirovanie)
-		{
-			LogMessage = "Ошибка: try (DrIn)Res\""+E.Message+"\"" + "Класс ошибки = " +E.ClassName() ;
-			Synchronize(&Logirovanie);
-		}
-		ScanVTIndy::Terminate();
-	}
-
-	catch(Exception &E)   // Другие НЕ Indy исключения
-	{
-		ErrorMessage = "Ошибка: try (nouIn) Res\""+E.Message+"\""+ "Класс ошибки = " +E.ClassName();
-		Synchronize(&ErrorLog);
-		if(logirovanie)
-		{
-			LogMessage = "Ошибка: try (nouIn) Res\""+E.Message+"\""+ "Класс ошибки = " +E.ClassName();
-			Synchronize(&Logirovanie);
-		}
-		ScanVTIndy::Terminate();
-	}
-
-	return resultat;
-
-}
-///+++++++++++++++++++++++++++++++++++
-void __fastcall ScanVTIndy::ScanFiles()
-{
-   VtBase.BaseDataProverki = "";
-   Progress = "Ищем хеш в базе VT";
-   // Вывожу в таблицу о начале сканирования
-   Synchronize(&AtScanBegin);
-   if(logirovanie)
-   {
-	  LogMessage = "Вывожу в таблицу о начале сканирования \n ScanFiles()";
-	  Synchronize(&Logirovanie);
-   }
-
-   while(!Terminated)
-   {
-	 if(!GetStatusConnect())
-	 {
-		Progress ="Ошибка сети. Нет Интернета.";
-		// Вывожу в таблицу о начале загрузке.
-		ErrorMessage = "Ошибка сети. Нет Интернета.";
-		Synchronize(&ErrorLog);
+	if(Terminated)
+    {
+		Progress =LnMesScanStopped;
 		Synchronize(&ScanProgres);
-		if(logirovanie)
-		{
-		   LogMessage = "Ошибка сети ScanFiles() ";
-		   Synchronize(&Logirovanie);
-		}
-		break;
-	 }
-	 bool proverka =SearchHesh(VtBase.BaseMD5.c_str());
-	 if (!proverka)
-	 {
-		if(logirovanie)
-		{
-		   LogMessage = "bool proverka == false \n Файл не проверялся";
-		   Synchronize(&Logirovanie);
-		}
-		Synchronize(&FileUploadBool);
+	    if(logirovanie)
+	    {
+			LogMessage = LnMesScanStopped + " NewScanFiles() ";
+			Synchronize(&Logirovanie);
+	    }
+	}
 
-		if(FileUpload)
+	else
+	{
+		bool proverka =SearchHesh(VtBase.BaseMD5.c_str());
+		//Проверка на  превышение лимита. код будет 429
+		if(ScanIndyVT.http_response_code == 429)
 		{
-			;
-		}
-        if(logirovanie)
-		{
-			  LogMessage = "Начало загрузки файла ScanFiles()";
-			  Synchronize(&Logirovanie);
-		}
-		Progress ="Загрузка файла";
-		// Вывожу в таблицу о начале загрузке.
-		Synchronize(&ScanProgres);
-		//отправляем файл.
-		if(VtBase.BaseSizeFile.ToInt() > 33554432)
-		{
+			Progress =LnMesScanStopped +"." + LnMesNouLimitApiKey + "code=429";
+			Synchronize(&ScanProgres);
 			if(logirovanie)
 			{
-				LogMessage = "Ошибка проверки. Размер файла превышает 32Мб ScanFiles()";
+				LogMessage = " в ReScanVT() в" + LnMesScanStopped +"." + LnMesNouLimitApiKey + "code=429";
 				Synchronize(&Logirovanie);
 			}
-			Synchronize(&OtwetErrorSizeFile);
-			break;
+			//останавливаю проверку. так как произошло превышение лимита.
+			return;
 		}
-
-		VTFiles(VtBase.BasePatchFileName);
-		JSONParseAnalysisID();
-
-		Progress ="Идет анализ файла";
-		Synchronize(&ScanProgres);
-		while(!Terminated)
+		//Файл проверялся ранее
+		if(proverka)
 		{
-			Sleep(15000);
-			if(!GetStatusConnect())
+			Synchronize(&DelSpisokNamePotok);
+
+			// Если Рескан ==false
+			if(!ScanIndyVT.Rescan)
+				ReScanFalse(); //Просто выводим отчет.
+			else
+				ReScanVT();//Проводим повторное сканирование.
+
+		}
+		//Файл не проверялся ранее
+		else
+		{
+			while(!Terminated)
 			{
-				Progress ="Ошибка сети. Нет Интернета.";
-				// Вывожу в таблицу о начале загрузке.
+				Progress ="Подготовка к загрузке файла";
 				Synchronize(&ScanProgres);
-				ErrorMessage = "Ошибка сети. Нет Интернета.";
-				Synchronize(&ErrorLog);
-				return;
-			}
-			VTAnalysasID();
-
-			if(logirovanie)
-			{
-				LogMessage = " в ScanFiles() VTAnalysasID()";
-				Synchronize(&Logirovanie);
-			}
-			if(JSONParseAnalysisStatus())
-			{
-				if(VtBase.BaseStatusAnalyzeID == "completed")
+				Synchronize(&FileUploadBool);
+				if(FileUpload)
 				{
-					if(logirovanie)
+					if(VtBase.BaseSizeFile.ToInt()<= 32*1024*1024)
 					{
-						LogMessage = " в ScanFiles() в if(VtBase.BaseStatusAnalyzeID == \"completed\")\n" + VtBase.BaseJesson;
-						Synchronize(&Logirovanie);
+							Progress =LnMesUploadFile;
+							Synchronize(&ScanProgres);
+							PosGetZapross("https://www.virustotal.com/api/v3/files",'P',VtBase.BasePatchFileName);
+					}
+					else if(VtBase.BaseSizeFile.ToInt()> 32*1024*1024 && VtBase.BaseSizeFile.ToInt() <= VtBase.MaxFileSize*1024*1024 &&VtBase.BaseSizeFile.ToInt() <= 650*1024*1024)
+					{
+						Progress = LnMesFileMax32MB;
+						Synchronize(&ScanProgres);
+						PosGetZapross("https://www.virustotal.com/api/v3/files/upload_url",'G',"");
+
+						if(ScanIndyVT.http_response_code == 200)
+						{
+							Progress = "ScanIndyVT.http_response_code == 200" + VtBase.BaseJesson;
+							Synchronize(&ScanProgres);
+							if(VTAnalysasFileUploadID ())
+							{
+								PosGetZapross(VtBase.BaseUploadFile,'P',VtBase.BasePatchFileName);
+							}
+
+						}
+
+					}
+					if(ScanIndyVT.http_response_code == 429)
+					{
+						Progress =LnMesErrorUploadFile +"." +  LnMesNouLimitApiKey +"code=429";
+						Synchronize(&ScanProgres);
+						if(logirovanie)
+						{
+							LogMessage = LnMesErrorUploadFile +"." +  LnMesNouLimitApiKey +"code=429";
+							Synchronize(&Logirovanie);
+						}
+						ErrorMessage = "http_response_code == 429\n" +VtBase.BaseJesson+ "\n http_response_code = " + ScanIndyVT.http_response_code;
+						Synchronize(&ErrorLog);
+						//останавливаю проверку. так как произошло превышение лимита.
+						break;
+					}
+					if(ScanIndyVT.http_response_code == 200)
+					{
+						Synchronize(&DelSpisokNamePotok);
+						if(JSONParseAnalysisID())
+						{
+							Progress =LnMesAnalizFile;
+							Synchronize(&ScanProgres);
+							while(!Terminated)
+							{
+								Sleep(15000);
+								PosGetZapross("https://www.virustotal.com/api/v3/analyses/"+ VtBase.BaseIDVT,'G',"");
+								if(ScanIndyVT.http_response_code == 429)
+								{
+									Progress =LnMesErrorUploadFile +"." +  LnMesNouLimitApiKey +"code=429";
+									Synchronize(&ScanProgres);
+									if(logirovanie)
+									{
+										LogMessage = LnMesErrorUploadFile +"." +  LnMesNouLimitApiKey +"code=429";
+										Synchronize(&Logirovanie);
+									}
+                                    ErrorMessage = "http_response_code == 429\n" +VtBase.BaseJesson+ "\n http_response_code = " + ScanIndyVT.http_response_code;
+									Synchronize(&ErrorLog);
+									//останавливаю проверку. так как произошло превышение лимита.
+									break;
+								}
+								if(ScanIndyVT.http_response_code == 200)
+								{
+									if(JSONParseAnalysisStatus())
+									{
+										if(VtBase.BaseStatusAnalyzeID == "completed")
+										{
+											if(logirovanie)
+											{
+												LogMessage = " в ScanFiles() в if(VtBase.BaseStatusAnalyzeID == \"completed\")\n" + VtBase.BaseJesson;
+												Synchronize(&Logirovanie);
+											}
+
+											VTJSONParseDetectAnalysasID();
+											if(logirovanie)
+											{
+												LogMessage = " в ScanFiles() в if(VtBase.BaseStatusAnalyzeID == \"completed\")  После VTJSONParseDetectAnalysasID()\n" + VtBase.BaseJesson;
+												Synchronize(&Logirovanie);
+											}
+											Synchronize(&VIOtwet);
+											break;
+										}//if(VtBase.BaseStatusAnalyzeID == "completed")
+									}//if(JSONParseAnalysisStatus())
+								}//if(ScanIndyVT.http_response_code == 200)
+
+							}//while(!Terminated)
+							break;
+						}//if(JSONParseAnalysisID())
+					}//if(ScanIndyVT.http_response_code == 200)
+					else
+					{
+						Progress =ScanIndyVT.http_response_code;
+						Synchronize(&ScanProgres);
+						ErrorMessage = "http_response_code\n" +VtBase.BaseJesson+ "\n http_response_code = " + ScanIndyVT.http_response_code;
+						Synchronize(&ErrorLog);
 					}
 
-					VTJSONParseDetectAnalysasID();
-					if(logirovanie)
-					{
-						LogMessage = " в ScanFiles() в if(VtBase.BaseStatusAnalyzeID == \"completed\")  После VTJSONParseDetectAnalysasID()\n" + VtBase.BaseJesson;
-						Synchronize(&Logirovanie);
-					}
-					Synchronize(&VIOtwet);
-					break;
-				}
-			}
-
-		}
-		break;
-	 }
-
-	 if(proverka)
-	 {
-		Synchronize(&DelSpisokNamePotok);
-		// Если Рескан ==false
-		if(!ScanIndyVT.Rescan)
-		{
-			if(logirovanie)
-			{
-			   LogMessage = "Рескан рескан == фалсе \n после if(!ScanIndyVT.Rescan) ScanFiles() ";
-			   Synchronize(&Logirovanie);
-			}
-
-			ReScanFalse();
-
-			if(logirovanie)
-			{
-			   LogMessage = "после ReScanFalse(); ScanFiles() ";
-			   Synchronize(&Logirovanie);
-			}
-			break;
-		}
-        // Если Рескан ==true
-		else
-		{
-			if(logirovanie)
-			{
-			   LogMessage = "после // Если Рескан ==true \n else ScanFiles() ";
-			   Synchronize(&Logirovanie);
-			}
-			//Закоментировал, так как ссылки сейчас нет. только по IP сылка.
-			//JSONGetPermalink();
-			if(logirovanie)
-			{
-			   LogMessage = "после JSONGetPermalink(); ScanFiles() ";
-			   Synchronize(&Logirovanie);
-			}
-			//Synchronize(&ZapisPermalinkLV);
-
-			ReScanVT();
-			if(logirovanie)
-			{
-			   LogMessage = "после ApiReScan(); ScanFiles() ";
-			   Synchronize(&Logirovanie);
-			}
-			break;
-		}
-
-	 }
-
-	 //break;
-   }
-
-   if(Terminated)
-   {
-	  Progress ="Проверка остановлена";
-	  Synchronize(&ScanProgres);
-	  if(logirovanie)
-	  {
-		 LogMessage = "Проверка остановлена ScanFiles() ";
-		 Synchronize(&Logirovanie);
-	  }
-   }
-
+				}//if(FileUpload)
+				else Sleep(5000);//Ставим паузу, перед повторной проверкой на количество загружаемых файлов.
+			}//while(!Terminated)
+		}//Файл не проверялся ранее
+		//else
+	}
 }
-//+++++++++++++++++++++++++++++++++++++
+//+++++++++++++++++++++++++++++++++++++++++++++
 void __fastcall ScanVTIndy::ReScanFalse()
 {
-   Progress ="ReScan false. Обработка результата.";
+   Progress ="ReScan false. "+LnMesObrabotResult;
 
    if(logirovanie)
 	{
@@ -1161,10 +681,8 @@ void __fastcall ScanVTIndy::VTJSONParseDetect()
 			LogMessage = " в VTJSONParseDetect()\n" +  ResRescan->ToString();
 			Synchronize(&Logirovanie);
 		}
-
 		TJSONObject *obj = static_cast<TJSONObject*>(ResRescan->Get("data")->JsonValue);
 		TJSONObject *qwe = static_cast<TJSONObject*>(obj->Get("attributes")->JsonValue);
-		//TJSONObject *asd = static_cast<TJSONObject*>(obj->Get("links")->JsonValue);
 		TJSONObject *zxc = static_cast<TJSONObject*>(qwe->Get("last_analysis_stats")->JsonValue);
 		TJSONObject *result = static_cast<TJSONObject*>(qwe->Get("last_analysis_results")->JsonValue);
 		try
@@ -1214,9 +732,9 @@ void __fastcall ScanVTIndy::VIOtwet()
 	  {
 		 if(AnsiCompareStr(Form3->ListView2->Items->Item[i]->SubItems->Strings[3].LowerCase(),VtBase.BaseSHA256.LowerCase()) !=0)
 		 {
-			ErrorMessage = "Не совпадает sha256: у меня = "
+			ErrorMessage = LnMesNoSovpadSHA256
 			+ Form3->ListView2->Items->Item[i]->SubItems->Strings[3]
-			+ " На сайте = " + VtBase.BaseSHA256 + "\n"
+			+ LnMesToVT + VtBase.BaseSHA256 + "\n"
 			+ "md5Tablica = " + Form3->ListView2->Items->Item[i]->SubItems->Strings[2]
 			+ " md5VTBase = " + VtBase.BaseMD5
 			+ "\n"
@@ -1239,23 +757,7 @@ void __fastcall ScanVTIndy::VIOtwet()
    ListItem->SubItems->Add(VtBase.BaseSHA256);//Хеш SHA256
    ListItem->SubItems->Add(VtBase.BaseDataProverki);//Дата проверки
    ListItem->SubItems->Add(VtBase.BaseAdress);// ссылка на результат.
-
-   //Закоментировал пока не прописал к новому детекту
-   /*if(VtBase.BaseJesson !="")
-   {
-	   TJSONObject * ResRescan =(TJSONObject*) TJSONObject::ParseJSONValue(VtBase.BaseJesson);
-	   if(ResRescan !=NULL)
-	   {
-		  TJSONObject *obj = (TJSONObject*)ResRescan->Get("scans")->JsonValue;
-		  if(obj !=NULL)
-		  {
-			 ListItem->Data = new String(obj->ToString());
-			 VtBase.BaseJesson = obj->ToString();
-
-		  }
-	   }
-   }*/
-   ListItem->Data = new String(VtBase.BaseJesson);
+   ListItem->Data = new String(VtBase.BaseJesson);// результат
 
    for(int i = 0; i < Form3->ListView2->Items->Count ; i++)
    {
@@ -1323,7 +825,7 @@ void __fastcall ScanVTIndy::VIOtwet()
    {
 	  Form3->TrayIcon1->Visible = true;
 	  Form3->TrayIcon1->BalloonTimeout = 300; // Ставлю на 3 секунды
-	  Form3->TrayIcon1->BalloonTitle = "Файл проверен.";
+	  Form3->TrayIcon1->BalloonTitle = LnMesFileVerified;
 	  Form3->TrayIcon1->BalloonHint = VtBase.BasePatchFileName + " : " + VtBase.BaseDetect;
 	  Form3->TrayIcon1->ShowBalloonHint();
 	  Form3->TrayIcon1->FreeOnRelease();
@@ -1333,41 +835,38 @@ void __fastcall ScanVTIndy::VIOtwet()
 //Извлекаю из ответа ID для Get analyses id
 bool __fastcall ScanVTIndy::JSONParseAnalysisID()
 {
-   UnicodeString a="";
-   bool rezult = false;
-   try
-   {
-	  std::auto_ptr<TJSONObject> ResRescan(static_cast<TJSONObject*>(TJSONObject::ParseJSONValue(VtBase.BaseJesson)));
-	  if(logirovanie)
-	  {
-		 LogMessage = " в JSONParseAnalysisID() try std::auto_ptr<TJSONObject> ResRescan \n" +  ResRescan->ToString();
-		 Synchronize(&Logirovanie);
-	  }
-
-	 TJSONObject *obj = static_cast<TJSONObject*>(ResRescan->Get("data")->JsonValue);
-
-	 try
-	 {
-		VtBase.BaseIDVT = obj->Get("id")->JsonValue->Value();
-		rezult = true;
-		if(logirovanie)
-		{
-		 LogMessage = " в JSONParseAnalysisID() try obj->Get(\"id\")->JsonValue->Value();\n" +  VtBase.BaseIDVT;
-
-		 Synchronize(&Logirovanie);
-		}
-	 }
-	 catch(Exception &E)
+	UnicodeString a="";
+	bool rezult = false;
+	try
 	{
+		std::auto_ptr<TJSONObject> ResRescan(static_cast<TJSONObject*>(TJSONObject::ParseJSONValue(VtBase.BaseJesson)));
 		if(logirovanie)
 		{
-			LogMessage = " JSONParseAnalysisID() catch TJSONObject *obj\n" + E.Message + String("\n") + obj->ToString();
+			LogMessage = " в JSONParseAnalysisID() try std::auto_ptr<TJSONObject> ResRescan \n" +  ResRescan->ToString();
 			Synchronize(&Logirovanie);
 		}
-	   ErrorMessage = "error: JSONParseAnalysisID\n JSON = " +VtBase.BaseJesson+ "\n NameFile = " + VtBase.BaseFileName + "\n Error = "+ E.Message;
-	   Synchronize(&ErrorLog);
-	}
+		  TJSONObject *obj = static_cast<TJSONObject*>(ResRescan->GetValue("data"));
+		try
+		{
+			VtBase.BaseIDVT = obj->GetValue("id")->Value();
+			rezult = true;
+			if(logirovanie)
+			{
+				LogMessage = " в JSONParseAnalysisID() try obj->Get(\"id\")->JsonValue->Value();\n" +  VtBase.BaseIDVT;
 
+				Synchronize(&Logirovanie);
+			}
+		}
+		catch(Exception &E)
+		{
+			if(logirovanie)
+			{
+				LogMessage = " JSONParseAnalysisID() catch TJSONObject *obj\n" + E.Message + String("\n") + obj->ToString();
+				Synchronize(&Logirovanie);
+			}
+			ErrorMessage = "error: JSONParseAnalysisID\n JSON = " +VtBase.BaseJesson+ "\n NameFile = " + VtBase.BaseFileName + "\n Error = "+ E.Message;
+			Synchronize(&ErrorLog);
+		}
    }
    catch(...)
    {
@@ -1376,13 +875,59 @@ bool __fastcall ScanVTIndy::JSONParseAnalysisID()
 		 LogMessage = " в VTJSONParseDetect() catch(...)\n" +a;
 		 Synchronize(&Logirovanie);
 	  }
-	   ErrorMessage = "error: JSONParseAnalysisID\n JSON = " +VtBase.BaseJesson+ "\n NameFile = " + VtBase.BaseFileName;// + "\n Error = " +;
+	   ErrorMessage = "catch(...) error: JSONParseAnalysisID\n JSON = " +VtBase.BaseJesson+ "\n NameFile = " + VtBase.BaseFileName;// + "\n Error = " +;
 	   Synchronize(&ErrorLog);
    }
    return rezult;
 
 }
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++
+///+++++++++++++++++++++++++++++++++++
+bool __fastcall ScanVTIndy::VTAnalysasFileUploadID ()
+{
+	bool rezult = false;
+	try
+	{
+		std::auto_ptr<TJSONObject> ResRescan(static_cast<TJSONObject*>(TJSONObject::ParseJSONValue(VtBase.BaseJesson)));
+		if(logirovanie)
+		{
+			LogMessage = " в VTAnalysasFileUploadID() try std::auto_ptr<TJSONObject> ResRescan \n" +  ResRescan->ToString();
+			Synchronize(&Logirovanie);
+		}
+		try
+		{
+			VtBase.BaseUploadFile = ResRescan->Get("data")->JsonValue->Value();
+			rezult = true;
+			if(logirovanie)
+			{
+				LogMessage = "VTAnalysasFileUploadID() try ResRescan->Get(\"data\")\n" +  VtBase.BaseUploadFile;
+
+				Synchronize(&Logirovanie);
+			}
+		}
+		catch (Exception &E)
+		{
+			if(logirovanie)
+			{
+				LogMessage = "VTAnalysasFileUploadID() catch TJSONObject *ResRescan\n" + E.Message + String("\n") + ResRescan->ToString();
+				Synchronize(&Logirovanie);
+			}
+		}
+
+	}
+	catch(Exception &E)
+	{
+		if(logirovanie)
+		{
+			LogMessage = " JSONParseAnalysisStatus() catch TJSONObject *asd\n" + E.ToString();
+			Synchronize(&Logirovanie);
+		}
+	   //ErrorMessage = "error: JSONParseDetect\n JSON = " +VtBase.BaseJesson+ "\n http_response_code = " + ScanIndyVT.http_response_code;
+	   //Synchronize(&ErrorLog);
+	}
+	return rezult;
+
+}
 // Извлекаем статус проверки, в VTAnalysasID()
    // статусы
    // "completed" - завершен.
@@ -1499,34 +1044,32 @@ void __fastcall ScanVTIndy::VTJSONParseDetectAnalysasID()
  //Проводит реанализ файла, и ждет отчета новой провеки?
 void __fastcall ScanVTIndy::ReScanVT()
 {
-   Progress = "Повторная проверка файла";
-	// Вывожу в таблицу о начале сканирования
-	Synchronize(&ScanProgres);
-	if(logirovanie)
-	{
-	   LogMessage = " в ApiReScan() ";
-	   Synchronize(&Logirovanie);
-	}
 	int I;
 
-	Progress = "Ждём ответа на повторный анализ";
+	Progress = LnMesOtwetNarescan;
 	// Вывожу в таблицу о начале сканирования
 	Synchronize(&ScanProgres);
-
+    if(Terminated)
+	{
+	  Progress =LnMesScanStopped +"11";
+	  Synchronize(&ScanProgres);
+	}
 	do
 	{
 		if(!GetStatusConnect())
 		{
-			Progress ="Ошибка сети. Нет Интернета.";
+			Progress =LnMesErrorNetwork +"." + LnMesNouInternet;
 			// Вывожу в таблицу о начале загрузке.
 			Synchronize(&ScanProgres);
-			ErrorMessage = "Ошибка сети. Нет Интернета.";
+			ErrorMessage = LnMesErrorNetwork +"." + LnMesNouInternet;
 			Synchronize(&ErrorLog);
 			return;
 		}
 
 
-		if(VTAnalyse(VtBase.BaseMD5))
+		//if(VTAnalyse(VtBase.BaseMD5))
+		//Повторное сканирование.
+		if(PosGetZapross("https://www.virustotal.com/api/v3/files/" + VtBase.BaseMD5 + "/analyse",'P',""))
 		{
 			if(logirovanie)
 			{
@@ -1555,15 +1098,29 @@ void __fastcall ScanVTIndy::ReScanVT()
 					 Sleep(15000);
 					 if(!GetStatusConnect())
 					 {
-						Progress ="Ошибка сети. Нет Интернета.";
+						Progress =LnMesErrorNetwork +"." + LnMesNouInternet;
 						// Вывожу в таблицу о начале загрузке.
 						Synchronize(&ScanProgres);
-						ErrorMessage = "Ошибка сети. Нет Интернета.";
+						ErrorMessage = LnMesErrorNetwork +"." + LnMesNouInternet;
 						Synchronize(&ErrorLog);
 						return;
 					 }
-					 VTAnalysasID();
+					 //VTAnalysasID();
+					 PosGetZapross("https://www.virustotal.com/api/v3/analyses/"+ VtBase.BaseIDVT,'G',"");
+                     //Проверка на  превышение лимита. код будет 429
+					 if(ScanIndyVT.http_response_code == 429)
+					 {
+						Progress =LnMesErrorUploadFile +"." +  LnMesNouLimitApiKey +"code=429";
+						Synchronize(&ScanProgres);
+						if(logirovanie)
+						{
+							LogMessage = " в ReScanVT() " +LnMesErrorUploadFile +"." +  LnMesNouLimitApiKey +"code=429";
+							Synchronize(&Logirovanie);
+						}
 
+						//останавливаю проверку. так как произошло превышение лимита.
+						break;
+					 }
 					 if(logirovanie)
 					 {
 						LogMessage = " в ReScanVT() VTAnalysasID()";
@@ -1605,11 +1162,11 @@ void __fastcall ScanVTIndy::ReScanVT()
 				  }
 				  if(Terminated)
 				  {
-					 Progress ="Проверка остановлена";
+					 Progress =LnMesScanStopped;
 					 Synchronize(&ScanProgres);
 					 if(logirovanie)
 					 {
-						LogMessage = " в ReScanVT() в Проверка остановлена";
+						LogMessage = " в ReScanVT() " + LnMesScanStopped;
 						Synchronize(&Logirovanie);
 					 }
 				  }
@@ -1618,19 +1175,200 @@ void __fastcall ScanVTIndy::ReScanVT()
 
 			   }
 			   else
-				  Sleep(10000);
+				  break;//Sleep(10000);
 			}
-
+			//Проверка на  превышение лимита. код будет 429
+			if(ScanIndyVT.http_response_code == 429)
+			{
+				Progress =LnMesErrorUploadFile +"." +  LnMesNouLimitApiKey +"code=429";
+				Synchronize(&ScanProgres);
+                if(logirovanie)
+				{
+					LogMessage = " в ReScanVT() " +  LnMesErrorUploadFile +"." +  LnMesNouLimitApiKey +"code=429";
+					Synchronize(&Logirovanie);
+				}
+				//останавливаю проверку. так как произошло превышение лимита.
+				break;
+			}
 			//else
 			   //Sleep(2000);
 		}
 	}while(!Terminated);
-
-	if(Terminated)
-	{
-	  Progress ="Проверка остановлена";
-	  Synchronize(&ScanProgres);
-	}
 }
 //++++++++++++++++++++++++++++++++++++++++
+// Новая функция запроса.
+// Объединил все запросы в одну функцию.
+//url ссылка запроса, Zapros тип запроса(Pos/Get), PatchFile Имя файла если надо загрузить его.
+bool __fastcall ScanVTIndy::PosGetZapross (UnicodeString Url, const wchar_t Zapros, UnicodeString PatchFile)
+{
+
+	std::auto_ptr<TIdHTTP> IndyVT (new TIdHTTP(NULL) );
+	std::auto_ptr<TIdSSLIOHandlerSocketOpenSSL> ssl ( new TIdSSLIOHandlerSocketOpenSSL(NULL));
+	std::auto_ptr<TIdSocksInfo> soketInfo (new TIdSocksInfo(NULL));
+	bool resultat= false;
+	IndyVT->HandleRedirects = 1;
+	IndyVT->Request->ContentType = L"application/x-msdownload";
+	IndyVT->Request->Accept = "text/html,application/json,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8";
+	IndyVT->Request->UserAgent = "Mozilla/5.0 (Windows; U; Windows NT 5.1;en-US; rv:1.8.1.1) Gecko/20061204 Firefox/2.0.0.1";
+	IndyVT->Request->CustomHeaders->AddValue("x-apikey", ScanIndyVT.ApiKey);
+
+	if(Zapros == 'P'&& PatchFile !="")
+	{
+		IndyVT->OnWorkBegin = InOnWorkBegin;
+		IndyVT->OnWork = InWork;
+		IndyVT->OnWorkEnd = InWorkEnd;
+	}
+	if(ScanIndyVT.ProxyVT.ProxiChecked)
+	{
+		switch(ScanIndyVT.ProxyVT.Socket)
+		{
+			case 0:
+			{
+				soketInfo->Version = svNoSocks;
+				break;
+			}
+
+			case 1:
+			{
+				soketInfo->Version = svSocks4;
+				break;
+			}
+			case 2:
+			{
+				soketInfo->Version = svSocks5;
+				break;
+			}
+		}
+		if(ScanIndyVT.ProxyVT.Proxy !=" " || ScanIndyVT.ProxyVT.Proxy.Length() !=0)
+		{
+			soketInfo->Host = ScanIndyVT.ProxyVT.Proxy;
+		}
+
+		if(ScanIndyVT.ProxyVT.IpPort !=0)
+			soketInfo->Port = ScanIndyVT.ProxyVT.IpPort;
+
+		if(ScanIndyVT.ProxyVT.OptProxiLogin !=" " || ScanIndyVT.ProxyVT.OptProxiLogin.Length() != 0)
+			soketInfo->Username = ScanIndyVT.ProxyVT.OptProxiLogin;
+
+		if(ScanIndyVT.ProxyVT.OptProxiPassword !=" " || ScanIndyVT.ProxyVT.OptProxiPassword.Length() != 0)
+		{
+			soketInfo->Password = ScanIndyVT.ProxyVT.OptProxiPassword;
+			soketInfo->Authentication = saUsernamePassword;
+		}
+		else
+			soketInfo->Authentication = saNoAuthentication;
+	}
+	ssl->SSLOptions->SSLVersions = TIdSSLVersions() << sslvSSLv23;
+	ssl->SSLOptions->VerifyMode = TIdSSLVerifyModeSet();
+	ssl->SSLOptions->Mode =  sslmClient;
+	IndyVT->IOHandler = ssl.get();
+	ssl->TransparentProxy = soketInfo.get();
+
+	if(!ScanIndyVT.ProxyVT.ProxiChecked)
+	{
+		INTERNET_PROXY_INFO dfdg;
+		dfdg.dwAccessType = INTERNET_OPEN_TYPE_PRECONFIG;
+		UrlMkSetSessionOption(INTERNET_OPTION_PROXY,&dfdg, sizeof(dfdg),0);
+	}
+	//удалил все пробелы по краям
+	PatchFile = PatchFile.Trim();
+
+	if(logirovanie)
+	{
+		LogMessage = " в ScanVTIndy::PosGetZapross";
+		Synchronize(&Logirovanie);
+	}
+	try
+	{
+		/*Место добавление получение настроек по умолчанию.*/
+		switch(Zapros)
+		{
+			case 'G':
+				JessonInSearchHech = VtBase.BaseJesson = IndyVT->Get(Url);
+				ScanIndyVT.http_response_code = IndyVT->ResponseCode;
+
+				if(logirovanie)
+				{
+					LogMessage = " ScanVTIndy::PosGetZapross прошла успешно. response code = " + ScanIndyVT.http_response_code + String("\n") + VtBase.BaseJesson;
+					Synchronize(&Logirovanie);
+				}
+				resultat = true;
+				break;
+
+			case 'P':
+				if(PatchFile =="")
+				{
+					std::auto_ptr<TIdMultiPartFormDataStream> PostData(new TIdMultiPartFormDataStream);
+					VtBase.BaseJesson = IndyVT->Post(Url,PostData.get());
+					ScanIndyVT.http_response_code = IndyVT->ResponseCode;
+					resultat = true;
+                }
+				else
+				{
+					std::auto_ptr<TIdMultiPartFormDataStream> PostData(new TIdMultiPartFormDataStream);
+					std::auto_ptr<TFileStream> fs (new TFileStream(PatchFile, fmOpenRead | fmShareDenyNone));
+					PostData->AddFormField("file","","",fs.get(),PatchFile);
+					VtBase.BaseJesson = IndyVT->Post(Url,PostData.get());
+					ScanIndyVT.http_response_code = IndyVT->ResponseCode;
+					resultat = true;
+				}
+                if(logirovanie)
+				{
+					LogMessage = " ScanVTIndy::PosGetZapross прошла успешно. response code = " + ScanIndyVT.http_response_code + String("\n") + VtBase.BaseJesson;
+					Synchronize(&Logirovanie);
+				}
+				break;
+		}
+
+	}
+	catch(EIdHTTPProtocolException &E)
+	{
+		;
+	}
+
+	catch(EIdOSSLConnectError &E)
+	{
+		;
+	}
+	catch (EIdSocketError &E)
+	{
+	   ;
+	}
+	catch (EIdOpenSSLAPISSLError &E)
+	{
+		;
+	}
+	catch (EIdConnClosedGracefully &E)
+	{
+		;
+	}
+
+	catch(EIdException &E)// Другие исключения Indy
+	{
+		ErrorMessage = "Ошибка: try (DrIn)Res\""+E.Message+"\"" + "Класс ошибки = " +E.ClassName();
+		Synchronize(&ErrorLog);
+		if(logirovanie)
+		{
+			LogMessage = "Ошибка: try (DrIn)Res\""+E.Message+"\"" + "Класс ошибки = " +E.ClassName() ;
+			Synchronize(&Logirovanie);
+		}
+		//ScanVTIndy::Terminate();
+	}
+
+	catch(Exception &E)   // Другие НЕ Indy исключения
+	{
+		ErrorMessage = "Ошибка: try (nouIn) Res\""+E.Message+"\""+ "Класс ошибки = " +E.ClassName()
+						+ "\n" + PatchFile + "---" + Zapros + "\n" + Url;
+		Synchronize(&ErrorLog);
+		if(logirovanie)
+		{
+			LogMessage = "Ошибка: try (nouIn) Res\""+E.Message+"\""+ "Класс ошибки = " +E.ClassName();
+			Synchronize(&Logirovanie);
+		}
+		//ScanVTIndy::Terminate();
+	}
+
+	return resultat;
+
+}
 

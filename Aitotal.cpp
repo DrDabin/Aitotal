@@ -30,7 +30,7 @@ WINAPI _tWinMain(HINSTANCE, HINSTANCE, LPTSTR par, int)
 		{
 		   ;
 		}
-		 //должен быть как-можно сложнее
+		//должен быть как-можно сложнее
 		HANDLE hMutex=OpenMutexW(MUTEX_ALL_ACCESS, false, L"ProgAitotal");
 
 		if(!hMutex)

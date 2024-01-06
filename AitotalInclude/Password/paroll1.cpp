@@ -9,6 +9,10 @@
 //---------------------------------------------------------------------------
 #pragma resource "*.dfm"
 TFParoll *FParoll;
+
+UnicodeString LnMesIncorectPassword ="Неверный пароль";
+UnicodeString LnMesErrorIncPassword = "Ошибка. Неверный пароль.\n Введите новый пароль или нажмите отмена" ;
+UnicodeString LnMesErrorOpenArchiv = "Ошибка. Архив поврежден." ;
 //---------------------------------------------------------------------------
 __fastcall TFParoll::TFParoll(TComponent* Owner)
 	: TForm(Owner)
@@ -29,12 +33,12 @@ void __fastcall TFParoll::BtOkClick(TObject *Sender)
 				break;
 			case errorDataPass:
 				EdParoll->Text = "";
-				StatusBar1->Panels->Items[0]->Text = String("Неверный пароль.");
-				ShowMessage("Ошибка. Неверный пароль.\n Введите новый пароль или нажмите отмена");
+				StatusBar1->Panels->Items[0]->Text = String(LnMesIncorectPassword);
+				ShowMessage(LnMesErrorIncPassword);
 				break;
 
 			case errorHead:
-				ShowMessage("Ошибка. Архив поврежден.");
+				ShowMessage(LnMesErrorOpenArchiv);
 				FParoll->Close();
 				break;
 		}
