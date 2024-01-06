@@ -533,10 +533,10 @@ void __fastcall TMyOptionsForm::OptComboLangClick(TObject *Sender)
 				OptComboLang->ItemIndex=1;
 				break;
 
-		default: ini->WriteString("Tools","LanguageFile","Russian");
-				((TFormResultScan*)FormResultScan)->Langua("Russian");
+		default: ini->WriteString("Tools","LanguageFile","English");
+				((TFormResultScan*)FormResultScan)->Langua("English");
 				//OptComboLang->Text = OptComboLang->Items->Strings[0];
-				OptComboLang->ItemIndex=0;
+				OptComboLang->ItemIndex=1;
 
 
 	}

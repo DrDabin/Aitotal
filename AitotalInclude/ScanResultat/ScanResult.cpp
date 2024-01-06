@@ -978,12 +978,16 @@ void __fastcall TFormResultScan::FormCreate(TObject *Sender)
         switch(GetSystemDefaultUILanguage())
 		{
 
-			case 0x0409: Langua("English");
+			case 0x0409: Langua("English");//Английский
 						ini->WriteString("Tools","LanguageFile","English");
 						break;
-			//case 0x0419: Langua("ru.lng"); break;
-			default: Langua("Russian");
+			case 0x0419:  ; //Русский
+			case 0x422: ;  //Украинский
+						Langua("ru.lng");
 						ini->WriteString("Tools","LanguageFile","Russian");
+						break;
+			default: Langua("English");
+						ini->WriteString("Tools","LanguageFile","English");
 
 		}
     }
