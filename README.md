@@ -33,4 +33,3 @@ Abilities:
 - Added password input in the form. If no passwords are applicable, the form for entering the password is displayed.
 
 For unzipping, the 7-zip source code is used, author: Igor Pavlov. Link: http://7-zip.org
-
