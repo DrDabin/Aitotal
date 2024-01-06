@@ -41,6 +41,10 @@ object MyOptionsForm: TMyOptionsForm
       TabOrder = 0
       object MyOptionsGlobal: TTabSheet
         Caption = #1054#1073#1097#1080#1077' '#1085#1072#1089#1090#1088#1086#1081#1082#1080
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         object Panel2: TPanel
           Left = 0
           Top = 0
@@ -292,6 +296,10 @@ object MyOptionsForm: TMyOptionsForm
       object MyOptionsNetworc: TTabSheet
         Caption = #1053#1072#1089#1090#1088#1086#1081#1082#1072' '#1089#1077#1090#1080
         ImageIndex = 1
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         object Panel3: TPanel
           Left = 0
           Top = 0

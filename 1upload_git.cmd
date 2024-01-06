@@ -19,7 +19,7 @@ repo="Aitotal"
 
 git config --global user.name "DrDabin"
 git config --global user.email "Aibolit198@mail.ru"
-#git config --global user.signingkey B024668D57E188FF
+git config --global user.signingkey 10970661D478CF8772F6AEE57FD1BA6B50624129
 git config --global core.autocrlf false
 git config --global core.safecrlf false
 
