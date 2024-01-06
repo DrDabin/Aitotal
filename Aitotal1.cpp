@@ -34,6 +34,7 @@
 #pragma package(smart_init)
 #pragma resource "*.dfm"
 
+
 TForm3 *Form3;
 
 UnicodeString LnMesUnpakArchiv = "Распаковка архива";
