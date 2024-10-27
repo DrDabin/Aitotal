@@ -171,7 +171,7 @@ void __fastcall TMyOptionsForm::OptionReadIni(TObject *Sender)
     }
 
 	// устанавливаем максимальный размер файла при загрузки.
-	LEMaxFileSize->Text = Ini->ReadInt64("Tools","MaxSizeFile",202);
+	LEMaxFileSize->Text = Ini->ReadInt64("Tools","MaxSizeFile",650);
 
 	if(Ini->ReadInteger("Tools", "FileCount",0) <= 0 || Ini->ReadInteger("Tools", "FileCount",0) >20)
 	   OpTionFileCount->Text = 5;
@@ -443,7 +443,7 @@ void __fastcall TMyOptionsForm::TestProxi(TObject *Sender)
    }
 }
 //---------------------------------------------------------------------------
-
+// Сброс на стандартные настройки.
 void __fastcall TMyOptionsForm::OptRest(TObject *Sender)
 {
    Ini->WriteString("Tools", "apikey", "3c04a612f2bf23e46dc857ffa0655544ea3a9d0d3c25b007057908eb7c8ca7b1");
@@ -451,7 +451,7 @@ void __fastcall TMyOptionsForm::OptRest(TObject *Sender)
    Ini->WriteInteger("Tools", "ThreadCount",20);
    Ini->WriteBool("Tools", "RunDuplicateApplication", false);
    // устанавливаем максимальный размер файла при загрузки.
-	Ini->WriteInt64("Tools","MaxSizeFile",202);
+	Ini->WriteInt64("Tools","MaxSizeFile",650);
    //если труе мы закрываем программу, елзе - сворачиваем в трей
    Ini->WriteBool("Tools", "Exit_Tray", false);
 
@@ -507,8 +507,8 @@ void __fastcall TMyOptionsForm::RBOptionsIEClick(TObject *Sender)
 void __fastcall TMyOptionsForm::FormActivate(TObject *Sender)
 {
 	std::auto_ptr<TIniFile> ini (new TIniFile(ExtractFilePath(Application->ExeName) + "tools\\options.ini"));
-	ini->ReadString("Tools","LanguageFile","Russian");
-	if(ini->ReadString("Tools","LanguageFile","Russian")== "English")
+	ini->ReadString("Tools","LanguageFile","English");
+	if(ini->ReadString("Tools","LanguageFile","English")== "English")
 		OptComboLang->ItemIndex =1;
 
 	else
@@ -524,22 +524,19 @@ void __fastcall TMyOptionsForm::OptComboLangClick(TObject *Sender)
 	{
 		case 0: ini->WriteString("Tools","LanguageFile","Russian");
 				((TFormResultScan*)FormResultScan)->Langua("Russian");
-				//OptComboLang->Text = OptComboLang->Items->Strings[0];
 				OptComboLang->ItemIndex=0;
 				break;
 		case 1: ini->WriteString("Tools","LanguageFile","English");
 				((TFormResultScan*)FormResultScan)->Langua("English");
-				//OptComboLang->Text = OptComboLang->Items->Strings[1];
 				OptComboLang->ItemIndex=1;
 				break;
 
 		default: ini->WriteString("Tools","LanguageFile","English");
 				((TFormResultScan*)FormResultScan)->Langua("English");
-				//OptComboLang->Text = OptComboLang->Items->Strings[0];
 				OptComboLang->ItemIndex=1;
 
 
 	}
 }
-//---------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------------------------------------------------------------------
 

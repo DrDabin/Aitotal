@@ -68,7 +68,7 @@ public:		// User declarations
 	bool Tompost; // Если труето форму результат выводить поверхвсех окон.
 	void __fastcall TFormResultScan::SortProgramming(int i);
 	__fastcall TFormResultScan(TComponent* Owner);
-	void __fastcall TFormResultScan::Execute(UnicodeString Lng) ;
+	//void __fastcall TFormResultScan::Execute(UnicodeString Lng) ;
 	void __fastcall TFormResultScan::Langua(UnicodeString Lng);
 	struct TLanguageRec {
 		UnicodeString id;

@@ -103,7 +103,6 @@ object Form3: TForm3
       Height = 25
       Caption = 'Button2'
       TabOrder = 0
-      Visible = False
       OnClick = Button2Click
     end
   end
@@ -112,7 +111,7 @@ object Form3: TForm3
     Top = 77
     Width = 969
     Height = 246
-    ActivePage = TabSheet1
+    ActivePage = TabSheet3
     Align = alClient
     DoubleBuffered = False
     Font.Charset = RUSSIAN_CHARSET
@@ -185,10 +184,6 @@ object Form3: TForm3
     object TabSheet2: TTabSheet
       Caption = #1057#1082#1072#1085#1080#1088#1086#1074#1072#1085#1080#1077
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object ListView2: TListView
         Left = 0
         Top = 0
@@ -257,10 +252,6 @@ object Form3: TForm3
     object TabSheet3: TTabSheet
       Caption = #1056#1077#1079#1091#1083#1100#1090#1072#1090
       ImageIndex = 2
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object ListView3: TListView
         Left = 0
         Top = 0
@@ -721,5 +712,12 @@ object Form3: TForm3
     Filter = 'jesson|*.json'
     Left = 900
     Top = 170
+  end
+  object FileOpenDialog1: TFileOpenDialog
+    FavoriteLinks = <>
+    FileTypes = <>
+    Options = [fdoPickFolders]
+    Left = 884
+    Top = 255
   end
 end

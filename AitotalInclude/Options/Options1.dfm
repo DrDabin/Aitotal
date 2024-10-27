@@ -231,7 +231,7 @@ object MyOptionsForm: TMyOptionsForm
           end
           object ToolsReset: TButton
             Left = 125
-            Top = 318
+            Top = 323
             Width = 75
             Height = 25
             Caption = #1057#1073#1088#1086#1089#1080#1090#1100
@@ -427,7 +427,7 @@ object MyOptionsForm: TMyOptionsForm
     TabOrder = 1
     object Button1: TButton
       Left = 130
-      Top = 5
+      Top = 6
       Width = 75
       Height = 25
       Caption = #1057#1086#1093#1088#1072#1085#1080#1090#1100

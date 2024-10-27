@@ -433,7 +433,8 @@ void __fastcall TFormResultScan::exitResult(TObject *Sender)
    FormResultScan->Close();
 }
 //---------------------------------------------------------------------------
- void __fastcall TFormResultScan::Execute(UnicodeString Lng)
+// Закоментировал. так как ни где пока не используется.
+/* void __fastcall TFormResultScan::Execute(UnicodeString Lng)
 {
 	//   open ini by name
 	//TMemIniFile * prog = new TMemIniFile();
@@ -672,7 +673,7 @@ void __fastcall TFormResultScan::exitResult(TObject *Sender)
 	for (int i = 0; i < 83; i++)
    *(UnicodeString*)lr[i].var = ini->ReadString("Variables", lr[i].id, *(UnicodeString*)lr[i].var);
   delete ini;
-}
+} */
 
 //+++++++++++++++++++++
 void __fastcall TFormResultScan::Langua(UnicodeString Lng)
@@ -683,7 +684,7 @@ void __fastcall TFormResultScan::Langua(UnicodeString Lng)
    HRSRC hSrsrc=FindResourceW(HInstance,ChangeFileExt(Lng,"").c_str(),pchResType);
    if(hSrsrc ==NULL)
    {
-	  ShowMessage("ResursNout");
+	  ShowMessage("ResursNout =" + ChangeFileExt(Lng,"") + "=" +Lng);
 	  ;//ErrorLog("Ресурс не найденNameResource");
 	  ;//return false;
    }
@@ -696,7 +697,7 @@ void __fastcall TFormResultScan::Langua(UnicodeString Lng)
 			void *pvResPtr=LockResource(hGlobal);
 			if(pvResPtr==NULL)
 			{
-				ShowMessage("ResursNout= NULL");;//return false;
+				ShowMessage("ResursNout= NULL =" +ChangeFileExt(Lng,""));;//return false;
 			}
 			else
 			{
@@ -731,7 +732,7 @@ void __fastcall TFormResultScan::Langua(UnicodeString Lng)
 			//   only ComponentCount  - TMenuItem is TComponent
 			for (int n = 0; n < fm->ComponentCount; n++)
 			{
-//     			we have TRadioButton, TButton, TBitBtn, TAction
+				//we have TRadioButton, TButton, TBitBtn, TAction
 				TObject * o = fm->Components[n];
 
 				if (o->ClassNameIs("TRadioButton")) {
@@ -975,18 +976,19 @@ void __fastcall TFormResultScan::FormCreate(TObject *Sender)
 	}
 	else
 	{
-        switch(GetSystemDefaultUILanguage())
+		//switch(GetSystemDefaultUILanguage())
+		switch(GetUserDefaultUILanguage()) //локаль пользователя, а не системы.
 		{
 
-			case 0x0409: Langua("English");//Английский
+			case 0x0409: Langua("English.lng");//Английский
 						ini->WriteString("Tools","LanguageFile","English");
 						break;
 			case 0x0419:  ; //Русский
 			case 0x422: ;  //Украинский
-						Langua("ru.lng");
+						Langua("Russian.lng");
 						ini->WriteString("Tools","LanguageFile","Russian");
 						break;
-			default: Langua("English");
+			default: Langua("English.lng");
 						ini->WriteString("Tools","LanguageFile","English");
 
 		}

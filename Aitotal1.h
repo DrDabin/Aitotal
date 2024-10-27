@@ -132,6 +132,7 @@ __published: // IDE-managed Components
 	TSaveDialog *SaveJeson;
 	TOpenDialog *OpenJeson;
 	TMenuItem *N61;
+	TFileOpenDialog *FileOpenDialog1;
 
 	void __fastcall FormActivate(TObject *Sender);
 	void __fastcall MmExit(TObject *Sender);

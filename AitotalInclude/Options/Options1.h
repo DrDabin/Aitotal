@@ -72,7 +72,7 @@ __published:	// IDE-managed Components
 	void __fastcall RBOptionsIEClick(TObject *Sender);
 	void __fastcall FormActivate(TObject *Sender);
 	void __fastcall OptComboLangClick(TObject *Sender);
-	//void __fastcall OptComboLangClick(TObject *Sender);
+	//void __fastcall OptComboLangChange(TObject *Sender);
 
 
 

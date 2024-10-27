@@ -33,7 +33,6 @@ UnicodeString LnMesErrorNouArchivSign = "Не известный архив";
 	  //Читаем информацию в буфер
 	  tfile->Read(pszBuffer,9);
 	  //переводим в 16 систему
-	  unsigned int r = 0;
 
 	  for(unsigned int i=0;i <7;i++)
 	  {

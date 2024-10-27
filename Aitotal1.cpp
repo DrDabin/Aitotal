@@ -357,7 +357,6 @@ int __stdcall SortProcListViewe1(TListItem *Item1, TListItem *Item2, long Para)
 void __fastcall TForm3::FormActivate(TObject *Sender)
 {
 	//exit=false;
-
 	ListView3->Columns->Items[0]->Width = 150;// Имя файла
 	ListView3->Columns->Items[1]->Width = 180; //Путь к файлу
 	ListView3->Columns->Items[2]->Width = 70;//Результат
@@ -529,7 +528,27 @@ void __fastcall TForm3::MmOpenFile(TObject *Sender)
 // ---------------------------------------------------------------------------
 void __fastcall TForm3::MmOpenDir(TObject *Sender)
 {
+	//Что бы был выбор директории а не файла.
+	//OpenDialog.Options := OpenDialog.Options + [fdoPickFolders];
 	if (GetStatusConnect())
+	{
+		if (FileOpenDialog1->Execute())
+		{
+			for (int i = 0; i < FileOpenDialog1->Files->Count; i++)
+			{
+				MyFiledDir(FileOpenDialog1->Files->Strings[i],1);
+			}
+			ScanFile();
+		}
+	}
+	else
+		MessageBox(0, LnMesNoInterConect.c_str(), 0, MB_OK + MB_ICONSTOP);
+
+
+
+   // на этот код вроде антивирус ругается.
+
+	/*if (GetStatusConnect())
 	{
 		BROWSEINFOW info;
 		wchar_t szDir[MAX_PATH];
@@ -562,6 +581,7 @@ void __fastcall TForm3::MmOpenDir(TObject *Sender)
 	else
 		MessageBoxW(0, LnMesNoInterConect.c_str(), LnMesAttentionError.c_str(),
 		MB_OK + MB_ICONSTOP);
+	*/
 }
 
 // ---------------------------------------------------------------------------
@@ -1185,10 +1205,9 @@ void __fastcall TForm3::ParsingArchivTDSciller(UnicodeString FileName, TList *Sp
 	  UnicodeString MyMd5="";
 	  UnicodeString Sha256="";
 
-	  if((sizefile >0) && (sizefile < 134271701))
+	  if((sizefile >0) && (sizefile < AtOptions.MaxSizeVale))
 	  {
 		 MyMd5 = CalkFileMD5(FileName).LowerCase();
-		 //Sha256 = Mysha256ver2(FileName);
 		 //Использую стандартную функцию расчета хеш суммы
 		 try
 		 {
@@ -1198,7 +1217,7 @@ void __fastcall TForm3::ParsingArchivTDSciller(UnicodeString FileName, TList *Sp
 		 {
 			ErrorLog(LnMesErrorCalcSHA256 + ".  ParsingArchivTDSciller()" +e.ToString());
 		 }
-		 //Application->ProcessMessages();
+
 		 if( (MyMd5 !=""))
 		 {
 			if(FileExists(ExtractFilePath(FileName) + ExstractFileNameBezExt(ExtractFileName(FileName)) + ".ini") ==false)
@@ -1553,7 +1572,6 @@ void __fastcall TForm3::ParsingArchiv(UnicodeString DirPatchArchiv, int rescan)
 	  ErrorLog(LnMesListEmti +".\n" +DirPatchArchiv);
    }
 	delete SpisokFileArchiv;
-	//delete SpisokFileKarantin;
 
 	for (int i = 0; i < ListFileKarantin->Count; i++) {
 		delete (DuplicatListFile*)ListFileKarantin->Items[i];
@@ -1723,7 +1741,8 @@ void __fastcall TForm3::OptionReadIni()
 	AtOptions.FileCount = IniOptions->ReadInteger("Tools", "FileCount",5);
 	AtOptions.Thread =  IniOptions->ReadInteger("Tools", "ThreadCount",20);
 	AtOptions.ErrorArchiv = IniOptions->ReadBool("Tools","MessageErrorArchive", false);
-	AtOptions.MaxSizeVale = IniOptions->ReadInt64("Tools","MaxSizeFile",202);
+	AtOptions.MaxSizeVale = IniOptions->ReadInt64("Tools","MaxSizeFile",650);
+	AtOptions.MaxSizeVale = AtOptions.MaxSizeVale*1024*1024; // Перевожу в байты.
 	ApikeyCount = IniOptions->ReadInteger("Tools", "ApikeyCount",0);
 
 	if(ApikeyCount == 0)
@@ -1812,9 +1831,6 @@ void __fastcall TForm3::PauseT(AnsiString pause_str)
    while(!stop)
    {
 	  stop=(Now()-t)>tpause;
-	  //что бы не грузился процессор, а то грузит на 25%
-	  //Sleep(1);
-	  ///Application->ProcessMessages();
    }
 }
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -1890,7 +1906,7 @@ void __fastcall TForm3::CopyTListToListViewofStream()
 
 					FileItem.SizeFile = fs->Size;
 
-					if((FileItem.SizeFile <=0)  || (FileItem.SizeFile > AtOptions.MaxSizeVale*1024*1024))
+					if((FileItem.SizeFile <=0)  || (FileItem.SizeFile > AtOptions.MaxSizeVale))
 						OtWetErrorSizeFile(FileItem.MyPatch,"", FileItem.SizeFile, "");
 					else
 					{
@@ -2076,7 +2092,6 @@ void TForm3::StartThreadVT()
 				filenumber++;
 				ApikeyNumber++;
 				ProgressBar1->StepBy(1);
-				//Application->ProcessMessages();
 			 }
 		  }
 	}
