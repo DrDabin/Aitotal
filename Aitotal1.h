@@ -26,7 +26,7 @@
 #include <Vcl.ActnList.hpp>
 #include <Vcl.Dialogs.hpp>
 #include <System.Classes.hpp>
-
+ UINT MY_MESSAGE();
 // ---------------------------------------------------------------------------
 class TForm3 : public TForm {
 __published: // IDE-managed Components
@@ -236,14 +236,13 @@ __published: // IDE-managed Components
 private: // User declarations
 	BEGIN_MESSAGE_MAP
 		MESSAGE_HANDLER(WM_COPYDATA, TWMCopyData, GetMessage)
-		MESSAGE_HANDLER(WM_USER+1, TMessage, SetForeground)
 		MESSAGE_HANDLER(WM_DROPFILES, TWMDropFiles, Response)
 		MESSAGE_HANDLER (WM_QUERYENDSESSION, TMessage, WM_QueryEndSession)
 	END_MESSAGE_MAP(TForm)
-
+	// сообщение при разворачивание программы из трея.
+	virtual void __fastcall WndProc(Winapi::Messages::TMessage &Message);
 	void __fastcall TForm3::WM_QueryEndSession (TMessage &msg);
 	void __fastcall TForm3::GetMessage(TWMCopyData &msg);
-	void __fastcall TForm3::SetForeground(TMessage &msg);
 	//Выводит ответ при размере файла более 128 мб или 0 байт или -1байт.
 	void __fastcall TForm3::OtWetErrorSizeFile(UnicodeString FileNime, UnicodeString MoveFileName,  __int64 sizefile, UnicodeString Md5);
 	void __fastcall TForm3::ZanoshuVListWiew3PriOshibki(UnicodeString ArcName, __int64 MysizaFile , String rezult, String Heh, UnicodeString Sha256,bool date);
@@ -336,6 +335,7 @@ public:// User declarations
 	//Это надо для того, что бы удалять только те распакованные архивы которые распаковывала данная копия.
 	//Удаление происходит в FormDestroy()
 	TStringList *SpisokArchivFolder;
+
 
 
 };

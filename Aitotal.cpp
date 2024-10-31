@@ -6,6 +6,7 @@
 #pragma hdrstop
 
 #include <tchar.h>
+#include "Aitotal1.h"
 //---------------------------------------------------------------------------
 
 USEFORM("AitotalInclude\Options\Options1.cpp", MyOptionsForm);
@@ -30,7 +31,7 @@ WINAPI _tWinMain(HINSTANCE, HINSTANCE, LPTSTR par, int)
 		{
 		   ;
 		}
-		//должен быть как-можно сложнее
+		 //должен быть как-можно сложнее
 		HANDLE hMutex=OpenMutexW(MUTEX_ALL_ACCESS, false, L"ProgAitotal");
 
 		if(!hMutex)
@@ -41,35 +42,39 @@ WINAPI _tWinMain(HINSTANCE, HINSTANCE, LPTSTR par, int)
 			if(!Dublikat)
 			{
 				//придумай классу формы уникальное имя
-			   HWND__ *hWnd = FindWindowW(L"TForm3",NULL);
-			   int cout;
+			   HWND hWnd = FindWindow(L"TForm3", 0);
 
-			   if (ParamCount() >0)
+            if (IsWindowVisible(hWnd))
+			{
+				SendMessage(hWnd, WM_SYSCOMMAND, SC_RESTORE, 0);
+				SetForegroundWindow(hWnd);
+			}
+			else
+			{
+                if (ParamCount() >0)
 			   {
 				  wchar_t * asqw  = new wchar_t[_tcslen(par)];
 				  StrCopy(asqw,L" ");
-
 				  for (int i = 1; i <= ParamCount(); i++)
 				  {
 					 wcscat(asqw ,UnicodeString(ParamStr(i)).w_str());
 					 wcscat(asqw, L"\n");
 				  }
-
 				  COPYDATASTRUCT cds;
 				  cds.dwData = 0;
-				  cds.cbData =sizeof(wchar_t) * (wcslen(asqw) + sizeof(wchar_t)); //sizeof(char) * (_tcslen(asqw) + sizeof(char));
+				  cds.cbData =sizeof(wchar_t)* (_tcslen(asqw) + sizeof(wchar_t)); //sizeof(char) * (_tcslen(asqw) + sizeof(char));
 				  cds.lpData = asqw;
-				  SendMessage(hWnd, WM_COPYDATA, (WPARAM)hWnd, (LPARAM)(LPVOID)&cds);
+				  SendMessage(hWnd, WM_COPYDATA, (WPARAM)hWnd, (LPARAM)&cds);
 			   }
-			   else
-				  SendMessage(hWnd, WM_USER+1, 0, 0);
 
-			   ReleaseMutex(hMutex);
-			   return 0;
+				SendMessage(hWnd, MY_MESSAGE(), 0, 0);
+			}
+
+			return 0;
 			}
 
 		}
-		 ReleaseMutex(hMutex);
+
 
 		 // Не переносить, а то не будет работать запрет запуска копий программ.
 		 // а так все данные добавляются в главную программу.
@@ -80,6 +85,7 @@ WINAPI _tWinMain(HINSTANCE, HINSTANCE, LPTSTR par, int)
 		Application->CreateForm(__classid(TMyOptionsForm), &MyOptionsForm);
 		Application->CreateForm(__classid(TFormResultScan), &FormResultScan);
 		Application->Run();
+		ReleaseMutex(hMutex);
 	}
 	catch (Exception &exception)
 	{

@@ -80,6 +80,7 @@ private:	// User declarations
 public:		// User declarations
 	__fastcall TMyOptionsForm(TComponent* Owner);
 
+
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TMyOptionsForm *MyOptionsForm;

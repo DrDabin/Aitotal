@@ -30,7 +30,7 @@ object MyOptionsForm: TMyOptionsForm
       Top = 1
       Width = 416
       Height = 377
-      ActivePage = MyOptionsGlobal
+      ActivePage = MyOptionsNetworc
       Align = alClient
       Font.Charset = RUSSIAN_CHARSET
       Font.Color = clWindowText

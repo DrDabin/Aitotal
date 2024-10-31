@@ -174,9 +174,9 @@ void __fastcall TForm3::GetMessage(TWMCopyData &msg)
 	std::auto_ptr<TStringList> SpisokFileArchiv (new TStringList(NULL) );
 	SpisokFileArchiv->Text = (wchar_t*)msg.CopyDataStruct->lpData;
 	int inrescan=1;
-	for(int i = 1; i < SpisokFileArchiv->Count; i++)
+	for(int i = 0; i < SpisokFileArchiv->Count; i++)
 	{
-		if(SpisokFileArchiv->Strings[i].SubString(1,1)=="/")
+		if(SpisokFileArchiv->Strings[i].Trim().SubString(1,1).Trim()=="/")
 		{
 			if( SpisokFileArchiv->Strings[i].Trim()  == "/scan")
 				inrescan=1;
@@ -197,10 +197,6 @@ void __fastcall TForm3::GetMessage(TWMCopyData &msg)
 	ScanFile();
 }
 //---------------------------------------------------------------------------
-void __fastcall TForm3::SetForeground(TMessage &msg)
-{
-   SetForegroundWindow(Handle);
-}
 
 void __fastcall TForm3::WM_QueryEndSession (TMessage &msg)
 {
@@ -485,7 +481,7 @@ void __fastcall TForm3::FormCreate(TObject *Sender)
 
 	for(int i = 1; i<=ParamCount(); i++)
 	{
-		if(ParamStr(i).SubString(1,1)=="/")
+		if(ParamStr(i).Trim().SubString(1,1)=="/")
 		{
 			if( ParamStr(i)  == "/scan")
 				inrescan=1;
@@ -1749,7 +1745,7 @@ void __fastcall TForm3::OptionReadIni()
 	{
 	   ApikeyCount == 1;
 	   AtOptions.Apikey.reserve(1);
-	   AtOptions.Apikey.insert(AtOptions.Apikey.end(),IniOptions->ReadString("Tools", "apikey", "ae3b8044123881cd4f04fa92a709ed6132413ea79bf2f09917b04df5abe47ef9"));
+	   AtOptions.Apikey.insert(AtOptions.Apikey.end(),IniOptions->ReadString("Tools", "apikey", "abcab5eeb395af07494eacb74e5589286902c819bace1404a4f38d13f029e7e5"));
 	}
 	else
 	{
@@ -1759,13 +1755,13 @@ void __fastcall TForm3::OptionReadIni()
 	   {
 		 if(i == 0)
 		 {
-			UnicodeString key = IniOptions->ReadString("Tools", "apikey", "3c04a612f2bf23e46dc857ffa0655544ea3a9d0d3c25b007057908eb7c8ca7b1");
+			UnicodeString key = IniOptions->ReadString("Tools", "apikey", "abcab5eeb395af07494eacb74e5589286902c819bace1404a4f38d13f029e7e5");
 			AtOptions.Apikey.insert(AtOptions.Apikey.end(),key);
 		 }
 		 else
 		 {
 			UnicodeString num = L"apikey"+IntToStr(i);
-			UnicodeString key = IniOptions->ReadString("Tools", num, "3c04a612f2bf23e46dc857ffa0655544ea3a9d0d3c25b007057908eb7c8ca7b1");
+			UnicodeString key = IniOptions->ReadString("Tools", num, "abcab5eeb395af07494eacb74e5589286902c819bace1404a4f38d13f029e7e5");
 			AtOptions.Apikey.insert(AtOptions.Apikey.end(),key);
 		 }
 	   }
@@ -2263,9 +2259,9 @@ void __fastcall TForm3::TreyIc(TObject *Sender)
    }
    else
    {
-	  WindowState = wsNormal;
-	  Form3->Show();
-	  TrayIcon1->Visible = true;
+	  TrayIcon1->Visible = false;
+	  this->Show();
+	  this->WindowState = wsNormal;
 	  Application->BringToFront();
    }
 }
@@ -2283,12 +2279,15 @@ void __fastcall TForm3::FormCloseQuery(TObject *Sender, bool &CanClose)
 		}
 		else
 		{
-			CanClose = false;
-			Hide();
-			WindowState = wsMinimized;
+			//WindowState = wsMinimized;
 			TrayIcon1->Visible = true;
+            CanClose = false;
+        // Application->Restore();
+        // Application->Minimize();
+			Hide();
 		}
 	}
+
 }
 //---------------------------------------------------------------------------
 
@@ -2770,7 +2769,7 @@ void __fastcall TForm3::ListView1CustomDrawSubItem(TCustomListView *Sender, TLis
 void __fastcall TForm3::ListView3CustomDrawSubItem(TCustomListView *Sender, TListItem *Item,
 		  int SubItem, TCustomDrawState State, bool &DefaultDraw)
 {
-	 if((Item->Index%2) ==0)
+	if((Item->Index%2) ==0)
    {
 	   Sender->Canvas->Brush->Color = (TColor)RGB(235,235,235);
 	   Sender->Update();
@@ -3904,4 +3903,17 @@ void __fastcall TForm3::SaveSession(TObject *Sender)
    LVItemsToTextINJssonProg(Form3->PatchProgramma + "AitotalTMP\\jeson_" + FormatDateTime("YYYY.MM.DD",Date()) + "_" + FormatDateTime("HH-NN-SS",Time()));
 }
 //---------------------------------------------------------------------------
-
+ UINT MY_MESSAGE()
+{
+    return RegisterWindowMessage(L"UI_CyberForumMessage");
+}
+void __fastcall TForm3::WndProc(Winapi::Messages::TMessage &Message)
+{
+    TForm::WndProc(Message);
+    if(Message.Msg == MY_MESSAGE())
+    {
+        this->Show();
+        this->WindowState = wsNormal;
+        Application->BringToFront();
+    }
+}

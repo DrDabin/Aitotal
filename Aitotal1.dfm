@@ -103,6 +103,7 @@ object Form3: TForm3
       Height = 25
       Caption = 'Button2'
       TabOrder = 0
+      Visible = False
       OnClick = Button2Click
     end
   end
@@ -124,6 +125,10 @@ object Form3: TForm3
     TabOrder = 1
     object TabSheet1: TTabSheet
       Caption = #1060#1072#1081#1083' '#1087#1088#1086#1074#1077#1088#1082#1080
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object ListView1: TListView
         Left = 0
         Top = 0
@@ -184,6 +189,10 @@ object Form3: TForm3
     object TabSheet2: TTabSheet
       Caption = #1057#1082#1072#1085#1080#1088#1086#1074#1072#1085#1080#1077
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object ListView2: TListView
         Left = 0
         Top = 0
@@ -673,7 +682,6 @@ object Form3: TForm3
     BalloonTitle = 'Derfah'
     BalloonTimeout = 3
     PopupMenu = PopupTrayIcon
-    Visible = True
     OnBalloonClick = TrayIcon1BalloonClick
     OnClick = TreyIc
     Left = 612

@@ -77,7 +77,7 @@ void __fastcall TMyOptionsForm::OptionSave(TObject *Sender)
 		Ini->WriteString("Tools", "apikey", OptApikey->Text);
 
 	else
-		Ini->WriteString("Tools", "apikey", "3c04a612f2bf23e46dc857ffa0655544ea3a9d0d3c25b007057908eb7c8ca7b1");
+		Ini->WriteString("Tools", "apikey", "abcab5eeb395af07494eacb74e5589286902c819bace1404a4f38d13f029e7e5");
 
 	//ставлю ограничение на 19 файлов.
 	if(OpTionFileCount->Text.ToInt() <=0 || OpTionFileCount->Text.ToInt() >20)
@@ -123,8 +123,6 @@ void __fastcall TMyOptionsForm::OptionSave(TObject *Sender)
 
 void __fastcall TMyOptionsForm::FormCreate(TObject *Sender)
 {
-
-
 	KeyPreview = True;
 	MyOptionsPage->ActivePage =  MyOptionsGlobal;
 	if(FileExists(ExtractFilePath(Application->ExeName) + "tools\\options.ini"))
@@ -190,8 +188,8 @@ void __fastcall TMyOptionsForm::OptionReadIni(TObject *Sender)
 	else
 	   RBTrei->Checked = true;
 
-	UnicodeString ApikeyPot = Ini->ReadString("Tools", "apikey", "3c04a612f2bf23e46dc857ffa0655544ea3a9d0d3c25b007057908eb7c8ca7b1");
-	if(ApikeyPot =="" || ApikeyPot =="3c04a612f2bf23e46dc857ffa0655544ea3a9d0d3c25b007057908eb7c8ca7b1")
+	UnicodeString ApikeyPot = Ini->ReadString("Tools", "apikey", "abcab5eeb395af07494eacb74e5589286902c819bace1404a4f38d13f029e7e5");
+	if(ApikeyPot =="" || ApikeyPot =="abcab5eeb395af07494eacb74e5589286902c819bace1404a4f38d13f029e7e5")
 	  OptApikey->Text = "";
 	else   OptApikey->Text = ApikeyPot;
 
@@ -298,7 +296,7 @@ void __fastcall TMyOptionsForm::TestProxi(TObject *Sender)
 	  IndyVT->Request->ContentType = L"application/x-msdownload";
 	  IndyVT->Request->UserAgent = "Mozilla/5.0 (Windows; U; Windows NT 5.1;en-US; rv:1.8.1.1) Gecko/20061204 Firefox/2.0.0.1";
 	  //IndyVT->Request->Accept= "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8";
-	  IndyVT->Request->CustomHeaders->AddValue("x-apikey", "3c04a612f2bf23e46dc857ffa0655544ea3a9d0d3c25b007057908eb7c8ca7b1");
+	  IndyVT->Request->CustomHeaders->AddValue("x-apikey", Form3->AtOptions.Apikey[0] /*APIKeyStatic*/);
 	  if(RBProxy->Checked)
 	  {
 		 switch(ComboBox1->ItemIndex)
@@ -411,7 +409,7 @@ void __fastcall TMyOptionsForm::TestProxi(TObject *Sender)
 	  {
 		 try
 		 {
-			if(!RBProxy->Checked)
+			if(RBOptionsIE->Checked)
 			{
 				INTERNET_PROXY_INFO dfdg;
 				dfdg.dwAccessType = INTERNET_OPEN_TYPE_PRECONFIG;
@@ -446,7 +444,7 @@ void __fastcall TMyOptionsForm::TestProxi(TObject *Sender)
 // Сброс на стандартные настройки.
 void __fastcall TMyOptionsForm::OptRest(TObject *Sender)
 {
-   Ini->WriteString("Tools", "apikey", "3c04a612f2bf23e46dc857ffa0655544ea3a9d0d3c25b007057908eb7c8ca7b1");
+   Ini->WriteString("Tools", "apikey", "abcab5eeb395af07494eacb74e5589286902c819bace1404a4f38d13f029e7e5");
    Ini->WriteInteger("Tools", "FileCount",5);
    Ini->WriteInteger("Tools", "ThreadCount",20);
    Ini->WriteBool("Tools", "RunDuplicateApplication", false);
