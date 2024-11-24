@@ -28,7 +28,7 @@
 #*.lib
 
 # Executables
-*.exe
+#*.exe
 *.out
 *.app
 
@@ -46,8 +46,8 @@ __recovery/
 *.map
 *.tds
 *.rar
-#*.7z
-*.zip
+*.7z
+#*.zip
 *.bat
 *.txt
 *.cmd
