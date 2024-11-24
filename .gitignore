@@ -50,7 +50,7 @@ __recovery/
 #*.zip
 *.bat
 *.txt
-*.cmd
+#*.cmd
 AitotalTMP/
 Release/
 UnpackTo7Z/
