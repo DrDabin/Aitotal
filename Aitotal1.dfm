@@ -8,7 +8,7 @@ object Form3: TForm3
   Font.Charset = RUSSIAN_CHARSET
   Font.Color = clWindowText
   Font.Height = -11
-  Font.Name = 'Tahoma'
+  Font.Name = 'Microsoft Sans Serif'
   Font.Style = []
   Menu = MainMenu1
   OldCreateOrder = False
@@ -34,14 +34,14 @@ object Form3: TForm3
       77)
     object Label1: TLabel
       Left = 4
-      Top = 15
-      Width = 77
+      Top = 13
+      Width = 87
       Height = 16
       Caption = #1042#1074#1077#1076#1080#1090#1077' MD5'
       Font.Charset = RUSSIAN_CHARSET
       Font.Color = clWindowText
       Font.Height = -13
-      Font.Name = 'Tahoma'
+      Font.Name = 'Microsoft Sans Serif'
       Font.Style = []
       ParentFont = False
     end
@@ -75,9 +75,9 @@ object Form3: TForm3
       TabOrder = 5
     end
     object Edit1: TEdit
-      Left = 87
+      Left = 97
       Top = 12
-      Width = 621
+      Width = 613
       Height = 21
       Anchors = [akLeft, akTop, akRight]
       ParentShowHint = False

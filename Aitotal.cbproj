@@ -59,7 +59,13 @@
         <SanitizedProjectName>Aitotal</SanitizedProjectName>
         <Icon_MainIcon>Aitotal_Icon.ico</Icon_MainIcon>
         <Manifest_File>img\xpmanifest.xml</Manifest_File>
-        <VerInfo_AutoGenVersion>true</VerInfo_AutoGenVersion>
+        <VerInfo_MajorVer>2</VerInfo_MajorVer>
+        <VerInfo_MinorVer>2</VerInfo_MinorVer>
+        <VerInfo_Release>2</VerInfo_Release>
+        <VerInfo_Build>2</VerInfo_Build>
+        <VerInfo_PreRelease>true</VerInfo_PreRelease>
+        <VerInfo_Locale>1033</VerInfo_Locale>
+        <VerInfo_Keys>CompanyName=CopName;FileDescription=$(MSBuildProjectName);FileVersion=2.2.2.2;InternalName=IntName;LegalCopyright=Copyrigt;LegalTrademarks=Tradema;OriginalFilename=OrigFileName;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=2.2.2.2;Comments=comments</VerInfo_Keys>
         <DCC_Namespace>Vcl;Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;System;Xml;Data;Datasnap;Web;Soap;$(DCC_Namespace)</DCC_Namespace>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <LinkPackageStatics>rtl.lib;vcl.lib;xmlrtl.lib;IndyCore.lib;IndySystem.lib;IndyProtocols.lib;vclx.lib;vclactnband.lib</LinkPackageStatics>
@@ -84,6 +90,14 @@
     <PropertyGroup Condition="'$(Base_Win32)'!=''">
         <IncludePath>$(BDSINCLUDE)\windows\vcl;$(IncludePath)</IncludePath>
         <Manifest_File>img\xpmanifest.xml</Manifest_File>
+        <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+        <VerInfo_MajorVer>2</VerInfo_MajorVer>
+        <VerInfo_MinorVer>2</VerInfo_MinorVer>
+        <VerInfo_Release>2</VerInfo_Release>
+        <VerInfo_Build>2</VerInfo_Build>
+        <VerInfo_PreRelease>true</VerInfo_PreRelease>
+        <VerInfo_Locale>1033</VerInfo_Locale>
+        <VerInfo_Keys>CompanyName=CopName;FileDescription=$(MSBuildProjectName);FileVersion=2.2.2.2;InternalName=IntName;LegalCopyright=Copyrigt;LegalTrademarks=Tradema;OriginalFilename=OrigFileName;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=2.2.2.2;Comments=comments</VerInfo_Keys>
         <DCC_Namespace>Winapi;System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;$(DCC_Namespace)</DCC_Namespace>
         <UWP_CppLogo44>$(BDS)\bin\Artwork\Windows\UWP\cppreg_UwpDefault_44.png</UWP_CppLogo44>
         <UWP_CppLogo150>$(BDS)\bin\Artwork\Windows\UWP\cppreg_UwpDefault_150.png</UWP_CppLogo150>
@@ -100,10 +114,15 @@
         <BCC_AllCodeguardOptions>true</BCC_AllCodeguardOptions>
         <DynamicRTL>false</DynamicRTL>
         <_TCHARMapping>wchar_t</_TCHARMapping>
-        <VerInfo_Locale>1049</VerInfo_Locale>
-        <VerInfo_IncludeVerInfo>false</VerInfo_IncludeVerInfo>
+        <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+        <VerInfo_MajorVer>2</VerInfo_MajorVer>
+        <VerInfo_MinorVer>2</VerInfo_MinorVer>
+        <VerInfo_Release>2</VerInfo_Release>
+        <VerInfo_Build>2</VerInfo_Build>
+        <VerInfo_PreRelease>true</VerInfo_PreRelease>
+        <VerInfo_Locale>1033</VerInfo_Locale>
+        <VerInfo_Keys>CompanyName=CopName;FileDescription=$(MSBuildProjectName);FileVersion=2.2.2.2;InternalName=IntName;LegalCopyright=Copyrigt;LegalTrademarks=Tradema;OriginalFilename=OrigFileName;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=2.2.2.2;Comments=comments</VerInfo_Keys>
         <IncludePath>..\..\..\;..\..\;include7z\CPP;$(IncludePath)</IncludePath>
-        <VerInfo_Keys>FileVersion=1.0.0.0;ProgramID=com.embarcadero.$(MSBuildProjectName);FileDescription=$(MSBuildProjectName);ProductName=$(MSBuildProjectName)</VerInfo_Keys>
         <BCC_DebugLineNumbers>true</BCC_DebugLineNumbers>
         <BCC_InlineFunctionExpansion>false</BCC_InlineFunctionExpansion>
         <BCC_MonitorInlinePtrAccess>true</BCC_MonitorInlinePtrAccess>
@@ -117,7 +136,7 @@
         <BT_BuildType>Debug</BT_BuildType>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
-        <VerInfo_AutoGenVersion>false</VerInfo_AutoGenVersion>
+        <VerInfo_AutoGenVersion>True</VerInfo_AutoGenVersion>
         <DynamicRTL>false</DynamicRTL>
         <TASM_Debugging>None</TASM_Debugging>
     </PropertyGroup>
@@ -125,13 +144,23 @@
         <BCC_AllCodeguardOptions>false</BCC_AllCodeguardOptions>
         <Manifest_File>img\xpmanifest.manifest</Manifest_File>
         <_TCHARMapping>wchar_t</_TCHARMapping>
-        <VerInfo_Keys>FileVersion=1.0.0.0;ProgramID=com.embarcadero.$(MSBuildProjectName);FileDescription=$(MSBuildProjectName);ProductName=$(MSBuildProjectName)</VerInfo_Keys>
         <IncludePath>include7z\CPP;$(IncludePath)</IncludePath>
-        <VerInfo_Locale>1049</VerInfo_Locale>
-        <VerInfo_IncludeVerInfo>false</VerInfo_IncludeVerInfo>
+        <VerInfo_MajorVer>3</VerInfo_MajorVer>
+        <VerInfo_MinorVer>4</VerInfo_MinorVer>
+        <VerInfo_Release>8</VerInfo_Release>
+        <VerInfo_Build>0</VerInfo_Build>
         <LinkPackageStatics>rtl.lib;vcl.lib;xmlrtl.lib;IndyCore.lib;IndySystem.lib;IndyProtocols.lib;vclx.lib;vclactnband.lib;DbxCommonDriver.lib;dbrtl.lib;adortl.lib;vclimg.lib</LinkPackageStatics>
         <BT_BuildType>Debug</BT_BuildType>
+        <VerInfo_AutoGenVersion>false</VerInfo_AutoGenVersion>
         <Defines>NDEBUG;$(Defines)</Defines>
+        <VerInfo_Keys>CompanyName=Alex1983 &amp; Safezone.cc.;FileDescription=This program checks files on VirusTotal.com and displays the result. This program does not replace antiviruses.;FileVersion=3.4.8.0;InternalName=Aitotal.exe;LegalCopyright=(c) Alex1983 2024.10.31;LegalTrademarks=https://github.com/DrDabin/Aitotal;OriginalFilename=Aitotal.eze;ProgramID=Aitotal;ProductName=Aitotal;ProductVersion=3.4.8.0;Comments=comments</VerInfo_Keys>
+        <UWP_CppLogo150>Aitotal_Icon.ico</UWP_CppLogo150>
+        <BRCC_CompilerToUse>rc</BRCC_CompilerToUse>
+        <BRCC_Verbose>true</BRCC_Verbose>
+        <BRCC_Language>0409</BRCC_Language>
+        <VerInfo_IncludeVerInfo>false</VerInfo_IncludeVerInfo>
+        <UWP_CppLogo44>Aitotal_Icon.ico</UWP_CppLogo44>
+        <BCC_PCHUsage>None</BCC_PCHUsage>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2_Win64)'!=''">
         <Defines>NDEBUG;$(Defines)</Defines>
@@ -140,6 +169,9 @@
         <CppCompile Include="Aitotal.cpp">
             <BuildOrder>0</BuildOrder>
         </CppCompile>
+        <ResFiles Include="Aitotal.res">
+            <BuildOrder>44</BuildOrder>
+        </ResFiles>
         <CppCompile Include="Aitotal1.cpp">
             <Form>Form3</Form>
             <FormType>dfm</FormType>
@@ -211,10 +243,6 @@
         <None Include="AitotalInclude\Struct.h">
             <BuildOrder>48</BuildOrder>
         </None>
-        <ResourceCompile Include="AitotalInclude\symple.rc">
-            <Form>symple.res</Form>
-            <BuildOrder>28</BuildOrder>
-        </ResourceCompile>
         <CppCompile Include="include7z\CPP\7zip\Common\FileStreams.cpp">
             <BuildOrder>16</BuildOrder>
         </CppCompile>
@@ -294,11 +322,11 @@
         <None Include="include7z\CPP\Windows\PropVariant.h">
             <BuildOrder>35</BuildOrder>
         </None>
-        <FormResources Include="AitotalInclude\Options\Options1.dfm"/>
         <FormResources Include="Aitotal1.dfm"/>
         <FormResources Include="AitotalInclude\About\ABOUT.dfm"/>
-        <FormResources Include="AitotalInclude\Password\paroll1.dfm"/>
         <FormResources Include="AitotalInclude\ScanResultat\ScanResult.dfm"/>
+        <FormResources Include="AitotalInclude\Options\Options1.dfm"/>
+        <FormResources Include="AitotalInclude\Password\paroll1.dfm"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
@@ -328,37 +356,36 @@
                     <ProjectProperties Name="IndexFiles">False</ProjectProperties>
                 </ProjectProperties>
                 <Excluded_Packages>
-                    <Excluded_Packages Name="$(BDSBIN)\bcboffice2k210.bpl">Embarcadero C++Builder Office 2000 Servers Package</Excluded_Packages>
-                    <Excluded_Packages Name="$(BDSBIN)\bcbofficexp210.bpl">Embarcadero C++Builder Office XP Servers Package</Excluded_Packages>
-                    <Excluded_Packages Name="$(BDSBIN)\dcloffice2k210.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
-                    <Excluded_Packages Name="$(BDSBIN)\dclofficexp210.bpl">Microsoft Office XP Sample Automation Server Wrapper Components</Excluded_Packages>
-                    <Excluded_Packages Name="C:\Program Files (x86)\FastReports\LibD21\dclfrxtee21.bpl">(untitled)</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\bcboffice2k270.bpl">Embarcadero C++Builder Office 2000 Servers Package</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\bcbofficexp270.bpl">Embarcadero C++Builder Office XP Servers Package</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dcloffice2k270.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dclofficexp270.bpl">Microsoft Office XP Sample Automation Server Wrapper Components</Excluded_Packages>
                 </Excluded_Packages>
                 <VersionInfo>
-                    <VersionInfo Name="IncludeVerInfo">False</VersionInfo>
+                    <VersionInfo Name="IncludeVerInfo">True</VersionInfo>
                     <VersionInfo Name="AutoIncBuild">False</VersionInfo>
-                    <VersionInfo Name="MajorVer">1</VersionInfo>
-                    <VersionInfo Name="MinorVer">0</VersionInfo>
-                    <VersionInfo Name="Release">0</VersionInfo>
+                    <VersionInfo Name="MajorVer">3</VersionInfo>
+                    <VersionInfo Name="MinorVer">4</VersionInfo>
+                    <VersionInfo Name="Release">8</VersionInfo>
                     <VersionInfo Name="Build">0</VersionInfo>
                     <VersionInfo Name="Debug">False</VersionInfo>
-                    <VersionInfo Name="PreRelease">False</VersionInfo>
+                    <VersionInfo Name="PreRelease">True</VersionInfo>
                     <VersionInfo Name="Special">False</VersionInfo>
                     <VersionInfo Name="Private">False</VersionInfo>
                     <VersionInfo Name="DLL">False</VersionInfo>
                     <VersionInfo Name="Locale">1049</VersionInfo>
-                    <VersionInfo Name="CodePage">1251</VersionInfo>
+                    <VersionInfo Name="CodePage">1200</VersionInfo>
                 </VersionInfo>
                 <VersionInfoKeys>
                     <VersionInfoKeys Name="CompanyName"/>
                     <VersionInfoKeys Name="FileDescription"/>
-                    <VersionInfoKeys Name="FileVersion">1.0.0.0</VersionInfoKeys>
+                    <VersionInfoKeys Name="FileVersion">3.4.8.0</VersionInfoKeys>
                     <VersionInfoKeys Name="InternalName"/>
                     <VersionInfoKeys Name="LegalCopyright"/>
                     <VersionInfoKeys Name="LegalTrademarks"/>
                     <VersionInfoKeys Name="OriginalFilename"/>
                     <VersionInfoKeys Name="ProductName"/>
-                    <VersionInfoKeys Name="ProductVersion">1.0.0.0</VersionInfoKeys>
+                    <VersionInfoKeys Name="ProductVersion">3.4.8.0</VersionInfoKeys>
                     <VersionInfoKeys Name="Comments"/>
                     <VersionInfoKeys Name="CFBundleName"/>
                     <VersionInfoKeys Name="CFBundleDisplayName"/>
@@ -376,7 +403,7 @@
                     <VersionInfoKeys Name="CFBundleDevelopmentRegion"/>
                 </VersionInfoKeys>
                 <Language>
-                    <Language Name="ProjectLang">$00000419</Language>
+                    <Language Name="ProjectLang">$00000409</Language>
                 </Language>
                 <Resource_DLL_Projects>
                     <Resource_DLL_Projects Name="Item0">Английский (США)*$00000409*ENU*ENU</Resource_DLL_Projects>
@@ -396,13 +423,21 @@
                 <Platform value="Win64">False</Platform>
             </Platforms>
             <Deployment Version="3">
-                <DeployFile Condition="'$(DynamicRTL)'=='true' And '$(Multithreaded)'=='true'" LocalName="$(BDS)\bin\cc32150mt.dll" Class="DependencyModule"/>
+                <DeployFile Condition="'$(DynamicRTL)'=='true'" LocalName="$(BDS)\Redist\osx64\libcgcrtl.dylib" Class="DependencyModule">
+                    <Platform Name="OSX64">
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
                 <DeployFile Condition="'$(DynamicRTL)'=='true' And '$(Multithreaded)'!='true'" LocalName="$(BDS)\bin\cc32c260.dll" Class="DependencyModule">
                     <Platform Name="Win32">
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile Condition="'$(DynamicRTL)'=='true' And '$(Multithreaded)'!='true'" LocalName="$(BDS)\bin64\cc64160.dll" Class="DependencyModule"/>
+                <DeployFile Condition="'$(DynamicRTL)'=='true' And '$(Multithreaded)'!='true'" LocalName="$(BDS)\bin64\cc64250.dll" Class="DependencyModule">
+                    <Platform Name="Win64">
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
                 <DeployFile Condition="'$(DynamicRTL)'=='true' And '$(Multithreaded)'!='true'" LocalName="$(BDS)\bin\cc32260.dll" Class="DependencyModule">
                     <Platform Name="Win32">
                         <Overwrite>true</Overwrite>
@@ -422,6 +457,13 @@
                     </Platform>
                 </DeployFile>
                 <DeployFile Condition="'$(DynamicRTL)'=='true' And '$(Multithreaded)'!='true'" LocalName="$(BDS)\bin64\cc64150.dll" Class="DependencyModule"/>
+                <DeployFile LocalName="Aitotal_Icon.ico" Configuration="Release" Class="UWP_CppLogo150">
+                    <Platform Name="Win32">
+                        <RemoteDir>Assets\</RemoteDir>
+                        <RemoteName>Logo150x150.png</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
                 <DeployFile Condition="'$(DynamicRTL)'=='true' And '$(Multithreaded)'=='true'" LocalName="$(BDS)\bin\cc32c250mt.dll" Class="DependencyModule">
                     <Platform Name="Win32">
                         <Overwrite>true</Overwrite>
@@ -468,6 +510,12 @@
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
+                <DeployFile LocalName="Aitotal.res" Configuration="Release" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
                 <DeployFile Condition="'$(DynamicRTL)'=='true' And '$(Multithreaded)'!='true'" LocalName="$(BDS)\bin\cc32150.dll" Class="DependencyModule"/>
                 <DeployFile Condition="'$(DynamicRTL)'=='true' And '$(Multithreaded)'=='true'" LocalName="$(BDS)\bin64\cc64250mt.dll" Class="DependencyModule">
                     <Platform Name="Win64">
@@ -490,17 +538,9 @@
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
+                <DeployFile Condition="'$(DynamicRTL)'=='true' And '$(Multithreaded)'!='true'" LocalName="$(BDS)\bin64\cc64160.dll" Class="DependencyModule"/>
+                <DeployFile Condition="'$(DynamicRTL)'=='true' And '$(Multithreaded)'=='true'" LocalName="$(BDS)\bin\cc32150mt.dll" Class="DependencyModule"/>
                 <DeployFile Condition="'$(DynamicRTL)'=='true' And '$(Multithreaded)'=='true'" LocalName="$(BDS)\bin64\cc64160mt.dll" Class="DependencyModule"/>
-                <DeployFile Condition="'$(DynamicRTL)'=='true'" LocalName="$(BDS)\Redist\osx64\libcgcrtl.dylib" Class="DependencyModule">
-                    <Platform Name="OSX64">
-                        <Overwrite>true</Overwrite>
-                    </Platform>
-                </DeployFile>
-                <DeployFile Condition="'$(DynamicRTL)'=='true' And '$(Multithreaded)'!='true'" LocalName="$(BDS)\bin64\cc64250.dll" Class="DependencyModule">
-                    <Platform Name="Win64">
-                        <Overwrite>true</Overwrite>
-                    </Platform>
-                </DeployFile>
                 <DeployClass Name="AdditionalDebugSymbols">
                     <Platform Name="iOSSimulator">
                         <Operation>1</Operation>

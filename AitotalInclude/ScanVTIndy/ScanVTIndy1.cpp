@@ -122,22 +122,35 @@ void __fastcall ScanVTIndy::DelSpisokNamePotok()
 //+++++++++++++++++++++++++++++++++++
 void __fastcall ScanVTIndy::InOnWorkBegin(TObject *ASender, TWorkMode AWorkMode,__int64 AWorkCountMax)
 {
-	VTFileSize = AWorkCountMax;
+	//VTFileSize = AWorkCountMax;
+
+    // Устанавливаем размер загружаемых данных
+  if(AWorkMode==TWorkMode::wmRead)
+	VTFileSize = AWorkCountMax;  // download
+  else if(AWorkMode==TWorkMode::wmWrite)
+	VTFileSize = AWorkCountMax; // upload
 }
 //+++++++++++++++++++++++++
 void __fastcall ScanVTIndy::InWork(TObject *ASender, TWorkMode AWorkMode, __int64 AWorkCount)
 {
-	TIdHTTP *http = static_cast<TIdHTTP*>(ASender);
-
+	//TIdHTTP *http = static_cast<TIdHTTP*>(ASender);
+	__int64 WorkCount=0;
 	if(Terminated)
 	{
-		http->Socket->Close();
+		//http->Socket->Close();
+		dynamic_cast<TIdHTTP*>(ASender)->Disconnect();
 		Progress =LnMesScaningIsStoped;
 		Synchronize(&ScanProgres);
 	}
-	if(AWorkCount !=0 && VTFileSize !=0)
+    // Ход загрузки
+	if(AWorkMode==TWorkMode::wmRead)
+		WorkCount = AWorkCount;  // download
+	else if(AWorkMode==TWorkMode::wmWrite)
+		WorkCount = AWorkCount;  //  upload
+
+	if(WorkCount !=0 && VTFileSize !=0)
 	{
-		VtZagruzki = (AWorkCount*100)/VTFileSize;
+		VtZagruzki = (WorkCount*100)/VTFileSize;
 		Synchronize(&UploadProgress);
 
 		if(logirovanie)

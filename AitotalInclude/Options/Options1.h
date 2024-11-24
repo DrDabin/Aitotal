@@ -16,6 +16,8 @@
 #include <IdComponent.hpp>
 #include <IdCustomTransparentProxy.hpp>
 #include <IdSocks.hpp>
+
+#define ApyKeyVT  "abcab5eeb395af07494eacb74e5589286902c819bace1404a4f38d13f029e7e5"
 //---------------------------------------------------------------------------
 class TMyOptionsForm : public TForm
 {

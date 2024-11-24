@@ -77,7 +77,7 @@ void __fastcall TMyOptionsForm::OptionSave(TObject *Sender)
 		Ini->WriteString("Tools", "apikey", OptApikey->Text);
 
 	else
-		Ini->WriteString("Tools", "apikey", "abcab5eeb395af07494eacb74e5589286902c819bace1404a4f38d13f029e7e5");
+		Ini->WriteString("Tools", "apikey", ApyKeyVT);
 
 	//ставлю ограничение на 19 файлов.
 	if(OpTionFileCount->Text.ToInt() <=0 || OpTionFileCount->Text.ToInt() >20)
@@ -188,8 +188,8 @@ void __fastcall TMyOptionsForm::OptionReadIni(TObject *Sender)
 	else
 	   RBTrei->Checked = true;
 
-	UnicodeString ApikeyPot = Ini->ReadString("Tools", "apikey", "abcab5eeb395af07494eacb74e5589286902c819bace1404a4f38d13f029e7e5");
-	if(ApikeyPot =="" || ApikeyPot =="abcab5eeb395af07494eacb74e5589286902c819bace1404a4f38d13f029e7e5")
+	UnicodeString ApikeyPot = Ini->ReadString("Tools", "apikey", ApyKeyVT);
+	if(ApikeyPot =="" || ApikeyPot ==ApyKeyVT)
 	  OptApikey->Text = "";
 	else   OptApikey->Text = ApikeyPot;
 
@@ -411,10 +411,13 @@ void __fastcall TMyOptionsForm::TestProxi(TObject *Sender)
 		 {
 			if(RBOptionsIE->Checked)
 			{
-				INTERNET_PROXY_INFO dfdg;
-				dfdg.dwAccessType = INTERNET_OPEN_TYPE_PRECONFIG;
-				UrlMkSetSessionOption(INTERNET_OPTION_PROXY,&dfdg, sizeof(dfdg),0);
-            }
+				//INTERNET_PROXY_INFO dfdg;
+				//dfdg.dwAccessType = INTERNET_OPEN_TYPE_PRECONFIG;
+				//UrlMkSetSessionOption(INTERNET_OPTION_PROXY,&dfdg, sizeof(dfdg),0);
+				// Применил параметр INTERNET_OPTION_REFRESH вместо INTERNET_PROXY_INFO
+                // что бы его не создавать.
+				UrlMkSetSessionOption(INTERNET_OPTION_REFRESH,0, 0,0);
+			}
 
 			IndyVT->Get(Url);
 			IndyVT->ResponseCode;
@@ -444,7 +447,7 @@ void __fastcall TMyOptionsForm::TestProxi(TObject *Sender)
 // Сброс на стандартные настройки.
 void __fastcall TMyOptionsForm::OptRest(TObject *Sender)
 {
-   Ini->WriteString("Tools", "apikey", "abcab5eeb395af07494eacb74e5589286902c819bace1404a4f38d13f029e7e5");
+   Ini->WriteString("Tools", "apikey", ApyKeyVT);
    Ini->WriteInteger("Tools", "FileCount",5);
    Ini->WriteInteger("Tools", "ThreadCount",20);
    Ini->WriteBool("Tools", "RunDuplicateApplication", false);

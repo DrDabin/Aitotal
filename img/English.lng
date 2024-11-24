@@ -104,13 +104,9 @@ Version=Version
 Copyright=Copyright
 Comments=Comment
 ;Label1=Aitotal
-;Label2=3.4.5
-Label3=(c) Aibolit aka Alex1983
 Label4=This program is not a replacement
 Label5= for the antivirus.
 Label6=Date
-;Label7=2023.05.13
-Label8=Благодарность Александер, regist.
 OKButton=OK
 [MyOptionsForm]
 Caption=Settings

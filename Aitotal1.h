@@ -26,6 +26,7 @@
 #include <Vcl.ActnList.hpp>
 #include <Vcl.Dialogs.hpp>
 #include <System.Classes.hpp>
+
  UINT MY_MESSAGE();
 // ---------------------------------------------------------------------------
 class TForm3 : public TForm {

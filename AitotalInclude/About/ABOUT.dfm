@@ -73,11 +73,11 @@ object AboutBox: TAboutBox
       Caption = 'Aitotal'
     end
     object Label2: TLabel
-      Left = 128
+      Left = 127
       Top = 40
-      Width = 17
+      Width = 27
       Height = 16
-      Caption = '3.2'
+      Caption = '3.4.9'
     end
     object Label3: TLabel
       Left = 131
@@ -112,14 +112,14 @@ object AboutBox: TAboutBox
       Top = 60
       Width = 62
       Height = 16
-      Caption = '13.12.2015'
+      Caption = '22.11.2024'
     end
     object Label8: TLabel
       Left = 8
-      Top = 144
-      Width = 224
+      Top = 140
+      Width = 290
       Height = 16
-      Caption = #1041#1083#1072#1075#1086#1076#1072#1088#1085#1086#1089#1090#1100' '#1040#1083#1077#1082#1089#1072#1085#1076#1077#1088', regist.'
+      Caption = #1041#1083#1072#1075#1086#1076#1072#1088#1085#1086#1089#1090#1100' '#1040#1083#1077#1082#1089#1072#1085#1076#1077#1088', regist, Dragokas.'
     end
   end
   object OKButton: TButton

@@ -589,7 +589,7 @@ bool TForm3::ExtractResource(UnicodeString NameResource, UnicodeString NameFile)
    if(hSrsrc ==NULL)
    {
 	  ShowMessage(LnMesResNotFound);
-	  ErrorLog("Ресурс не найден" + NameResource);
+	  ErrorLog("Ресурс не найден = " + NameResource);
 	  return false;
    }
 
@@ -991,7 +991,6 @@ void __fastcall TForm3::ParsingArchivUVS(UnicodeString FileName, TList *SpisokFi
 	  if((sizefile >0) && (sizefile < AtOptions.MaxSizeVale))
 	  {
 		 MyMd5 = CalkFileMD5(FileName).LowerCase();
-		 //SHA256 = Mysha256ver2(FileName);
 		 //Использую стандартную функцию расчета хеш суммы
 		 try
 		 {
@@ -1745,7 +1744,7 @@ void __fastcall TForm3::OptionReadIni()
 	{
 	   ApikeyCount == 1;
 	   AtOptions.Apikey.reserve(1);
-	   AtOptions.Apikey.insert(AtOptions.Apikey.end(),IniOptions->ReadString("Tools", "apikey", "abcab5eeb395af07494eacb74e5589286902c819bace1404a4f38d13f029e7e5"));
+	   AtOptions.Apikey.insert(AtOptions.Apikey.end(),IniOptions->ReadString("Tools", "apikey", ApyKeyVT));
 	}
 	else
 	{
@@ -1755,13 +1754,13 @@ void __fastcall TForm3::OptionReadIni()
 	   {
 		 if(i == 0)
 		 {
-			UnicodeString key = IniOptions->ReadString("Tools", "apikey", "abcab5eeb395af07494eacb74e5589286902c819bace1404a4f38d13f029e7e5");
+			UnicodeString key = IniOptions->ReadString("Tools", "apikey", ApyKeyVT);
 			AtOptions.Apikey.insert(AtOptions.Apikey.end(),key);
 		 }
 		 else
 		 {
 			UnicodeString num = L"apikey"+IntToStr(i);
-			UnicodeString key = IniOptions->ReadString("Tools", num, "abcab5eeb395af07494eacb74e5589286902c819bace1404a4f38d13f029e7e5");
+			UnicodeString key = IniOptions->ReadString("Tools", num, ApyKeyVT);
 			AtOptions.Apikey.insert(AtOptions.Apikey.end(),key);
 		 }
 	   }

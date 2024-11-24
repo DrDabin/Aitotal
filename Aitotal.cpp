@@ -9,11 +9,11 @@
 #include "Aitotal1.h"
 //---------------------------------------------------------------------------
 
-USEFORM("AitotalInclude\Options\Options1.cpp", MyOptionsForm);
 USEFORM("Aitotal1.cpp", Form3);
 USEFORM("AitotalInclude\About\ABOUT.cpp", AboutBox);
-USEFORM("AitotalInclude\Password\paroll1.cpp", FParoll);
 USEFORM("AitotalInclude\ScanResultat\ScanResult.cpp", FormResultScan);
+USEFORM("AitotalInclude\Options\Options1.cpp", MyOptionsForm);
+USEFORM("AitotalInclude\Password\paroll1.cpp", FParoll);
 //---------------------------------------------------------------------------
 WINAPI _tWinMain(HINSTANCE, HINSTANCE, LPTSTR par, int)
 {
